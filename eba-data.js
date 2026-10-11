@@ -321,15 +321,24 @@
     return r;
   }
 
-  function search(q) {
-    var n = norm(q); if (!n) return [];
-    return topics.map(function (t) {
-      var name = norm(t.name), i = name.indexOf(n);
-      var s = i === 0 ? 3 : i > 0 ? 2 : norm(t.summary).indexOf(n) >= 0 ? 1 : 0;
-      return { t: t, s: s };
-    }).filter(function (x) { return x.s > 0; }).sort(function (a, b) { return b.s - a.s; }).map(function (x) { return x.t; });
+  /* Türkçe karakter toleransı: hucre = hücre, ogrenme = öğrenme */
+  function norm(s) {
+    return (s || '').toLocaleLowerCase('tr').replace(/ı/g, 'i').replace(/ş/g, 's').replace(/ç/g, 'c').replace(/ğ/g, 'g').replace(/ö/g, 'o').replace(/ü/g, 'u')
+      .replace(/[’'()·,.\-–]/g, ' ').replace(/\s+/g, ' ').trim();
   }
-  function norm(s) { return (s || '').toLocaleLowerCase('tr').replace(/[’'()·,.]/g, ' ').replace(/\s+/g, ' ').trim(); }
+  /* sıralama: tam başlık > başlık başı > başlıkta geçen > kazanım kodu > açıklama; eşitlikte lise konusu ortaokuldan önce */
+  function search(q, pred) {
+    var n = norm(q); if (!n) return [];
+    var qc = n.replace(/ /g, ''), codeQ = /\d/.test(qc) && qc.length >= 3 || /^biy/.test(qc);
+    return topics.map(function (t, i) {
+      if (pred && !pred(t)) return null;
+      var name = norm(t.name), k = name.indexOf(n), s = 0;
+      if (name === n) s = 6; else if (k === 0) s = 5; else if (k > 0) s = 4;
+      else if (codeQ && norm(t.code).replace(/ /g, '').indexOf(qc) >= 0) s = 3;
+      else if (norm(t.summary).indexOf(n) >= 0) s = 1;
+      return s ? { t: t, s: s, o: t.grade === 'O' ? 1 : 0, i: i } : null;
+    }).filter(Boolean).sort(function (a, b) { return b.s - a.s || a.o - b.o || a.i - b.i; }).map(function (x) { return x.t; });
+  }
 
   window.EBA_DATA = { themes: themes, themeById: themeById, topics: topics, byId: byId, links: links,
     resources: resources, neighbors: neighbors, search: search, programPdf: PROGRAM_PDF,
