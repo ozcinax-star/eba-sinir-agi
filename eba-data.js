@@ -1,4 +1,4 @@
-// EBA Biyoloji Haritası — konu verisi (Türkiye Yüzyılı Maarif Modeli 2024, Biyoloji 9–12)
+// EBA Biyoloji Haritası — konu verisi (Türkiye Yüzyılı Maarif Modeli 2026, Biyoloji 9–12)
 // Kaynak: MEB TYMM Biyoloji Dersi Öğretim Programı (içerik çerçevesi ve "temel kabuller").
 (function () {
   var T = 'https://tymm.meb.gov.tr';
@@ -333,5 +333,5 @@
 
   window.EBA_DATA = { themes: themes, themeById: themeById, topics: topics, byId: byId, links: links,
     resources: resources, neighbors: neighbors, search: search, programPdf: PROGRAM_PDF,
-    curriculum: 'Türkiye Yüzyılı Maarif Modeli · Biyoloji Dersi Öğretim Programı (2024)', checkedAt: 'Ekim 2026' };
+    curriculum: 'Türkiye Yüzyılı Maarif Modeli · Biyoloji Dersi Öğretim Programı (2026)', checkedAt: 'Ekim 2026' };
 })();
