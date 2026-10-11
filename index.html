@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="tr" data-eba-mode="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EBA Biyoloji Haritası · 9–12. sınıf konu ağı</title>
+<meta name="description" content="9–12. sınıf biyoloji konularını etkileşimli bir sinir ağında keşfet: bir konunun dayandığı temel bilgileri, sonraki konularla ilişkisini ve doğrulanmış MEB kaynaklarını tek ekranda gör.">
+<meta name="theme-color" content="#1d1a16">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="EBA Biyoloji Haritası">
+<meta property="og:description" content="Bir konu seç; neye dayandığını ve nereye götürdüğünü gör. Türkiye Yüzyılı Maarif Modeli 2024, Biyoloji 9–12.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%231d1a16'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23f6a06b'/%3E%3C/svg%3E">
+<script>
+document.documentElement.classList.add('js');
+try { var m = localStorage.getItem('eba-biyoloji-mode');
+  if (m !== 'light' && m !== 'mid' && m !== 'dark') m = (window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-eba-mode', m); } catch (e) {}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Figtree:wght@400;600;700&display=swap">
+<style>
+/* Caprasimo Ğ ğ İ Ş ş için ek glif kaynağı */
+@font-face{font-family:"Caprasimo";font-weight:400;src:local("Georgia Bold"),local("Georgia-Bold"),local("Rockwell Bold");unicode-range:U+011E-011F,U+0130,U+015E-015F}
+:root{
+  --font-heading:"Caprasimo",Georgia,serif;--font-body:"Figtree",system-ui,sans-serif;
+  --color-divider:rgba(32,30,29,.16);
+  --color-neutral-100:#f9f4ed;--color-neutral-200:#eee7db;--color-neutral-300:#dcd3c4;--color-neutral-400:#c0b6a5;--color-neutral-600:#82796a;--color-neutral-700:#645c50;--color-neutral-800:#474238;
+  --color-accent-100:#fff2eb;--color-accent-800:#643312;--color-accent-2-100:#f0fae1;--color-accent-2-800:#3d472b;
+  --n-body:#1d1a16;--n-bg:radial-gradient(120% 95% at 62% 50%,#3d352c 0%,#29241e 55%,#1c1915 100%);--n-ink:#f5ead8;--n-ink2:#c9bfae;--n-ink3:#e4dccd;--n-surf:#3a352e;--n-surf-a:rgba(58,53,46,.86);--n-line:rgba(245,234,216,.14);--n-line2:rgba(245,234,216,.24);--n-hov:rgba(245,234,216,.09);--n-shadow:rgba(0,0,0,.32);--n-glow:rgba(23,20,16,.8);--n-acc:#f6a06b;--n-chip-on:#f5ead8;--n-chip-on-ink:#1d1a16;--n-neuron:#f6a06b;--n-pulse:#e3b766;--n-e-pre:#f6a06b;--n-e-kol:#aebf92;--n-e-next:#f5ead8;--n-e-rel:#a19786;--n-e-base:#c0b6a5;--n-panel:#f9f4ed;--n-panel-shadow:0 12px 40px rgba(0,0,0,.45);--n-ph:#a19786;
+  --gO:#c0b6a5;--g9:#aebf92;--g10:#e3b766;--g11:#f6a06b;--g12:#e09aa3;
+  --ease:cubic-bezier(.22,.61,.36,1);--t-fast:.15s;--t-base:.25s;--t-slow:.4s;
+  color-scheme:dark;
+}
+html[data-eba-mode="light"]{--n-body:#e8e0d2;--n-bg:radial-gradient(120% 95% at 62% 50%,#f5efe5 0%,#ebe3d5 55%,#ded3c1 100%);--n-ink:#201e1d;--n-ink2:#5c5448;--n-ink3:#3a352e;--n-surf:#fbf6ee;--n-surf-a:rgba(251,246,238,.9);--n-line:rgba(32,30,29,.14);--n-line2:rgba(32,30,29,.24);--n-hov:rgba(32,30,29,.06);--n-shadow:rgba(80,58,30,.16);--n-glow:rgba(245,239,229,.9);--n-acc:#a4501c;--n-chip-on:#201e1d;--n-chip-on-ink:#f9f4ed;--n-neuron:#d2622a;--n-pulse:#b9821c;--n-e-pre:#c4561d;--n-e-kol:#5b7a3a;--n-e-next:#3a342c;--n-e-rel:#8a8070;--n-e-base:#82796a;--n-panel:#fcf8f2;--n-panel-shadow:0 12px 40px rgba(80,58,30,.2);--n-ph:#857c6e;--gO:#857b6b;--g9:#64843f;--g10:#b9821c;--g11:#d2622a;--g12:#bf5a6c;color-scheme:light}
+html[data-eba-mode="mid"]{--n-body:#b5a186;--n-bg:radial-gradient(120% 95% at 62% 50%,#d6c7b1 0%,#c7b59c 55%,#b5a186 100%);--n-ink:#1c1712;--n-ink2:#3f352a;--n-ink3:#2c251d;--n-surf:#ddd0bc;--n-surf-a:rgba(221,208,188,.92);--n-line:rgba(28,23,18,.16);--n-line2:rgba(28,23,18,.28);--n-hov:rgba(28,23,18,.08);--n-shadow:rgba(60,44,26,.18);--n-glow:rgba(214,199,177,.9);--n-acc:#7f300a;--n-chip-on:#1c1712;--n-chip-on-ink:#f4ece0;--n-neuron:#c93a0c;--n-pulse:#a35f00;--n-e-pre:#c93a0c;--n-e-kol:#2f7a12;--n-e-next:#1c1712;--n-e-rel:#6b5d4c;--n-e-base:#4e4438;--n-panel:#f7f1e8;--n-panel-shadow:0 12px 40px rgba(60,44,26,.22);--n-ph:#5e5243;--gO:#4e4438;--g9:#2f7a12;--g10:#a35f00;--g11:#c93a0c;--g12:#b0245c;color-scheme:light}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none !important}
+html,body{margin:0;height:100%;background:var(--n-body)}
+body{font-family:var(--font-body);font-size:16px;line-height:1.55;color:var(--n-ink)}
+h1,h2,h3{font-family:var(--font-heading);font-weight:400;line-height:1.12;letter-spacing:-.015em;margin:0}
+p{margin:0}
+a{color:#8c491a;text-underline-offset:3px}a:hover{color:#643312}
+button{font:inherit;color:inherit}
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--n-acc);outline-offset:2px}
+.panel :focus-visible,.listview :focus-visible{outline-color:#8c491a}
+::placeholder{color:var(--n-ph);opacity:1}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:12px;top:-60px;z-index:50;padding:10px 16px;border-radius:999px;background:var(--n-chip-on);color:var(--n-chip-on-ink);text-decoration:none;font-weight:700}
+.skip:focus{top:12px}
+
+/* tasarım sistemi (Organic) — kullanılan parçalar */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;text-decoration:none;font-family:var(--font-heading);font-size:14px;line-height:1.2;background:transparent;border:1px solid transparent;padding:8px 16px;border-radius:999px}
+.btn-primary{background:#f6a06b;color:#1d1a16}.btn-primary:hover{background:#d67f48}
+.btn-secondary{border-color:var(--n-line2);color:var(--n-ink)}.btn-secondary:hover{background:var(--n-hov)}
+.btn-icon{width:36px;height:36px;padding:0}
+.btn-ghost{color:var(--n-ink);padding:0}.btn-ghost:hover{background:var(--n-hov)}
+.tag{display:inline-flex;align-items:center;font-size:12px;letter-spacing:.02em;padding:3px 10px;border-radius:999px}
+.tag-accent{background:var(--color-accent-100);color:var(--color-accent-800)}
+.tag-accent-2{background:var(--color-accent-2-100);color:var(--color-accent-2-800)}
+.tag-neutral{background:var(--color-neutral-200);color:var(--color-neutral-800)}
+
+#app{position:relative;width:100%;height:100vh;height:100dvh;min-height:540px;overflow:hidden;background:var(--n-bg);transition:background var(--t-slow)}
+#stage{position:absolute;inset:0;z-index:1;touch-action:none}
+#stage canvas{display:block;outline:none}
+#labels{position:absolute;inset:0;z-index:2;pointer-events:none}
+#tip{position:absolute;left:0;top:0;z-index:5;pointer-events:none;opacity:0;display:flex;flex-direction:column;gap:2px;padding:9px 14px;border-radius:16px;background:var(--n-surf);border:1px solid var(--n-line);box-shadow:0 10px 28px var(--n-shadow);transition:opacity var(--t-fast);white-space:nowrap}
+#tip .n{font-weight:600;font-size:15px}#tip .s{font-size:13px;color:var(--n-ink2)}#tip .a{font-size:13px;font-weight:700;color:var(--n-acc);margin-top:2px}
+
+.top{position:absolute;top:0;left:0;right:0;z-index:7;height:72px;display:flex;align-items:center;gap:12px;padding:0 12px;pointer-events:none}
+.top nav{display:contents}
+.top > *,.top nav > *{pointer-events:auto}
+.brand{display:flex;align-items:center;gap:12px;margin-right:auto;color:var(--n-ink);text-decoration:none}
+.brand:hover{color:var(--n-ink)}
+.badge{display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:999px;border:1.5px solid currentColor;font-weight:700;font-size:13px;letter-spacing:.08em}
+.brand-name{display:none;font-family:var(--font-heading);font-size:21px;white-space:nowrap}
+.chips{position:absolute;top:66px;left:12px;right:12px;display:flex;gap:2px;padding:4px;border-radius:999px;background:var(--n-surf-a);border:1px solid var(--n-line);font-size:14px;font-weight:600;overflow-x:auto;scrollbar-width:none;width:max-content;max-width:calc(100% - 24px)}
+.chips::-webkit-scrollbar{display:none}
+.chip{display:flex;align-items:center;gap:6px;padding:7px 12px;border:0;border-radius:999px;white-space:nowrap;background:transparent;color:var(--n-ink);cursor:pointer}
+.chip:hover{background:var(--n-hov)}
+.chip[aria-pressed="true"]{background:var(--n-chip-on);color:var(--n-chip-on-ink)}
+.chip i{width:9px;height:9px;border-radius:50%;box-sizing:border-box;border:2px solid var(--c);background:var(--c)}
+.chip i.ring{background:transparent}
+.group{display:flex;gap:2px;padding:3px;border-radius:999px;background:var(--n-surf-a);border:1px solid var(--n-line)}
+.mode{display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--n-ink);cursor:pointer}
+.mode:hover{background:var(--n-hov)}
+.mode[aria-pressed="true"]{background:var(--n-chip-on);color:var(--n-chip-on-ink)}
+.listbtn{width:auto;padding:0 14px 0 11px;gap:7px;font-family:var(--font-body);font-weight:700;font-size:14px;background:var(--n-surf-a);border-color:var(--n-line2)}
+.listbtn span{display:none}
+.listbtn[aria-expanded="true"]{background:var(--n-chip-on);color:var(--n-chip-on-ink)}
+
+.help{position:absolute;top:76px;right:12px;z-index:9;width:min(360px,calc(100% - 24px));display:flex;flex-direction:column;gap:12px;padding:20px 22px;border-radius:24px;background:var(--n-surf);border:1px solid var(--n-line);box-shadow:0 18px 44px var(--n-shadow);font-size:15px;line-height:1.5;color:var(--n-ink3)}
+.help h2{font-size:20px;color:var(--n-ink)}
+.help .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.help .hint{color:var(--n-ink2);font-size:14px}
+.chips-hide .chips{display:none}
+
+.hero{position:absolute;left:clamp(16px,4.4vw,64px);top:128px;z-index:6;width:min(600px,calc(100% - 32px));display:flex;flex-direction:column;gap:18px;pointer-events:none}
+.eyebrow{font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--n-acc)}
+.hero h1{font-size:clamp(30px,3.5vw,50px);line-height:1.1;text-wrap:balance;text-shadow:0 2px 24px var(--n-glow)}
+.hero .search,.hero .popular,.hero .note{pointer-events:auto}
+.search{position:relative}
+.sbox{display:flex;align-items:center;gap:12px;height:60px;padding:0 8px 0 20px;border-radius:999px;background:var(--n-surf);box-shadow:0 12px 32px var(--n-shadow);border:1px solid var(--n-line)}
+.sbox svg{flex:none}
+.sbox input{flex:1;min-width:0;height:100%;border:0;outline:none;background:transparent;color:var(--n-ink);font-family:var(--font-body);font-size:18px}
+.sbox:focus-within{border-color:var(--n-acc);box-shadow:0 12px 32px var(--n-shadow),0 0 0 2px var(--n-acc)}
+.sbox .btn-primary{flex:none;height:44px;padding:0 22px;font-size:15px}
+.results,.noresults{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:10;border-radius:26px;background:var(--n-surf);border:1px solid var(--n-line);box-shadow:0 18px 40px var(--n-shadow)}
+.results{display:flex;flex-direction:column;gap:2px;padding:6px}
+.noresults{padding:14px 20px;font-size:15px;color:var(--n-ink2)}
+.opt{display:flex;align-items:center;gap:12px;width:100%;padding:10px 14px;border:0;border-radius:20px;background:transparent;color:var(--n-ink);text-align:left;cursor:pointer}
+.opt:hover,.opt[aria-selected="true"]{background:var(--n-hov)}
+.opt i,.dotg{flex:none;width:11px;height:11px;border-radius:50%;box-sizing:border-box;border:2px solid var(--c);background:var(--c)}
+.opt i.ring,.dotg.ring{background:transparent}
+.opt b{display:block;font-weight:600;font-size:16px}.opt small{display:block;font-size:13px;color:var(--n-ink2)}
+.popular{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px}
+.popular > span{color:var(--n-ink2);margin-right:4px}
+.popular .btn{font-family:var(--font-body);font-weight:600;font-size:14px;padding:8px 14px}
+.note{padding:12px 16px;border-radius:18px;background:var(--n-surf);border:1px solid var(--n-line);font-size:15px;color:var(--n-ink3)}
+
+.fsearch{position:absolute;left:12px;top:84px;z-index:6;width:min(420px,calc(100% - 24px))}
+.fsearch .sbox{height:54px;padding:0 8px;gap:10px;box-shadow:0 10px 28px var(--n-shadow)}
+.fsearch .sbox input{font-size:16px;font-weight:600}
+
+footer.legend{position:absolute;left:12px;bottom:22px;z-index:6;width:max-content;max-width:calc(100% - 24px);pointer-events:none}
+.leg{display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;padding:10px 18px;border-radius:24px;background:var(--n-surf-a);border:1px solid var(--n-line);font-size:14px;color:var(--n-ink2);pointer-events:auto}
+.leg.focus{color:var(--n-ink);font-weight:600;padding:12px 20px}
+.leg span{display:flex;align-items:center;gap:8px}
+.leg .src{display:none}
+#idleLegend{display:none}
+
+.controls{position:absolute;right:12px;bottom:22px;z-index:6;display:flex;align-items:flex-end;gap:16px}
+.controls .hintline{padding-bottom:14px;font-size:14px;color:var(--n-ink2);white-space:nowrap}
+.zoom{display:flex;flex-direction:column;gap:2px;padding:4px;border-radius:999px;background:var(--n-surf);border:1px solid var(--n-line)}
+.has-sel .controls{bottom:calc(54% + 12px)}
+
+.panel{position:absolute;top:46%;right:12px;bottom:12px;width:calc(100% - 24px);z-index:8;display:flex;flex-direction:column;border-radius:32px;background:var(--n-panel);color:#201e1d;box-shadow:var(--n-panel-shadow);overflow:hidden;animation:slide var(--t-base) var(--ease)}
+@keyframes slide{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.panel header{padding:20px 22px 16px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid var(--color-divider)}
+.panel .tags{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.panel .tags .btn{margin-left:auto;color:#201e1d;border-color:rgba(32,30,29,.24)}
+.panel .tags .btn:hover{background:rgba(32,30,29,.07)}
+.panel h2{font-size:30px;line-height:1.12}
+.panel h2:focus{outline:none}
+.pbody{flex:1;overflow:auto;padding:20px 22px 28px;display:flex;flex-direction:column;gap:26px;overscroll-behavior:contain}
+.sec{display:flex;flex-direction:column;gap:4px}
+.sec h3{font-family:var(--font-body);font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin:0 0 2px;color:#645c50}
+.sec h3.pre{color:#8c491a}.sec h3.kol{color:#56633f}.sec h3.nx{color:#201e1d}
+.sec .sub{font-size:14px;color:#645c50;margin-bottom:6px}
+.sec .sum{font-size:17px;line-height:1.6;text-wrap:pretty}
+.res{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:20px;background:#eee7db;color:#201e1d;text-decoration:none}
+.res:hover{background:#dcd3c4;color:#201e1d}
+.res .ic{flex:none;width:36px;height:36px;border-radius:50%;background:#f9f4ed;display:grid;place-items:center;color:#8c491a}
+.res .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.res .tx b{font-weight:600;font-size:15px}
+.res .tx small{display:flex;align-items:center;gap:6px;font-size:13px;color:#56633f;font-weight:700}
+.res.un{background:transparent;border:1.5px dashed #a19786;color:#645c50;padding:10px 14px}
+.res.un:hover{background:transparent;color:#645c50}
+.res.un .tx b{color:#201e1d}.res.un .tx small{color:#645c50;font-weight:400}
+.fine{font-size:13px;color:#645c50}
+.item{display:flex;gap:12px;padding:9px 12px;margin:0 -12px;border:0;border-radius:18px;background:transparent;color:inherit;text-align:left;cursor:pointer;width:calc(100% + 24px)}
+.item:hover{background:#eee7db}
+.mk{flex:none;width:12px;height:12px;margin-top:6px;border-radius:50%;box-sizing:border-box}
+.mk.pre{background:#c67139}.mk.base{border:2.5px solid #82796a}.mk.kol{border:2px dashed #728157}.mk.rel{border:2.5px dotted #a19786}
+.item svg{flex:none;margin-top:5px}
+.it{display:flex;flex-direction:column;gap:2px;min-width:0}
+.it .t{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.it .t b{font-weight:600;font-size:16px}.it .t span{font-size:13px;color:#645c50}
+.it .r{font-size:14.5px;line-height:1.5;color:#645c50;text-wrap:pretty}
+
+.listview{position:absolute;left:12px;top:84px;bottom:12px;width:min(460px,calc(100% - 24px));z-index:8;display:flex;flex-direction:column;border-radius:32px;background:var(--n-panel);color:#201e1d;box-shadow:var(--n-panel-shadow);overflow:hidden}
+.listview > header{padding:20px 22px 14px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--color-divider)}
+.listview > header h2{font-size:24px;margin-right:auto}
+.listview > header .btn{color:#201e1d;border-color:rgba(32,30,29,.24)}
+.lbody{overflow:auto;padding:8px 22px 24px;overscroll-behavior:contain}
+.lbody .lead{font-size:15px;color:#645c50;margin:10px 0 4px}
+.lbody h3{font-size:19px;margin:20px 0 4px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.lbody h3 small{font-family:var(--font-body);font-size:13px;font-weight:700;letter-spacing:.06em;color:#645c50}
+.lbody ul{list-style:none;margin:0;padding:0}
+.lbody li a.t{display:block;padding:8px 12px;margin:0 -12px;border-radius:16px;color:#201e1d;text-decoration:none}
+.lbody li a.t:hover{background:#eee7db}
+.lbody li b{font-weight:600;font-size:16px}
+.lbody li span{font-size:13px;color:#645c50;margin-left:8px}
+.lbody li p{font-size:14.5px;color:#645c50;line-height:1.5;margin-top:2px}
+.lbody .off{font-size:13px}
+.lbody .foot{margin-top:24px;font-size:13px;color:#645c50}
+
+.loading,.err{position:absolute;inset:0;z-index:20;display:grid;place-items:center;pointer-events:none;padding:16px}
+.loading span,.err span{max-width:420px;padding:12px 22px;border-radius:999px;background:var(--n-surf);border:1px solid var(--n-line);font-size:15px;color:var(--n-ink3);text-align:center}
+
+@media (min-width:600px){.brand-name{display:inline}.listbtn span{display:inline}.top{padding:0 24px;gap:16px}.chips{left:24px}.fsearch{left:24px}footer.legend{left:24px}.controls{right:24px}.hero{left:clamp(24px,4.4vw,64px)}}
+@media (min-width:700px){#idleLegend{display:flex}#idleLegend .src{display:flex}}
+@media (min-width:900px){.panel{top:84px;width:440px}.has-sel .controls{bottom:22px;right:476px}.help{right:24px;top:76px}}
+@media (min-width:1080px){.chips{position:static;max-width:none;width:auto}.hero{top:clamp(96px,16vh,150px)}.chips-hide .chips{display:flex}}
+@media (min-width:1280px){#idleLegend{max-width:calc(100vw - 700px)}}
+.focus-leg{display:none}
+@media (min-width:1280px){.focus-leg{display:flex;max-width:calc(100vw - 640px)}}
+
+/* 3B yok ya da JS yok: doğrusal sayfa */
+:is(html:not(.js),html.nogl),:is(html:not(.js),html.nogl) body{height:auto}
+:is(html:not(.js),html.nogl) #app{height:auto;min-height:100vh;overflow:visible}
+:is(html:not(.js),html.nogl) :is(#stage,#labels,#tip,.controls,#idleLegend,.chips,.fsearch){display:none}
+:is(html:not(.js),html.nogl) .top{position:relative;height:72px}
+:is(html:not(.js),html.nogl) .hero{position:relative;left:auto;top:auto;margin:16px auto 8px;padding:0 16px;width:min(680px,100%)}
+:is(html:not(.js),html.nogl) .listview{position:relative;left:auto;top:auto;bottom:auto;display:flex !important;width:min(680px,calc(100% - 24px));margin:16px auto 40px;max-height:none;overflow:visible}
+:is(html:not(.js),html.nogl) .lbody{overflow:visible}
+:is(html:not(.js),html.nogl) .listview > header .btn{display:none}
+:is(html:not(.js),html.nogl) .panel{position:fixed}
+:is(html:not(.js),html.nogl) footer.legend{display:none}
+html:not(.js) .needs-js{display:none !important}
+html.nogl .listbtn{display:none}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">İçeriğe geç</a>
+<div id="app">
+  <div id="stage"></div>
+  <div id="labels" aria-hidden="true"></div>
+  <div id="tip" aria-hidden="true"><span class="n"></span><span class="s"></span><span class="a"></span></div>
+
+  <header class="top">
+    <nav aria-label="Harita denetimleri">
+      <a class="brand" href="./" aria-label="EBA Biyoloji Haritası, başa dön"><span class="badge">EBA</span><span class="brand-name">Biyoloji Haritası</span></a>
+      <div class="chips needs-js" id="chips" role="group" aria-label="Sınıfa göre süz"></div>
+      <div class="group needs-js" role="group" aria-label="Görünüm modu">
+        <button type="button" class="mode" data-mode="dark" aria-pressed="false" aria-label="Koyu mod" title="Koyu mod"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button>
+        <button type="button" class="mode" data-mode="mid" aria-pressed="false" aria-label="Orta ton" title="Orta ton"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17Z" fill="currentColor"/></svg></button>
+        <button type="button" class="mode" data-mode="light" aria-pressed="false" aria-label="Açık mod" title="Açık mod"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></button>
+      </div>
+      <button type="button" class="btn btn-secondary btn-icon listbtn needs-js" id="listBtn" aria-expanded="false" aria-controls="listView" aria-label="Konu dizinini aç"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Liste</span></button>
+      <button type="button" class="btn btn-secondary btn-icon needs-js" id="helpBtn" aria-expanded="false" aria-controls="help" aria-label="Haritayı nasıl okurum?"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg></button>
+    </nav>
+  </header>
+
+  <div class="help" id="help" role="region" aria-label="Haritayı okuma" hidden>
+    <div class="row"><h2>Haritayı okuma</h2><button type="button" class="btn btn-ghost btn-icon" id="helpClose" aria-label="Kapat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <p>Her nöron bir konu. Rengi sınıfı, büyüklüğü bağlantı sayısını gösterir. Halkalı nöronlar ortaokul fen bilimlerinden gelen temellerdir ve ağın merkezinde durur.</p>
+    <p>Bir nörona tıklayınca bağlantıları renklenir: turuncu ön koşul, yeşil kesikli kolaylaştıran konu, <span id="nextWord">krem</span> sonraki konu, noktalı ilgili konu. Akan ışık öğrenme yönünü gösterir.</p>
+    <p class="hint">Sürükle: döndür · Kaydır ya da iki parmak: yakınlaştır · /: ara · Esc: geri · Liste düğmesi: aynı konular, 3B olmadan</p>
+  </div>
+
+  <main id="main">
+    <section class="hero" id="hero" aria-labelledby="h1">
+      <p class="eyebrow">9–12. sınıf biyoloji · Maarif Modeli 2024</p>
+      <h1 id="h1">Bir konu seç; neye dayandığını ve nereye götürdüğünü gör.</h1>
+      <div class="search needs-js" id="s1">
+        <div class="sbox">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="r1" aria-label="Konu ara" autocomplete="off" placeholder="Konu ara: hücresel solunum, mitoz, homeostazi…">
+          <button type="button" class="btn btn-primary" data-submit>Ara</button>
+        </div>
+        <div class="results" id="r1" role="listbox" aria-label="Arama sonuçları" hidden></div>
+        <div class="noresults" hidden>Bu adla bir konu bulunamadı. Daha kısa bir kelime dene.</div>
+      </div>
+      <div class="popular needs-js" id="popular"><span>Sık arananlar</span></div>
+      <p class="note" id="glnote" hidden>Üç boyutlu görünüm bu cihazda açılamadı. Arama ve konu dizini aynı bilgiyi verir.</p>
+    </section>
+
+    <div class="fsearch needs-js" id="s2" hidden>
+      <div class="sbox">
+        <button type="button" class="btn btn-secondary btn-icon" id="back" aria-label="Tüm haritaya dön"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7M19 12H5"/></svg></button>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="r2" aria-label="Başka bir konu ara" autocomplete="off" placeholder="Başka bir konu ara">
+      </div>
+      <div class="results" id="r2" role="listbox" aria-label="Arama sonuçları" hidden></div>
+      <div class="noresults" hidden>Bu adla bir konu bulunamadı.</div>
+    </div>
+
+    <aside class="panel" id="panel" aria-label="Konu ayrıntıları" hidden></aside>
+
+    <section class="listview" id="listView" aria-labelledby="listH" hidden>
+      <header><h2 id="listH">Konu dizini</h2><button type="button" class="btn btn-secondary btn-icon needs-js" id="listClose" aria-label="Dizini kapat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></header>
+      <div class="lbody">
+<!--LIST:START-->
+        <p class="lead">Harita ile aynı konular, aynı sırayla. Bir konuya dokunursan ön koşulları, sonraki konuları ve resmî kaynakları görürsün.</p>
+        <h3>Ortaokul temelleri <small>ORTAOKUL</small></h3>
+        <ul>
+          <li><a class="t" href="#konu=of_bilim"><b>Bilimin doğası</b><span>Fen 3–4</span><p>Bilimsel bilginin gözlem ve deneye dayandığı, yeni kanıtlarla değişebildiği fikri.</p></a></li>
+          <li><a class="t" href="#konu=of_canli"><b>Canlılar ve ortak özellikleri</b><span>Fen 3–4</span><p>Canlıları cansızlardan ayıran beslenme, solunum, büyüme, üreme ve tepki gibi temel özellikler.</p></a></li>
+          <li><a class="t" href="#konu=of_hucre"><b>Hücre</b><span>Fen 5</span><p>Canlıların temel yapı birimi olan hücre; hücre zarı, sitoplazma ve çekirdek.</p></a></li>
+          <li><a class="t" href="#konu=of_destek"><b>Destek ve hareket sistemi</b><span>Fen 5</span><p>İskelet, kas ve eklemlerin vücuda destek olması ve hareketi sağlaması.</p></a></li>
+          <li><a class="t" href="#konu=of_bioc"><b>Biyoçeşitlilik ve ekosistem</b><span>Fen 6</span><p>Canlı çeşitliliği, habitat, ekosistem ve nesli tükenen türler.</p></a></li>
+          <li><a class="t" href="#konu=of_sinir"><b>Sinir sistemi ve hormonlar</b><span>Fen 6</span><p>Merkezî ve çevresel sinir sistemi ile hormonların temel görevleri.</p></a></li>
+          <li><a class="t" href="#konu=of_ureme"><b>Üreme, büyüme ve gelişme</b><span>Fen 6</span><p>İnsanda ve bitkilerde üreme, büyüme ve gelişmenin temel evreleri.</p></a></li>
+          <li><a class="t" href="#konu=of_sistem"><b>Vücudumuzdaki sistemler</b><span>Fen 7</span><p>Sindirim, dolaşım, solunum ve boşaltım sistemlerinin yapı ve görevleri.</p></a></li>
+          <li><a class="t" href="#konu=of_besinz"><b>Besin zinciri ve enerji akışı</b><span>Fen 7</span><p>Üretici, tüketici ve ayrıştırıcılar arasındaki besin ilişkileri.</p></a></li>
+          <li><a class="t" href="#konu=of_fotos"><b>Fotosentez ve solunum</b><span>Fen 8</span><p>Bitkilerin besin üretmesi ve canlıların enerji elde etmek için solunum yapması.</p></a></li>
+          <li><a class="t" href="#konu=of_dna"><b>DNA ve genetik kod</b><span>Fen 8</span><p>Nükleotit, gen, DNA ve kromozom kavramları; kalıtım ve mutasyonun temeli.</p></a></li>
+          <li><a class="t" href="#konu=of_dongu"><b>Madde döngüleri ve sürdürülebilirlik</b><span>Fen 8</span><p>Su, oksijen ve karbon döngüleri; karbon ayak izi ve sürdürülebilir kalkınma.</p></a></li>
+        </ul>
+        <h3>Yaşam <small>9. SINIF</small> <a class="off" href="https://tymm.meb.gov.tr/biyoloji-dersi/unite/2" target="_blank" rel="noopener">Resmî tema sayfası<span class="sr"> (yeni sekmede açılır)</span></a></h3>
+        <ul>
+          <li><a class="t" href="#konu=donum"><b>Biyolojideki dönüm noktaları</b><span>BİY.9.1.1</span><p>Aşı, antibiyotik, DNA’nın yapısı, PZR ve CRISPR gibi buluşların insan hayatına katkıları.</p></a></li>
+          <li><a class="t" href="#konu=bilim"><b>Bilimin doğası ve bilimsel araştırma</b><span>BİY.9.1.2</span><p>Problemden hipoteze, deneyden sonuca uzanan araştırma süreci ve bilimsel bilginin özellikleri.</p></a></li>
+          <li><a class="t" href="#konu=etik"><b>Bilim etiği</b><span>BİY.9.1.3</span><p>Bilimsel araştırmalarda uyulması gereken kurallar ve araştırmacının sorumlulukları.</p></a></li>
+          <li><a class="t" href="#konu=ortak"><b>Canlıların ortak özellikleri</b><span>BİY.9.1.4</span><p>Hücresel yapı, metabolizma, homeostazi, üreme, uyarılara tepki ve adaptasyon gibi tüm canlılarda görülen özellikler.</p></a></li>
+          <li><a class="t" href="#konu=virus"><b>Virüsler</b><span>BİY.9.1.4</span><p>Hücresel yapıda olmayan virüslerin neden canlı ya da cansız olarak sınıflandırılamadığı.</p></a></li>
+          <li><a class="t" href="#konu=sinif"><b>Sınıflandırma ve ikili adlandırma</b><span>BİY.9.1.5</span><p>Linne’nin ikili adlandırması ve tür, cins, aile gibi sınıflandırma kategorileri.</p></a></li>
+          <li><a class="t" href="#konu=domain"><b>Üç üst âlem (domain) sistemi</b><span>BİY.9.1.6</span><p>Canlıların bakteriler, arkeler ve ökaryotlar olarak üç büyük gruba ayrılması.</p></a></li>
+          <li><a class="t" href="#konu=bakteri"><b>Bakteriler ve arkeler</b><span>BİY.9.1.6</span><p>Prokaryot hücreli bu iki grubun benzer ve farklı yönleri, yaşam ortamları.</p></a></li>
+          <li><a class="t" href="#konu=okaryotlar"><b>Protistler, bitkiler, mantarlar, hayvanlar</b><span>BİY.9.1.6</span><p>Ökaryot domainindeki dört grubun genel özellikleri ve örnekleri.</p></a></li>
+          <li><a class="t" href="#konu=biocesit"><b>Biyoçeşitlilik</b><span>BİY.9.1.7</span><p>Gen, tür ve ekosistem çeşitliliği; Türkiye’nin endemik türleri.</p></a></li>
+        </ul>
+        <h3>Organizasyon <small>9. SINIF</small> <a class="off" href="https://tymm.meb.gov.tr/biyoloji-dersi/unite/3" target="_blank" rel="noopener">Resmî tema sayfası<span class="sr"> (yeni sekmede açılır)</span></a></h3>
+        <ul>
+          <li><a class="t" href="#konu=su"><b>Su ve mineraller</b><span>BİY.9.2.1</span><p>Suyun çözücülük, adezyon ve kohezyon gibi özellikleri; minerallerin vücuttaki görevleri.</p></a></li>
+          <li><a class="t" href="#konu=karb"><b>Karbohidratlar</b><span>BİY.9.2.2</span><p>Glikozdan nişasta, glikojen ve selüloza; hücrenin temel enerji kaynağı.</p></a></li>
+          <li><a class="t" href="#konu=yag"><b>Yağlar (lipitler)</b><span>BİY.9.2.2</span><p>Trigliseritler, fosfolipitler ve steroitler; enerji deposu ve hücre zarının yapı taşı.</p></a></li>
+          <li><a class="t" href="#konu=protein"><b>Proteinler</b><span>BİY.9.2.2</span><p>Amino asitlerden oluşan, yapı ve görev çeşitliliği en fazla olan organik moleküller.</p></a></li>
+          <li><a class="t" href="#konu=enzim"><b>Enzimler</b><span>BİY.9.2.4</span><p>Tepkimeleri hızlandıran biyolojik katalizörler; pH ve sıcaklığın enzim aktivitesine etkisi.</p></a></li>
+          <li><a class="t" href="#konu=nukleik9"><b>Nükleik asitlerin yapısı</b><span>BİY.9.2.2</span><p>DNA ve RNA’nın nükleotitlerden oluşan genel yapısı.</p></a></li>
+          <li><a class="t" href="#konu=vitamin"><b>Vitaminler</b><span>BİY.9.2.2</span><p>Yağda ve suda çözünen vitaminler ve vücuttaki işlevleri.</p></a></li>
+          <li><a class="t" href="#konu=hucre"><b>Prokaryot ve ökaryot hücre</b><span>BİY.9.2.5</span><p>Çekirdeği olmayan hücreler ile zarla çevrili çekirdeği olan hücrelerin karşılaştırılması.</p></a></li>
+          <li><a class="t" href="#konu=organel"><b>Hücre zarı ve organeller</b><span>BİY.9.2.5</span><p>Hücre zarı, sitoplazma, mitokondri, kloroplast ve ribozom gibi yapılar ile aralarındaki iş birliği.</p></a></li>
+          <li><a class="t" href="#konu=madde"><b>Hücre zarından madde geçişleri</b><span>BİY.9.2.6</span><p>Difüzyon, ozmoz, aktif taşıma, endositoz ve ekzositoz.</p></a></li>
+          <li><a class="t" href="#konu=dokuorgan"><b>Hücreden doku, organ ve sisteme</b><span>BİY.9.2.8</span><p>Benzer hücrelerin dokuları, dokuların organları, organların sistemleri oluşturması.</p></a></li>
+        </ul>
+        <h3>Enerji <small>10. SINIF</small> <a class="off" href="https://tymm.meb.gov.tr/biyoloji-dersi/unite/8" target="_blank" rel="noopener">Resmî tema sayfası<span class="sr"> (yeni sekmede açılır)</span></a></h3>
+        <ul>
+          <li><a class="t" href="#konu=atp"><b>ATP ve enerji aktarımı</b><span>BİY.10.1.1</span><p>Hücrenin enerji taşıyıcısı ATP’nin yapısı ve enerji aktarımındaki rolü.</p></a></li>
+          <li><a class="t" href="#konu=fotosentez"><b>Fotosentez</b><span>BİY.10.1.2</span><p>Işık enerjisiyle karbondioksit ve sudan besin üretimi; ışığa bağlı ve ışıktan bağımsız evreler.</p></a></li>
+          <li><a class="t" href="#konu=kemosentez"><b>Kemosentez</b><span>BİY.10.1.4</span><p>Bazı bakterilerin ışık yerine kimyasal enerji kullanarak besin üretmesi.</p></a></li>
+          <li><a class="t" href="#konu=sindirim"><b>Canlılarda sindirim çeşitleri</b><span>BİY.10.1.5</span><p>Hücre içi ve hücre dışı sindirim; farklı canlılarda sindirim yapıları.</p></a></li>
+          <li><a class="t" href="#konu=insansind"><b>İnsanda sindirim, emilim ve taşınma</b><span>BİY.10.1.6</span><p>Besinlerin parçalanıp kana geçmesi ve hücrelere taşınması.</p></a></li>
+          <li><a class="t" href="#konu=solunum"><b>Hücresel solunum</b><span>BİY.10.1.7</span><p>Hücreler besinlerdeki kimyasal enerjiyi ATP’ye dönüştürür. Oksijenli solunum glikoliz, Krebs döngüsü ve elektron taşıma sistemi basamaklarıyla gerçekleşir; sonunda ATP, karbondioksit ve su oluşur.</p></a></li>
+          <li><a class="t" href="#konu=ferment"><b>Fermantasyon</b><span>BİY.10.1.9</span><p>Oksijen kullanılmadan enerji elde edilmesi; laktik asit ve etil alkol fermantasyonu.</p></a></li>
+          <li><a class="t" href="#konu=metab"><b>Enerji ve metabolizma</b><span>BİY.10.1.10</span><p>Besinlerden elde edilen enerjinin kas faaliyeti, sentez ve aktif taşıma gibi süreçlerde kullanılması.</p></a></li>
+        </ul>
+        <h3>Ekoloji <small>10. SINIF</small> <a class="off" href="https://tymm.meb.gov.tr/biyoloji-dersi/unite/10" target="_blank" rel="noopener">Resmî tema sayfası<span class="sr"> (yeni sekmede açılır)</span></a></h3>
+        <ul>
+          <li><a class="t" href="#konu=ekosistem"><b>Ekosistemin bileşenleri</b><span>BİY.10.2.1</span><p>Işık, su ve toprak gibi cansız bileşenler ile canlı bileşenler arasındaki ilişkiler.</p></a></li>
+          <li><a class="t" href="#konu=populasyon"><b>Popülasyon, komünite ve süksesyon</b><span>BİY.10.2.2</span><p>Popülasyonların büyümesi, taşıma kapasitesi ve komünitelerin zamanla değişmesi.</p></a></li>
+          <li><a class="t" href="#konu=etkilesim"><b>Tür içi ve türler arası etkileşimler</b><span>BİY.10.2.2</span><p>Rekabet, av-avcı ve simbiyoz gibi canlılar arası ilişkiler.</p></a></li>
+          <li><a class="t" href="#konu=enerjiakis"><b>Besin zinciri, besin ağı ve enerji akışı</b><span>BİY.10.2.3</span><p>Enerjinin üreticiden tüketicilere aktarılması ve her basamakta azalması.</p></a></li>
+          <li><a class="t" href="#konu=piramit"><b>Ekolojik piramitler ve biyolojik birikim</b><span>BİY.10.2.3</span><p>Enerji piramidi ve zararlı maddelerin besin zincirinde birikmesi.</p></a></li>
+          <li><a class="t" href="#konu=dongu"><b>Madde döngüleri</b><span>BİY.10.2.4</span><p>Su, karbon ve azot döngülerinin canlı ve cansız ortam arasında işleyişi.</p></a></li>
+          <li><a class="t" href="#konu=surdur"><b>Ekolojik sürdürülebilirlik</b><span>BİY.10.2.5</span><p>Habitat kaybı, kirlilik ve biyoçeşitlilik kaybı gibi sürdürülebilirliği kısıtlayan durumlar.</p></a></li>
+          <li><a class="t" href="#konu=ayakizi"><b>Ekolojik ayak izi</b><span>BİY.10.2.7</span><p>Bireyin doğal kaynak tüketiminin ölçülmesi ve küçültme yolları.</p></a></li>
+          <li><a class="t" href="#konu=koruma"><b>Doğal kaynakların korunması ve atık yönetimi</b><span>BİY.10.2.8</span><p>Koruma alanları, Sıfır Atık gibi uygulamalar ve geri kazanım.</p></a></li>
+        </ul>
+        <h3>Tepki <small>11. SINIF</small> <a class="off" href="https://tymm.meb.gov.tr/biyoloji-dersi/unite/13" target="_blank" rel="noopener">Resmî tema sayfası<span class="sr"> (yeni sekmede açılır)</span></a></h3>
+        <ul>
+          <li><a class="t" href="#konu=bitkihormon"><b>Bitki hormonları</b><span>BİY.11.1.2</span><p>Oksin, giberellin, etilen ve absisik asidin büyüme ve olgunlaşmadaki etkileri.</p></a></li>
+          <li><a class="t" href="#konu=tropizma"><b>Tropizma ve nasti</b><span>BİY.11.1.3</span><p>Uyaranın yönüne bağlı (yönelme) ve bağlı olmayan (irkilme) bitki hareketleri.</p></a></li>
+          <li><a class="t" href="#konu=duyu"><b>Duyu reseptörleri ve duyu organları</b><span>BİY.11.1.5</span><p>Işık, ses, basınç ve kimyasal uyarıları algılayan yapılar.</p></a></li>
+          <li><a class="t" href="#konu=noron"><b>Nöron ve sinyal iletimi</b><span>BİY.11.1.5</span><p>Nöronun yapısı, zar potansiyelindeki değişimle uyartı iletimi ve sinaps.</p></a></li>
+          <li><a class="t" href="#konu=sinirfark"><b>Hayvanlarda sinir sistemi farklılıkları</b><span>BİY.11.1.6</span><p>Süngerlerden memelilere sinir sisteminin yapısındaki farklılaşma.</p></a></li>
+          <li><a class="t" href="#konu=insansinir"><b>İnsan sinir sistemi</b><span>BİY.11.1.7</span><p>Merkezî ve çevresel sinir sistemi; duyu, ara ve motor nöronların iş birliği.</p></a></li>
+          <li><a class="t" href="#konu=refleks"><b>Refleks</b><span>BİY.11.1.8</span><p>Diz kapağı ve göz bebeği refleksi gibi istemsiz, hızlı tepkiler; refleks yayı.</p></a></li>
+          <li><a class="t" href="#konu=iskelet"><b>Kemik, eklem ve kas</b><span>BİY.11.1.9</span><p>Hareketin oluşmasında iskelet, eklem ve kasların eş güdümlü çalışması.</p></a></li>
+          <li><a class="t" href="#konu=kasilma"><b>Kas kasılma mekanizması</b><span>BİY.11.1.10</span><p>Sarkomerde aktin ve miyozinin birbiri üzerinden kayması (kayan iplikler modeli).</p></a></li>
+          <li><a class="t" href="#konu=bagisiklik"><b>Bağışıklık</b><span>BİY.11.1.11</span><p>Doğal ve kazanılmış bağışıklık; aktif ve pasif bağışıklık, aşılar.</p></a></li>
+          <li><a class="t" href="#konu=alerji"><b>Alerji</b><span>BİY.11.1.12</span><p>Bağışıklık sisteminin zararsız maddelere aşırı tepki vermesi.</p></a></li>
+        </ul>
+        <h3>Homeostazi <small>11. SINIF</small> <a class="off" href="https://tymm.meb.gov.tr/biyoloji-dersi/unite/16" target="_blank" rel="noopener">Resmî tema sayfası<span class="sr"> (yeni sekmede açılır)</span></a></h3>
+        <ul>
+          <li><a class="t" href="#konu=homeo"><b>Homeostazi ve önemi</b><span>BİY.11.2.1</span><p>Vücudun iç ortamını (sıcaklık, pH, su, kan şekeri) belirli sınırlar içinde tutması.</p></a></li>
+          <li><a class="t" href="#konu=geribildirim"><b>Pozitif ve negatif geri bildirim</b><span>BİY.11.2.3</span><p>Bir değişikliği düzelten ya da güçlendiren düzenleme döngüleri.</p></a></li>
+          <li><a class="t" href="#konu=endokrin"><b>Endokrin sistem</b><span>BİY.11.2.5</span><p>Hipofiz, tiroit, pankreas ve böbrek üstü bezlerinin hormonlarla dengeyi sağlaması.</p></a></li>
+          <li><a class="t" href="#konu=dolasim"><b>Dolaşım sistemi</b><span>BİY.11.2.6</span><p>Kalp, damarlar ve lenf sisteminin madde taşınması ve kan basıncı dengesindeki rolü.</p></a></li>
+          <li><a class="t" href="#konu=solsis"><b>Solunum sistemi</b><span>BİY.11.2.7</span><p>Alveollerde gaz değişimi; oksijen, karbondioksit ve pH dengesinin korunması.</p></a></li>
+          <li><a class="t" href="#konu=bosaltim"><b>Boşaltım sistemi ve nefron</b><span>BİY.11.2.8</span><p>Böbreklerde nefronların atıkları uzaklaştırması, su ve tuz dengesini sağlaması.</p></a></li>
+          <li><a class="t" href="#konu=saglik"><b>Homeostazi bozuklukları</b><span>BİY.11.2.10</span><p>Diyabet, hipertansiyon ve obezite gibi dengenin sağlanamadığı durumlar.</p></a></li>
+        </ul>
+        <h3>Üreme <small>12. SINIF</small> <a class="off" href="https://tymm.meb.gov.tr/biyoloji-dersi/unite/19" target="_blank" rel="noopener">Resmî tema sayfası<span class="sr"> (yeni sekmede açılır)</span></a></h3>
+        <ul>
+          <li><a class="t" href="#konu=kromozom"><b>Kromozom yapısı</b><span>BİY.12.1.3</span><p>DNA’nın proteinlerle paketlenerek kromozomları oluşturması.</p></a></li>
+          <li><a class="t" href="#konu=dongu12"><b>Hücre döngüsü ve mitoz</b><span>BİY.12.1.4</span><p>İnterfaz, mitoz ve sitokinez; büyüme ve onarımın temeli.</p></a></li>
+          <li><a class="t" href="#konu=mayoz"><b>Mayoz</b><span>BİY.12.1.4</span><p>Kromozom sayısını yarıya indiren ve kalıtsal çeşitlilik sağlayan bölünme.</p></a></li>
+          <li><a class="t" href="#konu=ayrilmama"><b>Kromozomlarda ayrılmama</b><span>BİY.12.1.5</span><p>Bölünmede kromozomların ayrılamaması ve Down sendromu gibi sonuçları.</p></a></li>
+          <li><a class="t" href="#konu=eseysiz"><b>Eşeysiz üreme</b><span>BİY.12.1.6</span><p>Bölünme, tomurcuklanma, sporla ve vejetatif üreme; ataya benzeyen bireyler.</p></a></li>
+          <li><a class="t" href="#konu=gametogenez"><b>Gametogenez ve döllenme</b><span>BİY.12.1.7</span><p>Sperm ve yumurta oluşumu (spermatogenez, oogenez) ve döllenme.</p></a></li>
+          <li><a class="t" href="#konu=insanureme"><b>İnsanda üreme sistemi</b><span>BİY.12.1.9</span><p>Dişi ve erkek üreme sistemleri; menstrual döngünün hormonlarla düzenlenmesi.</p></a></li>
+          <li><a class="t" href="#konu=embriyo"><b>Embriyonik gelişim</b><span>BİY.12.1.10</span><p>Döllenmeden sonra bölünme, gastrülasyon ve organogenez evreleri.</p></a></li>
+          <li><a class="t" href="#konu=cicek"><b>Çiçekli bitkilerde üreme</b><span>BİY.12.1.11</span><p>Çiçeğin kısımları, tozlaşma, döllenme, tohum ve meyve oluşumu.</p></a></li>
+          <li><a class="t" href="#konu=cimlenme"><b>Çimlenme ve dormansi</b><span>BİY.12.1.12</span><p>Tohumun çimlenmesini etkileyen su, sıcaklık ve oksijen gibi faktörler.</p></a></li>
+        </ul>
+        <h3>Gen <small>12. SINIF</small> <a class="off" href="https://tymm.meb.gov.tr/biyoloji-dersi/unite/22" target="_blank" rel="noopener">Resmî tema sayfası<span class="sr"> (yeni sekmede açılır)</span></a></h3>
+        <ul>
+          <li><a class="t" href="#konu=dnayapi"><b>DNA ve RNA’nın moleküler yapısı</b><span>BİY.12.2.1</span><p>Çift sarmal DNA, baz eşleşmesi ve RNA’nın DNA’dan farkları.</p></a></li>
+          <li><a class="t" href="#konu=replikasyon"><b>DNA replikasyonu</b><span>BİY.12.2.2</span><p>DNA’nın yarı korunumlu modelle kendini eşlemesi.</p></a></li>
+          <li><a class="t" href="#konu=genifade"><b>Gen ifadesi</b><span>BİY.12.2.3</span><p>Genetik kod; transkripsiyon ve translasyonla genden proteine.</p></a></li>
+          <li><a class="t" href="#konu=mutasyon"><b>Mutasyonlar</b><span>BİY.12.2.4</span><p>Genetik yapıdaki değişikliklerin nedenleri ve canlıya etkileri.</p></a></li>
+          <li><a class="t" href="#konu=mendel"><b>Mendel kalıtımı</b><span>BİY.12.2.5</span><p>Monohibrit, dihibrit ve kontrol çaprazlamaları; baskınlık ve çekiniklik.</p></a></li>
+          <li><a class="t" href="#konu=esbaskin"><b>Eş baskınlık ve çok alellilik</b><span>BİY.12.2.6</span><p>Kan gruplarında görülen, Mendel oranlarından farklı kalıtım biçimleri.</p></a></li>
+          <li><a class="t" href="#konu=eseybagli"><b>Eşeye bağlı kalıtım ve soyağacı</b><span>BİY.12.2.7</span><p>X ve Y kromozomuyla taşınan özellikler; renk körlüğü ve hemofili.</p></a></li>
+          <li><a class="t" href="#konu=gentest"><b>Genetik testler ve danışmanlık</b><span>BİY.12.2.8</span><p>Kalıtsal hastalık riskinin belirlenmesi; akraba evliliğinin riskleri.</p></a></li>
+          <li><a class="t" href="#konu=biyotek"><b>Biyoteknoloji ve etik</b><span>BİY.12.2.9</span><p>Rekombinant DNA, aşı ve hormon üretimi, GDO, kök hücre ve etik tartışmalar.</p></a></li>
+        </ul>
+        <p class="foot">Kaynak: Türkiye Yüzyılı Maarif Modeli · Biyoloji Dersi Öğretim Programı (2024). <a href="https://tymm.meb.gov.tr/assets/pdf/biyoloji-dersi_20260819_142444_074.pdf" target="_blank" rel="noopener">Öğretim programı (PDF)<span class="sr"> (yeni sekmede açılır)</span></a></p>
+<!--LIST:END-->
+      </div>
+    </section>
+  </main>
+
+  <footer class="legend">
+    <div class="leg" id="idleLegend" aria-label="Gösterge">
+      <span><i style="width:10px;height:10px;border-radius:50%;background:var(--n-neuron);box-shadow:0 0 10px var(--n-neuron)"></i>Nöron: konu</span>
+      <span><i style="width:12px;height:12px;border-radius:50%;border:2.5px solid var(--n-e-base);box-sizing:border-box"></i>Halkalı: ortaokul temeli</span>
+      <span>Büyüklük: bağlantı sayısı</span>
+      <span><svg width="26" height="10" viewBox="0 0 26 10" aria-hidden="true"><circle cx="4" cy="5" r="1.6" style="fill:var(--n-pulse)" opacity=".45"/><circle cx="11" cy="5" r="2.4" style="fill:var(--n-pulse)" opacity=".7"/><circle cx="20" cy="5" r="3.6" style="fill:var(--n-e-next)"/></svg>Akan ışık: konudan konuya sinyal</span>
+    </div>
+    <div class="leg focus focus-leg" id="focusLegend" hidden>
+      <span><svg width="30" height="10" viewBox="0 0 30 10" aria-hidden="true"><path d="M2 5h20" style="stroke:var(--n-e-pre)" stroke-width="2.6" stroke-linecap="round"/><path d="M21 1l7 4-7 4z" style="fill:var(--n-e-pre)"/></svg>Ön koşul</span>
+      <span><svg width="30" height="10" viewBox="0 0 30 10" aria-hidden="true"><path d="M2 5h20" style="stroke:var(--n-e-kol)" stroke-width="2.4" stroke-dasharray="5 4"/><path d="M21 1l7 4-7 4z" style="fill:var(--n-e-kol)"/></svg>Kolaylaştırır</span>
+      <span><svg width="30" height="10" viewBox="0 0 30 10" aria-hidden="true"><path d="M2 5h20" style="stroke:var(--n-e-next)" stroke-width="2.4" stroke-linecap="round"/><path d="M21 1l7 4-7 4z" style="fill:var(--n-e-next)"/></svg>Sonraki konu</span>
+      <span><svg width="30" height="10" viewBox="0 0 30 10" aria-hidden="true"><path d="M3 5h24" style="stroke:var(--n-e-rel)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="0.5 5"/></svg>İlgili</span>
+      <span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" style="stroke:var(--n-e-base)" stroke-width="2.5"/></svg>Ortaokul temeli</span>
+    </div>
+  </footer>
+
+  <div class="controls needs-js" id="controls">
+    <span class="hintline" id="hintline" hidden>Sürükle: döndür · Kaydır: yakınlaştır · Nörona tıkla: konuyu aç</span>
+    <div class="zoom" role="group" aria-label="Yakınlaştırma">
+      <button type="button" class="btn btn-ghost btn-icon" id="zin" aria-label="Yakınlaştır"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+      <button type="button" class="btn btn-ghost btn-icon" id="zout" aria-label="Uzaklaştır"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+      <button type="button" class="btn btn-ghost btn-icon" id="zreset" aria-label="Görünümü sıfırla"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
+    </div>
+  </div>
+
+  <div class="loading" id="loading" hidden><span role="status">Sinir ağı kuruluyor…</span></div>
+  <div class="sr" id="live" aria-live="polite"></div>
+</div>
+<noscript><p style="position:relative;z-index:30;padding:12px 16px;background:#f9f4ed;color:#201e1d;text-align:center">Etkileşimli harita JavaScript gerektirir. Aşağıdaki konu dizini ve resmî program bağlantıları JavaScript olmadan da çalışır.</p></noscript>
+<script src="eba-data.js"></script>
+<script src="app.js" defer></script>
+</body>
+</html>
