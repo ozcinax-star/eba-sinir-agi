@@ -386,8 +386,8 @@
       ns.forEach(function (n) { c.add(n.pos); maxY = Math.max(maxY, n.pos.y); }); c.divideScalar(ns.length || 1);
       var el = document.createElement('div');
       el.style.cssText = 'position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:center;gap:2px;white-space:nowrap;pointer-events:none;will-change:transform;opacity:0;text-shadow:0 2px 12px rgba(17,15,12,.95)';
-      var a = document.createElement('span'); a.style.cssText = 'font-family:var(--font-heading);font-size:18px'; a.textContent = t.name;
-      var b = document.createElement('span'); b.style.cssText = 'font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:.12em'; b.textContent = (t.grade === 'O' ? 'Ortaokul' : t.grade + '. sınıf').toLocaleUpperCase('tr');
+      var a = document.createElement('span'); a.style.cssText = 'font-family:var(--font-heading);font-size:20px'; a.textContent = t.name;
+      var b = document.createElement('span'); b.style.cssText = 'font-family:var(--font-body);font-size:13px;font-weight:700;letter-spacing:.1em'; b.textContent = (t.grade === 'O' ? 'Ortaokul' : t.grade + '. sınıf').toLocaleUpperCase('tr');
       el.appendChild(a); el.appendChild(b); self.labelLayer.appendChild(el);
       return { el: el, a: a, b: b, pos: new T.Vector3(c.x, maxY + 34, c.z), grade: String(t.grade) };
     });
@@ -678,7 +678,14 @@
     }
   };
 
+  S3.heroBox = function () {
+    var h = this.hb;
+    if (!h || h.w !== this.W || h.h !== this.H) { var el = document.querySelector('.hero'), r = el && el.offsetParent !== null ? el.getBoundingClientRect() : null; h = this.hb = { w: this.W, h: this.H, l: r ? r.left : 0, r: r ? r.right : 0, t: r ? r.top : 0, b: r ? r.bottom : 0, ok: !!r }; }
+    return h.ok ? h : null;
+  };
+
   S3.updateLabels = function () {
+    var self2 = this;
     var C = this.camera, v = this.v, W = this.W, H = this.H, s = state, tf = Math.tan((C.fov * Math.PI) / 360);
     var proj = function (p) { v.copy(p).project(C); return [((v.x + 1) / 2) * W, ((1 - v.y) / 2) * H, v.z]; };
     var pxR = function (n) { return (n.r * n.scale * H) / (2 * C.position.distanceTo(n.pos) * tf); };
@@ -689,8 +696,8 @@
       var L = o2.L, x = o2.x, z = o2.z, d = o2.d, y = o2.y;
       var o = s.sel || z > 1 ? 0 : clamp(1.75 - d / 1250, 0.18, 1);
       if (s.filter !== 'all' && L.grade !== s.filter) o *= 0.3;
-      if (s.wide && x < Math.min(700, W - 40) && y < 400 && !s.sel) o *= 0.2;
-      if (!s.wide && y < 380 && !s.sel) o *= 0.2;
+      var hr = self2.heroBox();
+      if (hr && !s.sel && x > hr.l - 40 && x < hr.r + 40 && y > hr.t && y < hr.b + 40) o = 0;
       if (o > 0) {
         var w = L.w || (L.w = L.el.offsetWidth || 140), h = L.h || (L.h = L.el.offsetHeight || 40), pad = 6;
         var at = function (yy) { return [x - w / 2 - pad, yy - h - pad, w + pad * 2, h + pad * 2]; };
