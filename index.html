@@ -198,6 +198,21 @@ footer.legend{position:absolute;left:12px;bottom:22px;z-index:6;width:max-conten
 @media (min-width:900px){.panel{top:84px;width:440px}.has-sel .controls{bottom:22px;right:476px}.help{right:24px;top:76px}}
 @media (min-width:1080px){.chips{position:static;max-width:none;width:auto}.hero{top:clamp(96px,16vh,150px)}.chips-hide .chips{display:flex}}
 @media (min-width:1280px){#idleLegend{max-width:calc(100vw - 700px)}}
+/* Telefon (<600px): kompakt başlık kartı, 2 sıralı filtre. Masaüstü/tahta etkilenmez. */
+@media (max-width:599px){
+html.js:not(.nogl) .chips{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:2px 0;width:auto;max-width:calc(100% - 24px);border-radius:22px;overflow:visible;-webkit-mask-image:none;mask-image:none;padding:4px}
+html.js:not(.nogl) .chip{padding:6px 10px;justify-content:flex-start}
+html.js:not(.nogl) .hero{top:150px;padding:12px 12px 14px;gap:10px;border-radius:24px;pointer-events:auto}
+html.js:not(.nogl) .hero .eyebrow{display:none}
+html.js:not(.nogl) .hero h1{font-size:23px;line-height:1.15}
+html.js:not(.nogl) .sbox{height:50px;padding:0 6px 0 16px}
+html.js:not(.nogl) .sbox .btn-primary{height:38px;padding:0 16px}
+html.js:not(.nogl) .popular{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-right:-12px;padding-right:12px}
+html.js:not(.nogl) .popular::-webkit-scrollbar{display:none}
+html.js:not(.nogl) .popular > span,html.js:not(.nogl) .popular .btn{flex:none;white-space:nowrap}
+html.js:not(.nogl) .hero-min .hero{padding:8px}
+html.js:not(.nogl) .hero-min .hero :is(h1,.popular,.note){display:none}
+}
 .focus-leg{display:none}
 @media (min-width:1280px){.focus-leg{display:flex;max-width:calc(100vw - 640px)}}
 
