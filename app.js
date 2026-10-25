@@ -8,8 +8,78 @@
   var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
 
   var THREE_URLS = ['https://unpkg.com/three@0.169.0/build/three.module.js', 'https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js'];
-  var MODE_KEY = 'eba-biyoloji-mode';
-  var FILTERS = [['all', 'Tümü'], ['9', '9. sınıf'], ['10', '10. sınıf'], ['11', '11. sınıf'], ['12', '12. sınıf'], ['O', 'Ortaokul']];
+  var MODE_KEY = 'eba-biyoloji-mode', LANG_KEY = 'eba-biyoloji-lang';
+  var FILTER_KEYS = ['all', '9', '10', '11', '12', 'O'];
+
+  /* ───────── dil ───────── */
+  /* index.html'deki data-i18n* öğelerinin Türkçesi sayfadan okunur; İngilizcesi burada */
+  var UI = { tr: {}, en: {
+    title: 'EBA Biology Map · Grades 9–12 topic network',
+    desc: 'Explore grade 9–12 biology topics in an interactive neural network: see what a topic builds on, how it connects to later topics, and verified official MEB resources on one screen.',
+    skip: 'Skip to content', nav: 'Map controls', brand: 'EBA Biology Map, back to start', brandName: 'Biology Map',
+    chips: 'Filter by grade', modes: 'Display mode', dark: 'Dark mode', mid: 'Mid tone', light: 'Light mode',
+    listOpen: 'Open topic index', list: 'List', helpOpen: 'How do I read the map?',
+    helpH: 'Reading the map', close: 'Close',
+    help1: 'Each neuron is a topic. Its color shows the grade and its size the number of links. Ringed neurons are foundations from middle-school science and sit at the center of the network.',
+    help2: 'Click a neuron and its links light up: orange is a prerequisite, dashed green a topic that helps, <span id="nextWord">cream</span> a next topic, dotted a related topic. The flowing light shows the direction of learning.',
+    help3: 'Drag: rotate · Scroll or pinch: zoom · /: search · Esc: back · List button: the same topics, without 3D',
+    eyebrow: 'Grade 9–12 biology · Maarif Model 2026', h1: 'Pick a topic; see what it builds on and where it leads.',
+    search: 'Search topics', searchPh: 'Search: mitosis…', go: 'Search', results: 'Search results',
+    none1: 'No topic found with that name. Try a shorter word.', none2: 'No topic found with that name.',
+    popular: 'Popular', glnote: 'The 3D view couldn’t start on this device. Search and the topic index give the same information.',
+    back: 'Back to the full map', search2: 'Search another topic', panel: 'Topic details',
+    listH: 'Topic index', listClose: 'Close index', legend: 'Legend',
+    legNeuron: 'Neuron: topic', legRing: 'Ring: middle-school foundation', legSize: 'Size: number of links', legFlow: 'Flowing light: direction of learning',
+    legPre: 'Prerequisite', legKol: 'Helps', legNext: 'Next topic', legRel: 'Related', legBase: 'Middle-school foundation',
+    hintline: 'Drag: rotate · Scroll: zoom · Click a neuron: open the topic',
+    zoom: 'Zoom', zin: 'Zoom in', zout: 'Zoom out', flat: '2D', flatL: 'Flat view (2D)', zreset: 'Reset view',
+    loading: 'Building the neural network…'
+  } };
+  var I18N_ATTR = [['data-i18n', null], ['data-i18n-aria', 'aria-label'], ['data-i18n-title', 'title'], ['data-i18n-ph', 'placeholder']];
+  var STR = {
+    tr: {
+      locale: 'tr', langName: 'Türkçe', switchTo: 'Türkçeye geç', all: 'Tümü',
+      chip: function (k) { return k === 'O' ? 'Ortaokul' : '<span>' + k + '<span class="lf">. sınıf</span></span>'; },
+      random: 'Rastgele konu', scope: function (f) { return 'Kapsam: ' + f; },
+      scopeAll: function (n) { return 'Tüm sınıflarda ara' + (n ? ' (+' + n + ')' : ''); }, noneIn: function (f) { return f + ' içinde sonuç yok.'; },
+      viaKol: 'bu konudan destek alır', viaOn: 'bu konuya dayanır', themeTag: function (th) { return th + ' teması'; },
+      closePanel: 'Paneli kapat', expand: 'Ayrıntıları büyüt', shrink: 'Küçült', grab: 'Paneli büyüt ya da küçült',
+      preOnly: 'Yalnızca ön koşulları göster', short: 'Kısaca', official: 'Resmî kaynaklar', verified: 'Doğrulandı', newTab: '(yeni sekmede açılır)',
+      notOfficial: 'resmî materyal olarak gösterilmez', checked: function (d) { return 'Bağlantılar ' + d + ' itibarıyla kontrol edildi.'; },
+      preOnlyNote: 'Yalnızca bu konudan önce bilinmesi gerekenler gösteriliyor.',
+      preH: 'Önce bunları bil', preSub: 'Ön koşul: bilinmeden bu konu anlaşılamaz.', baseH: 'Ortaokuldan gelen temel',
+      kolH: 'Öğrenmeni kolaylaştırır', kolSub: 'Şart değil; bilirsen bu konu daha kolay yerine oturur.',
+      chainH: 'Daha geriye giden zincir', chainSub: function (n) { return 'Ön koşullarının da dayandığı ' + n + ' konu. Eksik bir yer varsa buradan başla.'; },
+      nextH: 'Bu bilgiyi sonra nerede kullanacaksın', relH: 'İlgili konular', source: function (s) { return 'Kaynak: ' + s; },
+      opened: function (n) { return n + ' konusu açıldı'; }, fullMap: 'Tüm harita',
+      showing: function (f) { return 'Gösterilen: <b>' + f + '</b> konuları.'; }, showAll: 'Tüm sınıfları göster',
+      preOn: 'Yalnızca ön koşullar gösteriliyor', preOff: 'Tüm bağlantılar gösteriliyor', flatOn: 'Düz görünüm açık', flatOff: 'Üç boyutlu görünüm',
+      canvas: 'Biyoloji konularının üç boyutlu sinir ağı. Aynı konulara klavyeyle arama kutusundan ya da Liste düğmesinden ulaşılır.',
+      tipOpen: 'Açık konu', tipClick: 'Tıkla, konuyu aç', cream: 'krem', darkW: 'koyu'
+    },
+    en: {
+      locale: 'en', langName: 'English', switchTo: 'Switch to English', all: 'All',
+      chip: function (k) { return k === 'O' ? '<span>Middle<span class="lf"> school</span></span>' : '<span><span class="lf">Grade </span>' + k + '</span>'; },
+      random: 'Random topic', scope: function (f) { return 'Scope: ' + f; },
+      scopeAll: function (n) { return 'Search all grades' + (n ? ' (+' + n + ')' : ''); }, noneIn: function (f) { return 'No results in ' + f + '.'; },
+      viaKol: 'draws support from this topic', viaOn: 'builds on this topic', themeTag: function (th) { return th + ' theme'; },
+      closePanel: 'Close panel', expand: 'Expand details', shrink: 'Shrink', grab: 'Expand or shrink the panel',
+      preOnly: 'Show prerequisites only', short: 'In short', official: 'Official resources', verified: 'Verified', newTab: '(opens in a new tab)',
+      notOfficial: 'not shown as official material', checked: function (d) { return 'Links checked as of ' + d + '.'; },
+      preOnlyNote: 'Showing only what you need to know before this topic.',
+      preH: 'Know these first', preSub: 'Prerequisite: this topic can’t be understood without it.', baseH: 'Foundation from middle school',
+      kolH: 'Makes it easier to learn', kolSub: 'Not required; if you know it, this topic falls into place more easily.',
+      chainH: 'The chain further back', chainSub: function (n) { return (n === 1 ? '1 topic' : n + ' topics') + ' that its prerequisites build on. If something is missing, start here.'; },
+      nextH: 'Where you’ll use this later', relH: 'Related topics', source: function (s) { return 'Source: ' + s; },
+      opened: function (n) { return 'Opened topic: ' + n; }, fullMap: 'Full map',
+      showing: function (f) { return 'Showing: <b>' + f + '</b> topics.'; }, showAll: 'Show all grades',
+      preOn: 'Showing prerequisites only', preOff: 'Showing all links', flatOn: 'Flat view on', flatOff: '3D view',
+      canvas: 'Three-dimensional neural network of biology topics. The same topics can be reached by keyboard from the search box or the List button.',
+      tipOpen: 'Open now', tipClick: 'Click to open the topic', cream: 'cream', darkW: 'dark'
+    }
+  };
+  var lang = D.setLang(root.getAttribute('lang') === 'en' ? 'en' : 'tr'), TX = STR[lang];
+  function filters() { return FILTER_KEYS.map(function (k) { return [k, k === 'all' ? TX.all : D.gradeName(k)]; }); }
   var POPULAR = ['solunum', 'mayoz', 'fotosentez', 'homeo'];
   var MIN_D = 90, MAX_D = 2600;
   var EOP = { pre: 0.95, base: 0.85, kol: 0.9, next: 0.8, rel: 0.85 };
@@ -17,13 +87,13 @@
   var PAL = {
     dark: { lbg: 'rgba(29,26,22,.5)', rim: 0.55, GC: { O: '#c0b6a5', 9: '#aebf92', 10: '#e3b766', 11: '#f6a06b', 12: '#c3a4ec' }, EC: { pre: '#f6a06b', base: '#c0b6a5', kol: '#aebf92', next: '#f5ead8', rel: '#a19786' },
       add: true, bg: '#000000', fog: 0x241f1a, hemi: [0xfff1dc, 0x2a2119, 1.35], em: 0.46, fl: 0.9, hovE: 0.35, glowK: 1, pulseK: 1, dendK: 0.6, lineK: 1.1, dust: [0x96856c, 0.55],
-      ink: '#f5ead8', ink2: '#c9bfae', acc: '#f6a06b', shadow: 'rgba(23,20,16,.95)', chipBg: 'rgba(42,37,31,.9)', nextWord: 'krem', theme: '#1d1a16' },
+      ink: '#f5ead8', ink2: '#c9bfae', acc: '#f6a06b', shadow: 'rgba(23,20,16,.95)', chipBg: 'rgba(42,37,31,.9)', nextWord: 'cream', theme: '#1d1a16' },
     light: { lbg: 'rgba(245,239,229,.7)', rim: 0.8, GC: { O: '#857b6b', 9: '#64843f', 10: '#b9821c', 11: '#d2622a', 12: '#7b5bb0' }, EC: { pre: '#c4561d', base: '#82796a', kol: '#5b7a3a', next: '#3a342c', rel: '#8a8070' },
       add: false, bg: '#ebe3d5', fog: 0xebe3d5, hemi: [0xffffff, 0xcdbfa8, 1.5], em: 0.12, fl: 0.45, hovE: 0.15, glowK: 0.4, pulseK: 1.2, dendK: 0.7, lineK: 2.05, dust: [0xbcae95, 0.45],
-      ink: '#201e1d', ink2: '#5c5448', acc: '#a4501c', shadow: 'rgba(245,239,229,.95)', chipBg: 'rgba(251,246,238,.94)', nextWord: 'koyu', theme: '#e8e0d2' },
+      ink: '#201e1d', ink2: '#5c5448', acc: '#a4501c', shadow: 'rgba(245,239,229,.95)', chipBg: 'rgba(251,246,238,.94)', nextWord: 'darkW', theme: '#e8e0d2' },
     mid: { lbg: 'rgba(214,199,177,.7)', rim: 0.8, GC: { O: '#4e4438', 9: '#2f7a12', 10: '#a35f00', 11: '#c93a0c', 12: '#6a3a9c' }, EC: { pre: '#c93a0c', base: '#4e4438', kol: '#2f7a12', next: '#1c1712', rel: '#6b5d4c' },
       add: false, bg: '#c7b59c', fog: 0xc7b59c, hemi: [0xffffff, 0x8a7660, 1.4], em: 0.1, fl: 0.45, hovE: 0.15, glowK: 0.35, pulseK: 1.2, dendK: 0.75, lineK: 1.85, dust: [0xa08c72, 0.35],
-      ink: '#1c1712', ink2: '#3f352a', acc: '#7f300a', shadow: 'rgba(214,199,177,.95)', chipBg: 'rgba(222,210,192,.94)', nextWord: 'koyu', theme: '#b5a186' }
+      ink: '#1c1712', ink2: '#3f352a', acc: '#7f300a', shadow: 'rgba(214,199,177,.95)', chipBg: 'rgba(222,210,192,.94)', nextWord: 'darkW', theme: '#b5a186' }
   };
   var GC = PAL.dark.GC, EC = PAL.dark.EC;
 
@@ -44,17 +114,46 @@
   function dotHTML(g) { return '<i class="' + (g === 'O' ? 'ring' : '') + '" style="--c:var(--g' + g + ')"></i>'; }
   function subOf(t) { return t.grade === 'O' ? t.gradeLabel : t.gradeLabel + ' · ' + t.themeName; }
 
+  var ICON_RND = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>';
+  function eachI18n(fn) { I18N_ATTR.forEach(function (a) { $$('[' + a[0] + ']').forEach(function (el) { fn(el, el.getAttribute(a[0]), a[1]); }); }); }
   function buildStatic() {
-    $('#chips').innerHTML = FILTERS.map(function (f) {
-      var m = /^(\d+)(\. sınıf)$/.exec(f[1]);
-      return '<button type="button" class="chip" data-f="' + f[0] + '" aria-pressed="false" aria-label="' + f[1] + '">' + (f[0] === 'all' ? '' : dotHTML(f[0])) + (m ? '<span>' + m[1] + '<span class="lf">' + m[2] + '</span></span>' : f[1]) + '</button>';
-    }).join('');
+    var md = document.querySelector('meta[name=description]');
+    UI.tr.title = document.title; UI.tr.desc = md ? md.content : '';
+    eachI18n(function (el, k, attr) { if (!(k in UI.tr)) UI.tr[k] = attr ? el.getAttribute(attr) : el.innerHTML; });
     var pop = $('#popular');
     POPULAR.forEach(function (id) {
-      var b = document.createElement('button'); b.type = 'button'; b.className = 'btn btn-secondary'; b.textContent = D.byId[id].name; b.dataset.go = id; pop.appendChild(b);
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'btn btn-secondary'; b.dataset.go = id; pop.appendChild(b);
     });
-    var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'btn btn-secondary rnd'; rb.dataset.random = '1';
-    rb.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>Rastgele konu'; pop.appendChild(rb);
+    var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'btn btn-secondary rnd'; rb.dataset.random = '1'; pop.appendChild(rb);
+    renderStatic();
+    if (lang !== 'tr') $('#listView .lbody').innerHTML = D.listHTML();
+  }
+  /* dile bağlı sabit metinler; her dil değişiminde yeniden yazılır */
+  function renderStatic() {
+    var u = UI[lang], md = document.querySelector('meta[name=description]');
+    root.lang = lang; document.title = u.title; if (md) md.content = u.desc;
+    eachI18n(function (el, k, attr) { var v = u[k]; if (v == null) return; if (attr) el.setAttribute(attr, v); else el.innerHTML = v; });
+    $('#chips').innerHTML = filters().map(function (f) {
+      return '<button type="button" class="chip" data-f="' + f[0] + '" aria-pressed="false" aria-label="' + esc(f[1]) + '">' + (f[0] === 'all' ? '' : dotHTML(f[0])) + (f[0] === 'all' ? esc(f[1]) : TX.chip(f[0])) + '</button>';
+    }).join('');
+    $$('#popular [data-go]').forEach(function (b) { b.textContent = D.byId[b.dataset.go].name; });
+    $('#popular [data-random]').innerHTML = ICON_RND + esc(TX.random);
+    var other = lang === 'tr' ? 'en' : 'tr', lb = $('#langBtn');
+    lb.textContent = other.toUpperCase(); lb.setAttribute('lang', other); lb.dataset.lang = other;
+    lb.setAttribute('aria-label', STR[other].switchTo); lb.title = STR[other].switchTo;
+  }
+  function setLang(l) {
+    if (l === lang || !STR[l]) return;
+    lang = D.setLang(l); TX = STR[lang];
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    try { if (/[?&]lang=/.test(location.search)) history.replaceState(history.state, '', location.pathname + location.search.replace(/([?&]lang=)[^&]*/, '$1' + lang) + location.hash); } catch (e) {}
+    renderStatic();
+    var lb = $('#listView .lbody'); if (lb) lb.innerHTML = D.listHTML();
+    applyFilterViews();
+    if (scene) scene.relabel();
+    if (state.sel) renderPanel(true);
+    ui();
+    announce(TX.langName);
   }
 
   var phoneMQ = window.matchMedia('(max-width:599px)');
@@ -82,21 +181,21 @@
     $('#helpBtn').setAttribute('aria-expanded', String(state.help));
     $('#listView').hidden = !state.listOpen && !root.classList.contains('nogl');
     $('#listBtn').setAttribute('aria-expanded', String(state.listOpen));
-    $('#nextWord').textContent = PAL[state.mode].nextWord;
+    $('#nextWord').textContent = TX[PAL[state.mode].nextWord];
     if (!ui.fv) { ui.fv = 1; applyFilterViews(); }
     $$('.mode').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.mode === state.mode)); });
     $$('.chip').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.f === state.filter)); });
     renderResults();
   }
 
-  function filterLabel() { for (var i = 0; i < FILTERS.length; i++) if (FILTERS[i][0] === state.filter) return FILTERS[i][1]; return ''; }
+  function filterLabel() { var fs = filters(); for (var i = 0; i < fs.length; i++) if (fs[i][0] === state.filter) return fs[i][1]; return ''; }
   function renderResults() {
     var g = state.filter !== 'all' && state.scope === 'filter' ? state.filter : null;
     var all = state.query.trim() ? D.search(state.query) : [];
     var inScope = g ? all.filter(function (t) { return String(t.grade) === g; }) : all;
     var hiddenN = all.length - inScope.length;
     results = inScope.slice(0, 7);
-    var scopeRow = g ? '<div class="scope" role="presentation"><span>Kapsam: ' + esc(filterLabel()) + '</span>' + (hiddenN ? '<button type="button" data-scope>Tüm sınıflarda ara (+' + hiddenN + ')</button>' : '<button type="button" data-scope>Tüm sınıflarda ara</button>') + '</div>' : '';
+    var scopeRow = g ? '<div class="scope" role="presentation"><span>' + esc(TX.scope(filterLabel())) + '</span><button type="button" data-scope>' + esc(TX.scopeAll(hiddenN)) + '</button></div>' : '';
     boxes.forEach(function (b, bi) {
       var visible = bi === 0 ? !state.sel : !!state.sel;
       var show = visible && state.open && (results.length > 0 || (!!g && state.query.trim() && hiddenN > 0));
@@ -108,7 +207,7 @@
         b.list.innerHTML = results.map(function (t, i) {
           return '<div class="opt" role="option" id="o' + bi + '-' + i + '" data-id="' + t.id + '" aria-selected="' + (i === state.hi) + '">' + dotHTML(t.grade).replace('style="', 'style="') + '<span><b>' + esc(t.name) + '</b><small>' + esc(subOf(t)) + '</small></span></div>';
         }).join('') + scopeRow;
-        if (!results.length) b.list.innerHTML = '<div class="scope" role="presentation"><span>' + esc(filterLabel()) + ' içinde sonuç yok.</span><button type="button" data-scope>Tüm sınıflarda ara (+' + hiddenN + ')</button></div>';
+        if (!results.length) b.list.innerHTML = '<div class="scope" role="presentation"><span>' + esc(TX.noneIn(filterLabel())) + '</span><button type="button" data-scope>' + esc(TX.scopeAll(hiddenN)) + '</button></div>';
         b.input.setAttribute('aria-activedescendant', results.length ? 'o' + bi + '-' + state.hi : '');
       } else b.input.removeAttribute('aria-activedescendant');
     });
@@ -122,7 +221,7 @@
 
   function itemHTML(o, kind) {
     var t = o.topic, g = t.grade === 'O' ? t.gradeLabel : t.gradeLabel + ' · ' + t.themeName;
-    var via = kind === 'next' ? ' · ' + (o.type === 'kol' ? 'bu konudan destek alır' : 'bu konuya dayanır') : '';
+    var via = kind === 'next' ? ' · ' + (o.type === 'kol' ? TX.viaKol : TX.viaOn) : '';
     var mk = kind === 'next' ? ICON_ARROW : '<span class="mk ' + kind + '"></span>';
     return '<button type="button" class="item" data-go="' + t.id + '">' + mk + '<span class="it"><span class="t"><b>' + esc(t.name) + '</b><span>' + esc(g + via) + '</span></span><span class="r">' + esc(o.reason) + '</span></span></button>';
   }
@@ -141,43 +240,43 @@
       frontier = next; depth++;
     }
     var gv = function (t) { return t.grade === 'O' ? 8 : +t.grade; };
-    return out.sort(function (a, b) { return gv(a) - gv(b) || a.name.localeCompare(b.name, 'tr'); });
+    return out.sort(function (a, b) { return gv(a) - gv(b) || a.name.localeCompare(b.name, TX.locale); });
   }
 
   function renderPanel(keep) {
     var t = D.byId[state.sel]; if (!t) return;
     var nb = D.neighbors(t.id), res = D.resources(t.id);
-    var h = '<header><div class="tags"><span class="tag tag-accent" style="font-weight:700">' + esc(t.gradeLabel) + '</span><span class="tag tag-accent-2" style="font-weight:700">' + esc(t.themeName) + ' teması</span><span class="tag tag-neutral">' + esc(t.code) + '</span>' +
-      '<button type="button" class="btn btn-secondary btn-icon" data-close aria-label="Paneli kapat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>' +
-      '<h2 tabindex="-1" id="ptitle">' + esc(t.name) + '</h2><button type="button" class="btn btn-secondary expand" data-expand aria-expanded="false">Ayrıntıları büyüt</button></header><div class="pbody">' +
-      '<label class="pre-only"><input type="checkbox" data-preonly' + (state.preOnly ? ' checked' : '') + '><span>Yalnızca ön koşulları göster</span></label>' +
-      '<div class="sec"><h3>Kısaca</h3><p class="sum">' + esc(t.summary) + '</p></div>' +
-      '<div class="sec"><h3>Resmî kaynaklar</h3>' + res.map(function (r) {
+    var h = '<header><div class="tags"><span class="tag tag-accent" style="font-weight:700">' + esc(t.gradeLabel) + '</span><span class="tag tag-accent-2" style="font-weight:700">' + esc(TX.themeTag(t.themeName)) + '</span><span class="tag tag-neutral">' + esc(t.code) + '</span>' +
+      '<button type="button" class="btn btn-secondary btn-icon" data-close aria-label="' + esc(TX.closePanel) + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>' +
+      '<h2 tabindex="-1" id="ptitle">' + esc(t.name) + '</h2><button type="button" class="btn btn-secondary expand" data-expand aria-expanded="false">' + esc(TX.expand) + '</button></header><div class="pbody">' +
+      '<label class="pre-only"><input type="checkbox" data-preonly' + (state.preOnly ? ' checked' : '') + '><span>' + esc(TX.preOnly) + '</span></label>' +
+      '<div class="sec"><h3>' + esc(TX.short) + '</h3><p class="sum">' + esc(t.summary) + '</p></div>' +
+      '<div class="sec"><h3>' + esc(TX.official) + '</h3>' + res.map(function (r) {
         return r.verified
-          ? '<a class="res" href="' + esc(r.url) + '" target="_blank" rel="noopener"><span class="ic">' + ICON_BOOK + '</span><span class="tx"><b>' + esc(r.title) + '</b><small>' + ICON_OK + esc(r.source) + ' · Doğrulandı</small></span>' + ICON_EXT + '<span class="sr">(yeni sekmede açılır)</span></a>'
-          : '<div class="res un"><span class="ic" style="background:none;color:inherit">' + ICON_CLOCK + '</span><span class="tx"><b>' + esc(r.title) + '</b><small>' + esc(r.note) + ' · resmî materyal olarak gösterilmez</small></span></div>';
-      }).join('') + '<p class="fine">Bağlantılar ' + esc(D.checkedAt) + ' itibarıyla kontrol edildi.</p></div>';
-    if (state.preOnly) { nb = { pre: nb.pre, base: nb.base, kol: [], next: [], rel: [] }; h += '<p class="fine">Yalnızca bu konudan önce bilinmesi gerekenler gösteriliyor.</p>'; }
+          ? '<a class="res" href="' + esc(r.url) + '" target="_blank" rel="noopener"><span class="ic">' + ICON_BOOK + '</span><span class="tx"><b>' + esc(r.title) + '</b><small>' + ICON_OK + esc(r.source) + ' · ' + esc(TX.verified) + '</small></span>' + ICON_EXT + '<span class="sr">' + esc(TX.newTab) + '</span></a>'
+          : '<div class="res un"><span class="ic" style="background:none;color:inherit">' + ICON_CLOCK + '</span><span class="tx"><b>' + esc(r.title) + '</b><small>' + esc(r.note) + ' · ' + esc(TX.notOfficial) + '</small></span></div>';
+      }).join('') + '<p class="fine">' + esc(TX.checked(D.checkedAt)) + '</p></div>';
+    if (state.preOnly) { nb = { pre: nb.pre, base: nb.base, kol: [], next: [], rel: [] }; h += '<p class="fine">' + esc(TX.preOnlyNote) + '</p>'; }
     var before = nb.pre.length + nb.kol.length + nb.base.length > 0;
     if (before) {
-      h += '<div class="sec">' + (nb.pre.length ? '<h3 class="pre">Önce bunları bil</h3><p class="sub">Ön koşul: bilinmeden bu konu anlaşılamaz.</p>' + nb.pre.map(function (o) { return itemHTML(o, 'pre'); }).join('') : '') +
-        (nb.base.length ? '<h3 style="margin-top:14px">Ortaokuldan gelen temel</h3>' + nb.base.map(function (o) { return itemHTML(o, 'base'); }).join('') : '') +
-        (nb.kol.length ? '<h3 class="kol" style="margin-top:14px">Öğrenmeni kolaylaştırır</h3><p class="sub">Şart değil; bilirsen bu konu daha kolay yerine oturur.</p>' + nb.kol.map(function (o) { return itemHTML(o, 'kol'); }).join('') : '') + '</div>';
+      h += '<div class="sec">' + (nb.pre.length ? '<h3 class="pre">' + esc(TX.preH) + '</h3><p class="sub">' + esc(TX.preSub) + '</p>' + nb.pre.map(function (o) { return itemHTML(o, 'pre'); }).join('') : '') +
+        (nb.base.length ? '<h3 style="margin-top:14px">' + esc(TX.baseH) + '</h3>' + nb.base.map(function (o) { return itemHTML(o, 'base'); }).join('') : '') +
+        (nb.kol.length ? '<h3 class="kol" style="margin-top:14px">' + esc(TX.kolH) + '</h3><p class="sub">' + esc(TX.kolSub) + '</p>' + nb.kol.map(function (o) { return itemHTML(o, 'kol'); }).join('') : '') + '</div>';
     }
     var ch = chainOf(t.id);
     if (ch.length) {
-      h += '<div class="sec"><h3>Daha geriye giden zincir</h3><p class="sub">Ön koşullarının da dayandığı ' + ch.length + ' konu. Eksik bir yer varsa buradan başla.</p><div class="chain">' +
+      h += '<div class="sec"><h3>' + esc(TX.chainH) + '</h3><p class="sub">' + esc(TX.chainSub(ch.length)) + '</p><div class="chain">' +
         ch.map(function (o) { return '<button type="button" class="cn" data-go="' + o.id + '">' + dotHTML(o.grade) + esc(o.name) + '</button>'; }).join('') + '</div></div>';
     }
-    h += group('Bu bilgiyi sonra nerede kullanacaksın', 'nx', '', nb.next, 'next');
-    h += group('İlgili konular', '', '', nb.rel, 'rel');
-    h += '<p class="fine">Kaynak: ' + esc(D.curriculum) + '</p></div>';
-    var p = $('#panel'); if (!keep) p.classList.remove('big'); p.innerHTML = '<button type="button" class="grab" aria-label="Paneli büyüt ya da küçült"></button>' + h; syncExpand();
+    h += group(esc(TX.nextH), 'nx', '', nb.next, 'next');
+    h += group(esc(TX.relH), '', '', nb.rel, 'rel');
+    h += '<p class="fine">' + esc(TX.source(D.curriculum)) + '</p></div>';
+    var p = $('#panel'); if (!keep) p.classList.remove('big'); p.innerHTML = '<button type="button" class="grab" aria-label="' + esc(TX.grab) + '"></button>' + h; syncExpand();
   }
 
   function syncExpand() {
     var p = $('#panel'), b = $('[data-expand]', p), big = p.classList.contains('big');
-    if (b) { b.textContent = big ? 'Küçült' : 'Ayrıntıları büyüt'; b.setAttribute('aria-expanded', String(big)); }
+    if (b) { b.textContent = big ? TX.shrink : TX.expand; b.setAttribute('aria-expanded', String(big)); }
   }
   function togglePanel() { $('#panel').classList.toggle('big'); syncExpand(); }
   function announce(msg) { var l = $('#live'); l.textContent = ''; setTimeout(function () { l.textContent = msg; }, 30); }
@@ -200,7 +299,7 @@
     var pb = $('.pbody'); if (pb) pb.scrollTop = 0;
     if (!fromHash) setHash(id);
     var h = $('#ptitle'); if (h) h.focus({ preventScroll: true });
-    announce(D.byId[id].name + ' konusu açıldı');
+    announce(TX.opened(D.byId[id].name));
     if (document.activeElement && document.activeElement.tagName === 'INPUT') document.activeElement.blur();
   }
   function clearSel(fromHash) {
@@ -211,7 +310,7 @@
     ui();
     if (!fromHash) setHash(null);
     var b = state.query ? null : $('#s1 input'); if (b && !fromHash) { /* odak aramada kalmaz */ }
-    announce('Tüm harita');
+    announce(TX.fullMap);
     return prev;
   }
   function applyFilterViews() {
@@ -230,7 +329,7 @@
     var ln = $('#listScope');
     if (!ln) { ln = document.createElement('p'); ln.id = 'listScope'; ln.className = 'scopeline'; var lead = lb.querySelector('.lead'); if (lead) lead.after(ln); else lb.prepend(ln); }
     ln.hidden = f === 'all';
-    ln.innerHTML = f === 'all' ? '' : 'Gösterilen: <b>' + esc(filterLabel()) + '</b> konuları. <button type="button" class="btn btn-secondary" data-f="all">Tüm sınıfları göster</button>';
+    ln.innerHTML = f === 'all' ? '' : TX.showing(esc(filterLabel())) + ' <button type="button" class="btn btn-secondary" data-f="all">' + esc(TX.showAll) + '</button>';
   }
   function setFilter(k) {
     if (state.sel) clearSel();
@@ -283,6 +382,7 @@
       });
     });
     $('#back').addEventListener('click', function () { clearSel(); });
+    $('#langBtn').addEventListener('click', function () { setLang(this.dataset.lang); });
     $('#helpBtn').addEventListener('click', function () { state.help = !state.help; ui(); });
     $('#helpClose').addEventListener('click', function () { state.help = false; ui(); $('#helpBtn').focus(); });
     $('#listBtn').addEventListener('click', function () { state.listOpen = !state.listOpen; ui(); if (state.listOpen) { var f = $('#listView .lbody a'); if (f) f.focus({ preventScroll: true }); } });
@@ -304,10 +404,10 @@
       state.preOnly = c.checked; var pb = $('.pbody'), st = pb ? pb.scrollTop : 0;
       renderPanel(true); if (scene) scene.reapply();
       var nb = $('[data-preonly]'); if (nb) nb.focus({ preventScroll: true }); var pb2 = $('.pbody'); if (pb2) pb2.scrollTop = st;
-      announce(state.preOnly ? 'Yalnızca ön koşullar gösteriliyor' : 'Tüm bağlantılar gösteriliyor');
+      announce(state.preOnly ? TX.preOn : TX.preOff);
     });
     var zf = $('#zflat');
-    if (zf) zf.addEventListener('click', function () { state.flat = !state.flat; zf.setAttribute('aria-pressed', String(state.flat)); if (scene) scene.poke(); announce(state.flat ? 'Düz görünüm açık' : 'Üç boyutlu görünüm'); });
+    if (zf) zf.addEventListener('click', function () { state.flat = !state.flat; zf.setAttribute('aria-pressed', String(state.flat)); if (scene) scene.poke(); announce(state.flat ? TX.flatOn : TX.flatOff); });
     window.addEventListener('hashchange', onHash);
     window.addEventListener('popstate', onHash);
     if ('ResizeObserver' in window) new ResizeObserver(function () {
@@ -371,7 +471,7 @@
     var R = new T.WebGLRenderer({ antialias: !LITE, alpha: true, powerPreference: 'high-performance' });
     R.setPixelRatio(Math.min(LITE ? 1.5 : 1.75, window.devicePixelRatio || 1)); R.setSize(W, H); R.setClearColor(0x000000, 0);
     R.domElement.style.cursor = 'grab';
-    R.domElement.setAttribute('role', 'img'); R.domElement.setAttribute('aria-label', 'Biyoloji konularının üç boyutlu sinir ağı. Aynı konulara klavyeyle arama kutusundan ya da Liste düğmesinden ulaşılır.');
+    R.domElement.setAttribute('role', 'img'); R.domElement.setAttribute('aria-label', TX.canvas);
     this.stage.appendChild(R.domElement); this.renderer = R;
     R.domElement.addEventListener('webglcontextlost', function (e) { e.preventDefault(); self.alive = false; failGL('Üç boyutlu görünüm durdu (grafik bağlamı kaybedildi).'); });
 
@@ -474,9 +574,9 @@
       var el = document.createElement('div');
       el.style.cssText = 'position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:3px 12px 4px;border-radius:14px;white-space:nowrap;pointer-events:none;will-change:transform;opacity:0;text-shadow:0 2px 12px rgba(17,15,12,.95)';
       var a = document.createElement('span'); a.style.cssText = 'font-family:var(--font-heading);font-size:calc(20px * var(--ls,1))'; a.textContent = t.name;
-      var b = document.createElement('span'); b.style.cssText = 'font-family:var(--font-body);font-size:calc(13px * var(--ls,1));font-weight:700;letter-spacing:.1em'; b.textContent = (t.grade === 'O' ? 'Ortaokul' : t.grade + '. sınıf').toLocaleUpperCase('tr');
+      var b = document.createElement('span'); b.style.cssText = 'font-family:var(--font-body);font-size:calc(13px * var(--ls,1));font-weight:700;letter-spacing:.1em'; b.textContent = D.gradeName(t.grade).toLocaleUpperCase(TX.locale);
       el.appendChild(a); el.appendChild(b); self.labelLayer.appendChild(el);
-      return { el: el, a: a, b: b, pos: new T.Vector3(c.x, maxY + 34, c.z), grade: String(t.grade) };
+      return { el: el, a: a, b: b, pos: new T.Vector3(c.x, maxY + 34, c.z), grade: String(t.grade), id: t.id };
     });
     this.tipName = $('.n', this.tip); this.tipSub = $('.s', this.tip); this.tipAct = $('.a', this.tip);
     this.applyTheme(state.mode);
@@ -566,6 +666,15 @@
     el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
     el.addEventListener('pointerleave', function () { if (!self.dragging) { self.mouse = null; self.hover = -1; self.poke(); } });
     el.addEventListener('wheel', function (e) { e.preventDefault(); self.ctl.gDist = clamp(self.ctl.gDist * Math.exp(e.deltaY * 0.0011), MIN_D, MAX_D); self.lastInteract = performance.now(); self.poke(); }, { passive: false });
+  };
+
+  /* dil değişimi: etiket metinleri değişir, önbellekteki genişlikler sıfırlanır */
+  S3.relabel = function () {
+    this.themeLabels.forEach(function (Lb) { var t = D.themeById[Lb.id]; Lb.a.textContent = t.name; Lb.b.textContent = D.gradeName(t.grade).toLocaleUpperCase(TX.locale); Lb.w = Lb.h = 0; });
+    this.renderer.domElement.setAttribute('aria-label', TX.canvas);
+    this.tipI = -1;
+    if (state.sel) this.buildFocusLabels(state.sel);
+    this.poke();
   };
 
   S3.zoom = function (k) { this.ctl.gDist = clamp(this.ctl.gDist * k, MIN_D, MAX_D); this.lastInteract = performance.now(); this.poke(); };
@@ -695,7 +804,7 @@
     var sn = this.nodes[this.L.ix[id]];
     var main = mk('div', 'position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:center;gap:2px;white-space:nowrap;pointer-events:none;padding:5px 16px 7px;border-radius:20px;background:' + this.P.chipBg + ';box-shadow:0 6px 22px ' + this.P.shadow + ';will-change:transform;opacity:0');
     var a = mk('span', 'font-family:var(--font-heading);font-size:22px;color:' + this.P.ink); a.textContent = sn.t.name;
-    var b = mk('span', 'font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:.1em;color:' + this.P.ink2); b.textContent = (sn.isO ? sn.t.gradeLabel : sn.t.grade + '. sınıf · ' + sn.t.themeName).toLocaleUpperCase('tr');
+    var b = mk('span', 'font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:.1em;color:' + this.P.ink2); b.textContent = (sn.isO ? sn.t.gradeLabel : sn.t.gradeLabel + ' · ' + sn.t.themeName).toLocaleUpperCase(TX.locale);
     main.appendChild(a); main.appendChild(b); this.labelLayer.appendChild(main);
     this.fl = { items: items, main: main, n: sn, svg: svg };
   };
@@ -922,7 +1031,7 @@
       if (this.tipI !== hi) {
         this.tipName.textContent = n.t.name;
         this.tipSub.textContent = n.isO ? n.t.gradeLabel : n.t.gradeLabel + ' · ' + n.t.themeName;
-        this.tipAct.textContent = hi === this.selI ? 'Açık konu' : 'Tıkla, konuyu aç';
+        this.tipAct.textContent = hi === this.selI ? TX.tipOpen : TX.tipClick;
         this.tipI = hi;
       }
       var pp = proj(n.pos), r2 = pxR(n);
