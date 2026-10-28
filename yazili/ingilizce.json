@@ -1,0 +1,9 @@
+{
+  "exams": [
+    { "grade": 9, "donem": 1, "yazili": 1, "kodlar": ["ENG.9.1.V1", "ENG.9.1.G1", "ENG.9.1.W4"], "topics": ["ing_9_1_kel", "ing_9_1_dtb", "ing_9_1_bec"] },
+    { "grade": 9, "donem": 1, "yazili": 2, "kodlar": ["ENG.9.1.R3", "ENG.9.1.W3", "ENG.9.2.R4", "ENG.9.2.G1", "ENG.9.2.W4", "ENG.9.3.R2"], "topics": ["ing_9_1_bec", "ing_9_2_dtb", "ing_9_2_bec", "ing_9_3_bec"] },
+    { "grade": 9, "donem": 2, "yazili": 1, "kodlar": [], "topics": ["ing_9_1_kel", "ing_9_1_bec", "ing_9_3_kel", "ing_9_3_bec", "ing_9_6_kel"] },
+    { "grade": 9, "donem": 2, "yazili": 2, "kodlar": [], "topics": ["ing_9_6_bec", "ing_9_8_dtb"] },
+    { "grade": 10, "donem": 1, "yazili": 1, "kodlar": ["ENG.9.1.V1", "ENG.9.5.R2", "ENG.10.1.R3", "ENG.10.1.V1", "ENG.10.1.G1", "ENG.10.1.W3"], "topics": ["ing_10_1_kel", "ing_10_1_dtb1", "ing_10_1_dtb2", "ing_10_1_bec"] }
+  ]
+}

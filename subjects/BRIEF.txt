@@ -1,0 +1,12 @@
+GÖREV: EBA sinir ağı haritasına yeni bir ders ekleniyor. Çalışma klasörü: C:\Users\ozcin\OneDrive\Ekler\Desktop\EBA-PROJECT (git deposu; commit etme, başka dosyaya dokunma).
+
+ÖNCE OKU: subjects/README.md (veri sözleşmesi, kurallar) ve örnek olarak subjects/biyoloji.js (ilk 40 satır + birkaç bağlantı; hepsini okuma). Doğrulayıcı: node tools/validate-subject.js subjects/<ders>.js yazili/<ders>.json
+
+KAYNAK METİNLER (pdftotext çıktısı; Türkçe karakterlerin bir kısmı bozuk: ı, ş, ğ, ç, ö, ü düşebilir; metni anlamak için bağlamdan oku, ama dosyaya YAZARKEN doğru Türkçe karakterleri kullan):
+- Öğretim programı: C:\Users\ozcin\AppData\Local\Temp\claude\C--Users-ozcin-OneDrive-Ekler-Desktop-EBA-PROJECT\6e5807b2-6154-42d7-85ab-4ac323b7b83b\scratchpad\prog\<dosya>.txt  (çok büyük: Read ile bütün okuma; Grep ile ünite başlıklarını ve öğrenme çıktısı kodlarını bul, sonra ilgili satır aralıklarını sınırlı oku).
+- Yazılı PDF metinleri: ...\scratchpad\yz\<ders>\<sınıf>-d<dönem>-y<yazılı>.txt (aynı kök klasör).
+
+İŞ 1 — subjects/<ders>.js: programın GERÇEK ünite/öğrenme alanı yapısından tema, konu ve bağlantı grafı çıkar (README'deki kurallar). Programdaki sınıf düzeylerini (9–12) kapsa. Konu adı ve kazanım kodu programdan gelmeli. Bağlantıları öğrenme sırasına ve gerçek bağımlılıklara göre kur (zincirler, sınıflar arası bağlar, birkaç ilgili bağ). Biyoloji dosyasındaki gibi bütün grafı tek bir bağlı ağ olarak düşün.
+İŞ 2 — yazili/<ders>.json: OGM yazılı PDF'lerinin her biri için hangi konuların sorulduğunu eşle (README'nin son bölümü). Soru metinlerini ve çıktı tablosunu oku.
+BİTİRMEDEN ÖNCE: doğrulayıcıyı çalıştır, bütün HATA'ları gider (uyarıları mümkünse gider). Dosyaları Write ile oluştur (heredoc kullanma). Çok uzun dosyayı birkaç parçada yazman gerekirse, son dosyanın tek bir geçerli JS olması şart.
+RAPOR (en çok 12 satır): üretilen tema/konu/bağlantı sayıları, doğrulayıcı sonucu, programda kapsayamadığın ya da emin olmadığın yerler, yazılı eşlemesinde atlanan sorular. Uydurma yapma.

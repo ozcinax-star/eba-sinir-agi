@@ -1,0 +1,154 @@
+{
+ "exams": [
+  {
+   "grade": 9,
+   "donem": 1,
+   "yazili": 1,
+   "kodlar": [
+    "BY.9.1.1",
+    "BY.9.1.2",
+    "BY.9.1.4",
+    "BY.9.1.5"
+   ],
+   "topics": [
+    "donum",
+    "bilim",
+    "ortak",
+    "su"
+   ]
+  },
+  {
+   "grade": 9,
+   "donem": 1,
+   "yazili": 2,
+   "kodlar": [
+    "BY.9.1.3",
+    "BY.9.1.4",
+    "BY.9.1.5",
+    "BY.9.1.6"
+   ],
+   "topics": [
+    "etik",
+    "ortak",
+    "sinif",
+    "domain",
+    "bakteri",
+    "okaryotlar"
+   ]
+  },
+  {
+   "grade": 9,
+   "donem": 2,
+   "yazili": 1,
+   "kodlar": [
+    "BY.9.1.6",
+    "BY.9.1.7",
+    "BY.9.2.1",
+    "BY.9.2.2"
+   ],
+   "topics": [
+    "domain",
+    "okaryotlar",
+    "biocesit",
+    "su",
+    "karb",
+    "nukleik9",
+    "vitamin"
+   ]
+  },
+  {
+   "grade": 9,
+   "donem": 2,
+   "yazili": 2,
+   "kodlar": [
+    "BY.9.1.6",
+    "BY.9.2.2",
+    "BY.9.2.4",
+    "BY.9.2.5",
+    "BY.9.2.6",
+    "BY.9.2.7"
+   ],
+   "topics": [
+    "domain",
+    "bakteri",
+    "nukleik9",
+    "yag",
+    "enzim",
+    "hucre",
+    "organel",
+    "madde"
+   ]
+  },
+  {
+   "grade": 10,
+   "donem": 1,
+   "yazili": 1,
+   "kodlar": [
+    "BY.10.1.1",
+    "BY.10.1.3",
+    "BY.10.1.5"
+   ],
+   "topics": [
+    "atp",
+    "fotosentez",
+    "sindirim"
+   ]
+  },
+  {
+   "grade": 10,
+   "donem": 1,
+   "yazili": 2,
+   "kodlar": [
+    "BY.10.1.4",
+    "BY.10.1.5",
+    "BY.10.1.6",
+    "BY.10.1.7",
+    "BY.10.1.8",
+    "BY.10.1.9"
+   ],
+   "topics": [
+    "kemosentez",
+    "sindirim",
+    "insansind",
+    "solunum",
+    "metab",
+    "ferment"
+   ]
+  },
+  {
+   "grade": 10,
+   "donem": 2,
+   "yazili": 1,
+   "kodlar": [
+    "BY.10.1.10",
+    "BY.10.2.1",
+    "BY.10.2.2",
+    "BY.10.2.3"
+   ],
+   "topics": [
+    "metab",
+    "ekosistem",
+    "populasyon",
+    "etkilesim",
+    "enerjiakis",
+    "piramit"
+   ]
+  },
+  {
+   "grade": 10,
+   "donem": 2,
+   "yazili": 2,
+   "kodlar": [
+    "BY.10.2.4",
+    "BY.10.2.5",
+    "BY.10.2.6",
+    "BY.10.2.7"
+   ],
+   "topics": [
+    "dongu",
+    "surdur",
+    "ayakizi"
+   ]
+  }
+ ]
+}

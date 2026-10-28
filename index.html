@@ -101,6 +101,29 @@ button{font:inherit;color:inherit}
 .listbtn[aria-expanded="true"]{background:var(--n-chip-on);color:var(--n-chip-on-ink)}
 .langbtn{font-family:var(--font-body);font-weight:700;font-size:13px;letter-spacing:.06em;background:var(--n-surf-a);border-color:var(--n-line2)}
 
+.subjbtn{gap:7px;width:auto;max-width:190px;padding:0 12px 0 11px;font-family:var(--font-body);font-weight:700;font-size:14px;background:var(--n-surf-a);border-color:var(--n-line2)}
+.subjbtn .sl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.subjbtn[aria-expanded="true"]{background:var(--n-chip-on);color:var(--n-chip-on-ink)}
+.subjmenu{position:absolute;top:68px;right:12px;z-index:9;width:min(300px,calc(100% - 24px));max-height:calc(100% - 96px);overflow:auto;display:flex;flex-direction:column;gap:2px;padding:8px;border-radius:24px;background:var(--n-surf);border:1px solid var(--n-line);box-shadow:0 18px 44px var(--n-shadow)}
+.subjmenu[hidden]{display:none}
+.subjmenu .sh{margin:6px 12px 4px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--n-ink2)}
+.subjmenu hr{border:0;border-top:1px solid var(--n-line);margin:4px 8px}
+.si{display:flex;flex-direction:column;align-items:flex-start;gap:1px;width:100%;padding:10px 14px;border:0;border-radius:18px;background:transparent;color:var(--n-ink);cursor:pointer;text-align:left;font-family:var(--font-body)}
+.si b{font-weight:600;font-size:16px}.si small{font-size:13px;color:var(--n-ink2)}
+.si:hover{background:var(--n-hov)}
+.si[aria-pressed="true"]{background:var(--n-chip-on);color:var(--n-chip-on-ink)}
+.si[aria-pressed="true"] small{color:inherit;opacity:.8}
+/* tüm dersler görünümü: arama alta, ortaya ve küçük; ağa alan açılır */
+html.js:not(.nogl) .all-view:not(.has-sel) .hero{top:auto;bottom:22px;left:50%;transform:translateX(-50%);width:min(440px,calc(100% - 24px));padding:0;gap:0;background:none;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+html.js:not(.nogl) .all-view .hero :is(.eyebrow,.note,.popular){display:none}
+.all-view:not(.has-sel) footer.legend{display:none}
+html.js:not(.nogl) .all-view .hero h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;text-shadow:none}
+html.js:not(.nogl) .all-view .hero .sbox{height:44px;padding:0 5px 0 16px;gap:10px;box-shadow:0 8px 24px var(--n-shadow)}
+html.js:not(.nogl) .all-view .hero .sbox input{font-size:15px}
+html.js:not(.nogl) .all-view .hero .sbox .btn-primary{height:34px;padding:0 14px;font-size:14px}
+html.js:not(.nogl) .all-view .hero :is(.results,.noresults){top:auto;bottom:calc(100% + 8px)}
+@media (max-width:599px){html.js:not(.nogl) .all-view:not(.has-sel) .hero{left:12px;transform:none;width:calc(100% - 92px)}.top{gap:6px;padding:0 8px}.top .brand{display:none}.subjbtn{margin-right:auto;padding:0 10px}.subjbtn .sl{max-width:110px}.top .mode{width:32px;height:32px}.top .group{padding:2px}.top .btn-icon{width:40px;height:40px}.subjmenu{right:8px}}
+@media (prefers-reduced-motion:reduce){.subjmenu{animation:none}}
 .help{position:absolute;top:76px;right:12px;z-index:9;width:min(360px,calc(100% - 24px));display:flex;flex-direction:column;gap:12px;padding:20px 22px;border-radius:24px;background:var(--n-surf);border:1px solid var(--n-line);box-shadow:0 18px 44px var(--n-shadow);font-size:15px;line-height:1.5;color:var(--n-ink3)}
 .help h2{font-size:20px;color:var(--n-ink)}
 .help .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -284,6 +307,7 @@ html.nogl .listbtn{display:none}
     <nav aria-label="Harita denetimleri" data-i18n-aria="nav">
       <a class="brand" href="./" aria-label="EBA Biyoloji Haritası, başa dön" data-i18n-aria="brand"><span class="badge">EBA</span><span class="brand-name" data-i18n="brandName">Biyoloji Haritası</span></a>
       <div class="chips needs-js" id="chips" role="group" aria-label="Sınıfa göre süz" data-i18n-aria="chips"></div>
+      <button type="button" class="btn btn-secondary subjbtn needs-js" id="subjBtn" aria-haspopup="true" aria-expanded="false" aria-controls="subjMenu" aria-label="Ders seç"></button>
       <div class="group needs-js" role="group" aria-label="Görünüm modu" data-i18n-aria="modes">
         <button type="button" class="mode" data-mode="dark" aria-pressed="false" aria-label="Koyu mod" title="Koyu mod" data-i18n-aria="dark" data-i18n-title="dark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button>
         <button type="button" class="mode" data-mode="mid" aria-pressed="false" aria-label="Orta ton" title="Orta ton" data-i18n-aria="mid" data-i18n-title="mid"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17Z" fill="currentColor"/></svg></button>
@@ -294,6 +318,8 @@ html.nogl .listbtn{display:none}
       <button type="button" class="btn btn-secondary btn-icon needs-js" id="helpBtn" aria-expanded="false" aria-controls="help" aria-label="Haritayı nasıl okurum?" data-i18n-aria="helpOpen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg></button>
     </nav>
   </header>
+
+  <div class="subjmenu needs-js" id="subjMenu" role="group" aria-label="Ders seç" hidden></div>
 
   <div class="help" id="help" role="region" aria-label="Haritayı okuma" data-i18n-aria="helpH" hidden>
     <div class="row"><h2 data-i18n="helpH">Haritayı okuma</h2><button type="button" class="btn btn-ghost btn-icon" id="helpClose" aria-label="Kapat" data-i18n-aria="close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -486,7 +512,16 @@ html.nogl .listbtn{display:none}
   <div class="sr" id="live" aria-live="polite"></div>
 </div>
 <noscript><p style="position:relative;z-index:30;padding:12px 16px;background:#f9f4ed;color:#201e1d;text-align:center">Etkileşimli harita JavaScript gerektirir. Aşağıdaki konu dizini ve resmî program bağlantıları JavaScript olmadan da çalışır.<br><span lang="en">The interactive map needs JavaScript. The topic index below (in Turkish) works without it.</span></p></noscript>
-<script src="eba-data.js"></script>
+<script src="eba-core.js"></script>
+<script src="subjects/biyoloji.js"></script>
+<script src="subjects/matematik.js"></script>
+<script src="subjects/kimya.js"></script>
+<script src="subjects/fizik.js"></script>
+<script src="subjects/edebiyat.js"></script>
+<script src="subjects/cografya.js"></script>
+<script src="subjects/din.js"></script>
+<script src="subjects/felsefe.js"></script>
+<script src="subjects/ingilizce.js"></script>
 <script src="yazili-data.js"></script>
 <script src="app.js" defer></script>
 </body>

@@ -1,6 +1,17 @@
 'use strict';
 (function () {
-  var D = window.EBA_DATA;
+  var EBA = window.EBA;
+  var OWNER = {}; EBA.ids().forEach(function (sid) { EBA.reg[sid].topics.forEach(function (r) { OWNER[r[0]] = sid; }); });
+  var SUBJ_KEY = 'eba-subject';
+  function dataFor(s) { return EBA.make(s === 'all' ? EBA.ids() : [s]); }
+  function pickSubject() {
+    var q = /[?&]ders=([a-z]+)/.exec(location.search), h = /^#konu=([w]+)$/.exec(location.hash), s = q && q[1];
+    if (!s && h && OWNER[h[1]]) s = localStorage_get(SUBJ_KEY) === 'all' ? 'all' : OWNER[h[1]];
+    if (!s) s = localStorage_get(SUBJ_KEY);
+    return s === 'all' || (s && EBA.reg[s]) ? s : 'biyoloji';
+  }
+  function localStorage_get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  var D = dataFor(pickSubject());
   var root = document.documentElement;
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
@@ -10,6 +21,7 @@
   var THREE_URLS = ['https://unpkg.com/three@0.169.0/build/three.module.js', 'https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js'];
   var MODE_KEY = 'eba-biyoloji-mode', LANG_KEY = 'eba-biyoloji-lang';
   var FILTER_KEYS = ['all', '9', '10', '11', '12', 'O'];
+  var THREE_MOD = null;
 
   /* ───────── dil ───────── */
   /* index.html'deki data-i18n* öğelerinin Türkçesi sayfadan okunur; İngilizcesi burada */
@@ -44,7 +56,7 @@
       scopeAll: function (n) { return 'Tüm sınıflarda ara' + (n ? ' (+' + n + ')' : ''); }, noneIn: function (f) { return f + ' içinde sonuç yok.'; },
       viaKol: 'bu konudan destek alır', viaOn: 'bu konuya dayanır', themeTag: function (th) { return th + ' teması'; },
       closePanel: 'Paneli kapat', expand: 'Ayrıntıları büyüt', shrink: 'Küçült', grab: 'Paneli büyüt ya da küçült',
-      preOnly: 'Yalnızca ön koşulları göster', short: 'Kısaca', yzH: 'Yazılıya hazırlık', yzSub: 'Bu konu aşağıdaki ortak yazılılarda sorulabilir.', yzName: function (g, d, y) { return g + '. sınıf · ' + d + '. dönem ' + y + '. yazılı'; }, yzPdf: 'Yazılı senaryosu ve puanlama (PDF)', yzMat: 'Ders materyalleri (fasikül)', yzSrc: 'MEB · OGM Materyal · girişsiz', yzMatNote: 'Başlıklar güncel müfredattan farklı olabilir.', official: 'Resmî kaynaklar', verified: 'Doğrulandı', newTab: '(yeni sekmede açılır)',
+      preOnly: 'Yalnızca ön koşulları göster', short: 'Kısaca', subjPick: 'Ders seç', allSubj: 'Tüm dersler', allSubjSub: 'Hepsi tek sinir ağında', topicsN: 'konu', subjNow: function (s) { return s + ' haritası açıldı'; }, yzH: 'Yazılıya hazırlık', yzSub: 'Bu konu aşağıdaki ortak yazılılarda sorulabilir.', yzName: function (g, d, y) { return g + '. sınıf · ' + d + '. dönem ' + y + '. yazılı'; }, yzPdf: 'Yazılı senaryosu ve puanlama (PDF)', yzMat: 'Ders materyalleri (fasikül)', yzSrc: 'MEB · OGM Materyal · girişsiz', yzMatNote: 'Başlıklar güncel müfredattan farklı olabilir.', official: 'Resmî kaynaklar', verified: 'Doğrulandı', newTab: '(yeni sekmede açılır)',
       notOfficial: 'resmî materyal olarak gösterilmez', checked: function (d) { return 'Bağlantılar ' + d + ' itibarıyla kontrol edildi.'; },
       preOnlyNote: 'Yalnızca bu konudan önce bilinmesi gerekenler gösteriliyor.',
       preH: 'Önce bunları bil', preSub: 'Ön koşul: bilinmeden bu konu anlaşılamaz.', baseH: 'Ortaokuldan gelen temel',
@@ -64,7 +76,7 @@
       scopeAll: function (n) { return 'Search all grades' + (n ? ' (+' + n + ')' : ''); }, noneIn: function (f) { return 'No results in ' + f + '.'; },
       viaKol: 'draws support from this topic', viaOn: 'builds on this topic', themeTag: function (th) { return th + ' theme'; },
       closePanel: 'Close panel', expand: 'Expand details', shrink: 'Shrink', grab: 'Expand or shrink the panel',
-      preOnly: 'Show prerequisites only', short: 'In short', yzH: 'Exam practice', yzSub: 'This topic can appear in the common written exams below.', yzName: function (g, d, y) { return 'Grade ' + g + ' · term ' + d + ' · exam ' + y; }, yzPdf: 'Exam scenario and scoring (PDF, Turkish)', yzMat: 'Course materials (booklets, Turkish)', yzSrc: 'MEB · OGM Materyal · no login', yzMatNote: 'Titles may differ from the current curriculum.', official: 'Official resources', verified: 'Verified', newTab: '(opens in a new tab)',
+      preOnly: 'Show prerequisites only', short: 'In short', subjPick: 'Choose a subject', allSubj: 'All subjects', allSubjSub: 'Everything in one network', topicsN: 'topics', subjNow: function (s) { return s + ' map opened'; }, yzH: 'Exam practice', yzSub: 'This topic can appear in the common written exams below.', yzName: function (g, d, y) { return 'Grade ' + g + ' · term ' + d + ' · exam ' + y; }, yzPdf: 'Exam scenario and scoring (PDF, Turkish)', yzMat: 'Course materials (booklets, Turkish)', yzSrc: 'MEB · OGM Materyal · no login', yzMatNote: 'Titles may differ from the current curriculum.', official: 'Official resources', verified: 'Verified', newTab: '(opens in a new tab)',
       notOfficial: 'not shown as official material', checked: function (d) { return 'Links checked as of ' + d + '.'; },
       preOnlyNote: 'Showing only what you need to know before this topic.',
       preH: 'Know these first', preSub: 'Prerequisite: this topic can’t be understood without it.', baseH: 'Foundation from middle school',
@@ -79,8 +91,7 @@
     }
   };
   var lang = D.setLang(root.getAttribute('lang') === 'en' ? 'en' : 'tr'), TX = STR[lang];
-  function filters() { return FILTER_KEYS.map(function (k) { return [k, k === 'all' ? TX.all : D.gradeName(k)]; }); }
-  var POPULAR = ['solunum', 'mayoz', 'fotosentez', 'homeo'];
+  function filters() { return FILTER_KEYS.filter(function (k) { return k === 'all' || D.topics.some(function (t) { return String(t.grade) === k; }); }).map(function (k) { return [k, k === 'all' ? TX.all : D.gradeName(k)]; }); }
   var MIN_D = 90, MAX_D = 2600;
   var EOP = { pre: 0.95, base: 0.85, kol: 0.9, next: 0.8, rel: 0.85 };
 
@@ -100,7 +111,7 @@
   var mqReduce = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
   var LITE = Math.min(innerWidth, innerHeight) < 700 || (navigator.hardwareConcurrency || 8) <= 4;
 
-  var state = { mode: root.getAttribute('data-eba-mode') || 'dark', ready: false, sel: null, query: '', open: false, hi: 0, filter: 'all', scope: 'filter', preOnly: false, flat: false, help: false, listOpen: false, wide: innerWidth >= 900, roomy: innerWidth >= 1280 };
+  var state = { mode: root.getAttribute('data-eba-mode') || 'dark', ready: false, subject: D.multi ? 'all' : D.sel[0], sel: null, subjOpen: false, query: '', open: false, hi: 0, filter: 'all', scope: 'filter', preOnly: false, flat: false, help: false, listOpen: false, wide: innerWidth >= 900, roomy: innerWidth >= 1280 };
   var scene = null;
   var COARSE = window.matchMedia ? matchMedia('(pointer: coarse)').matches : false;
   var app = $('#app');
@@ -112,7 +123,7 @@
   });
 
   function dotHTML(g) { return '<i class="' + (g === 'O' ? 'ring' : '') + '" style="--c:var(--g' + g + ')"></i>'; }
-  function subOf(t) { return t.grade === 'O' ? t.gradeLabel : t.gradeLabel + ' · ' + t.themeName; }
+  function subOf(t) { return (D.multi ? t.subjectShort + ' · ' : '') + (t.grade === 'O' ? t.gradeLabel : t.gradeLabel + ' · ' + t.themeName); }
 
   var ICON_RND = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>';
   function eachI18n(fn) { I18N_ATTR.forEach(function (a) { $$('[' + a[0] + ']').forEach(function (el) { fn(el, el.getAttribute(a[0]), a[1]); }); }); }
@@ -120,19 +131,49 @@
     var md = document.querySelector('meta[name=description]');
     UI.tr.title = document.title; UI.tr.desc = md ? md.content : '';
     eachI18n(function (el, k, attr) { if (!(k in UI.tr)) UI.tr[k] = attr ? el.getAttribute(attr) : el.innerHTML; });
-    var pop = $('#popular');
-    POPULAR.forEach(function (id) {
+    renderStatic();
+    if (lang !== 'tr' || state.subject !== 'biyoloji') $('#listView .lbody').innerHTML = D.listHTML();
+  }
+  /* seçili derse göre değişen sayfa metinleri (Biyoloji için sayfadaki özgün metinler kalır) */
+  function dyn(l) {
+    if (state.subject === 'biyoloji') return {};
+    var multi = D.multi, tr = l === 'tr', sub = multi ? null : D.subjectShort(D.sel[0]);
+    var gs = D.topics.filter(function (t) { return t.grade !== 'O'; }).map(function (t) { return +t.grade; }), g0 = Math.min.apply(null, gs), g1 = Math.max.apply(null, gs), rg = g0 === g1 ? '' + g0 : g0 + '–' + g1;
+    var ex = D.popular.map(function (id) { return D.byId[id] && D.byId[id].name; }).filter(Boolean).sort(function (x, y) { return x.length - y.length; })[0] || '';
+    var low = function (s) { return s.toLocaleLowerCase(tr ? 'tr' : 'en'); };
+    var nm = multi ? (tr ? 'Tüm Dersler' : 'All Subjects') : sub;
+    var map = tr ? nm + ' Haritası' : nm + ' Map';
+    var o = tr ? {
+      title: 'EBA ' + map + ' · ' + rg + '. sınıf konu ağı',
+      desc: rg + '. sınıf ' + (multi ? 'tüm ders' : low(sub)) + ' konularını etkileşimli sinir ağında keşfet: bir konunun neye dayandığını, hangi konulara götürdüğünü ve doğrulanmış resmî MEB kaynaklarını tek ekranda gör.',
+      brand: 'EBA ' + map + ', başa dön', brandName: map,
+      eyebrow: rg + '. sınıf ' + (multi ? 'tüm dersler' : low(sub)) + ' · Maarif Modeli 2026', searchPh: 'Konu ara: ' + low(ex) + '…',
+      help1: UI.tr.help1 && UI.tr.help1.replace('ortaokul fen bilimlerinden', 'ortaokuldan')
+    } : {
+      title: 'EBA ' + map + ' · Grades ' + rg + ' topic network',
+      desc: 'Explore grade ' + rg + ' ' + (multi ? 'all-subject' : low(sub)) + ' topics in an interactive neural network: see what a topic builds on, how it connects to later topics, and verified official MEB resources on one screen.',
+      brand: 'EBA ' + map + ', back to start', brandName: map,
+      eyebrow: 'Grades ' + rg + ' ' + (multi ? 'all subjects' : low(sub)) + ' · Maarif Model 2026', searchPh: 'Search: ' + low(ex) + '…',
+      help1: UI.en.help1 && UI.en.help1.replace('middle-school science', 'middle school')
+    };
+    if (!o.help1) delete o.help1;
+    return o;
+  }
+  function renderPopular() {
+    var pop = $('#popular'); if (!pop) return;
+    $$('[data-go],[data-random]', pop).forEach(function (b) { b.remove(); });
+    D.popular.forEach(function (id) {
+      if (!D.byId[id]) return;
       var b = document.createElement('button'); b.type = 'button'; b.className = 'btn btn-secondary'; b.dataset.go = id; pop.appendChild(b);
     });
     var rb = document.createElement('button'); rb.type = 'button'; rb.className = 'btn btn-secondary rnd'; rb.dataset.random = '1'; pop.appendChild(rb);
-    renderStatic();
-    if (lang !== 'tr') $('#listView .lbody').innerHTML = D.listHTML();
   }
   /* dile bağlı sabit metinler; her dil değişiminde yeniden yazılır */
   function renderStatic() {
-    var u = UI[lang], md = document.querySelector('meta[name=description]');
+    var u = Object.assign({}, UI[lang], dyn(lang)), md = document.querySelector('meta[name=description]');
     root.lang = lang; document.title = u.title; if (md) md.content = u.desc;
     eachI18n(function (el, k, attr) { var v = u[k]; if (v == null) return; if (attr) el.setAttribute(attr, v); else el.innerHTML = v; });
+    renderPopular();
     $('#chips').innerHTML = filters().map(function (f) {
       return '<button type="button" class="chip" data-f="' + f[0] + '" aria-pressed="false" aria-label="' + esc(f[1]) + '">' + (f[0] === 'all' ? '' : dotHTML(f[0])) + (f[0] === 'all' ? esc(f[1]) : TX.chip(f[0])) + '</button>';
     }).join('');
@@ -169,6 +210,8 @@
   function ui() {
     var sel = state.sel ? D.byId[state.sel] : null;
     app.classList.toggle('has-sel', !!sel);
+    app.classList.toggle('all-view', !!D.multi);
+    renderSubjBtn();
     app.classList.toggle('chips-hide', !!sel);
     if (sel) heroMin(false);
     $('#hero').hidden = !!sel;
@@ -244,22 +287,22 @@
   }
 
   function yazilHTML(t) {
-    var Y = window.EBA_YAZILI; if (!Y) return '';
-    var ex = Y.exams.filter(function (e) { return e.topics.indexOf(t.id) >= 0; });
+    var Y = window.EBA_YAZILI, ys = Y && Y.subjects && Y.subjects[t.subject]; if (!ys) return '';
+    var ex = ys.exams.filter(function (e) { return e.topics.indexOf(t.id) >= 0; });
     if (!ex.length) return '';
     var row = function (url, title, small) {
       return '<a class="res" href="' + esc(url) + '" target="_blank" rel="noopener"><span class="ic">' + ICON_BOOK + '</span><span class="tx"><b>' + esc(title) + '</b><small>' + esc(small) + '</small></span>' + ICON_EXT + '<span class="sr">' + esc(TX.newTab) + '</span></a>';
     };
     return '<div class="sec"><h3>' + esc(TX.yzH) + '</h3><p class="sub">' + esc(TX.yzSub) + '</p>' +
       ex.map(function (e) { return row(e.url, TX.yzName(e.grade, e.donem, e.yazili), TX.yzPdf + ' · ' + TX.yzSrc); }).join('') +
-      row(Y.materyal[ex[0].grade], TX.yzMat, TX.yzSrc + ' · ' + TX.yzMatNote) +
+      row(ys.materyal[ex[0].grade], TX.yzMat, TX.yzSrc + ' · ' + TX.yzMatNote) +
       '<p class="fine">' + esc(TX.checked(new Date(Y.checked).toLocaleDateString(TX.locale, { month: 'long', year: 'numeric' }))) + '</p></div>';
   }
 
   function renderPanel(keep) {
     var t = D.byId[state.sel]; if (!t) return;
     var nb = D.neighbors(t.id), res = D.resources(t.id);
-    var h = '<header><div class="tags"><span class="tag tag-accent" style="font-weight:700">' + esc(t.gradeLabel) + '</span><span class="tag tag-accent-2" style="font-weight:700">' + esc(TX.themeTag(t.themeName)) + '</span><span class="tag tag-neutral">' + esc(t.code) + '</span>' +
+    var h = '<header><div class="tags">' + (D.multi ? '<span class="tag tag-neutral" style="font-weight:700">' + esc(t.subjectShort) + '</span>' : '') + '<span class="tag tag-accent" style="font-weight:700">' + esc(t.gradeLabel) + '</span><span class="tag tag-accent-2" style="font-weight:700">' + esc(TX.themeTag(t.themeName)) + '</span><span class="tag tag-neutral">' + esc(t.code) + '</span>' +
       '<button type="button" class="btn btn-secondary btn-icon" data-close aria-label="' + esc(TX.closePanel) + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>' +
       '<h2 tabindex="-1" id="ptitle">' + esc(t.name) + '</h2><button type="button" class="btn btn-secondary expand" data-expand aria-expanded="false">' + esc(TX.expand) + '</button></header><div class="pbody">' +
       '<label class="pre-only"><input type="checkbox" data-preonly' + (state.preOnly ? ' checked' : '') + '><span>' + esc(TX.preOnly) + '</span></label>' +
@@ -359,7 +402,7 @@
     ui();
   }
 
-  function readHash() { var m = /^#konu=([\w]+)$/.exec(location.hash); return m && D.byId[m[1]] ? m[1] : null; }
+  function readHash() { var m = /^#konu=([\w]+)$/.exec(location.hash); if (!m || !OWNER[m[1]]) return null; if (!D.byId[m[1]]) setSubject(OWNER[m[1]], true); return D.byId[m[1]] ? m[1] : null; }
   function onHash() {
     if (hashBusy) return;
     var id = readHash();
@@ -395,8 +438,16 @@
       });
     });
     $('#back').addEventListener('click', function () { clearSel(); });
+    $('#subjBtn').addEventListener('click', function () { setSubjOpen(!state.subjOpen); });
+    $('#subjMenu').addEventListener('click', function (e) { var b = e.target.closest('[data-subj]'); if (b) { setSubject(b.dataset.subj); $('#subjBtn').focus({ preventScroll: true }); } });
+    $('#subjMenu').addEventListener('keydown', function (e) {
+      var sis = $$('.si', this), i = sis.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown') { e.preventDefault(); sis[Math.min(sis.length - 1, i + 1)].focus(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); sis[Math.max(0, i - 1)].focus(); }
+    });
+    document.addEventListener('pointerdown', function (e) { if (state.subjOpen && !e.target.closest('#subjMenu,#subjBtn')) { state.subjOpen = false; ui(); } });
     $('#langBtn').addEventListener('click', function () { setLang(this.dataset.lang); });
-    $('#helpBtn').addEventListener('click', function () { state.help = !state.help; ui(); });
+    $('#helpBtn').addEventListener('click', function () { state.help = !state.help; if (state.help) state.subjOpen = false; ui(); });
     $('#helpClose').addEventListener('click', function () { state.help = false; ui(); $('#helpBtn').focus(); });
     $('#listBtn').addEventListener('click', function () { state.listOpen = !state.listOpen; ui(); if (state.listOpen) { var f = $('#listView .lbody a'); if (f) f.focus({ preventScroll: true }); } });
     $('#listClose').addEventListener('click', function () { state.listOpen = false; ui(); $('#listBtn').focus(); });
@@ -407,7 +458,8 @@
       var tag = (e.target && e.target.tagName) || '';
       if (e.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA') { e.preventDefault(); (state.sel ? boxes[1] : boxes[0]).input.focus(); }
       else if (e.key === 'Escape') {
-        if (state.help) { state.help = false; ui(); }
+        if (state.subjOpen) { state.subjOpen = false; ui(); $('#subjBtn').focus({ preventScroll: true }); }
+        else if (state.help) { state.help = false; ui(); }
         else if (state.listOpen && !root.classList.contains('nogl')) { state.listOpen = false; ui(); }
         else if (state.sel) clearSel();
       }
@@ -439,11 +491,17 @@
   var S3 = Scene3D.prototype;
 
   S3.layout = function () {
-    var s = 7;
+    var self0 = this, s = 7;
     var rnd = function () { s = (s + 0x6D2B79F5) | 0; var t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-    var order = ['yasam', 'org', 'enerji', 'ekoloji', 'tepki', 'homeo', 'ureme', 'gen'], ys = [-70, 60, -110, 90, -40, 120, -90, 30];
-    var A = { fen: { x: 0, y: 0, z: 0 } };
-    order.forEach(function (id, i) { var a = (i / 8) * Math.PI * 2; A[id] = { x: 400 * Math.cos(a), y: ys[i] * 1.6, z: 400 * Math.sin(a) }; });
+    var ys = [-70, 60, -110, 90, -40, 120, -90, 30], A = {}, subs = D.sel, SR = D.multi ? Math.max(1500, subs.length * 230) : 0;
+    this.subAnchors = [];
+    subs.forEach(function (sid, si) {
+      var ths = D.themes.filter(function (t) { return t.subject === sid; }), ring = ths.filter(function (t) { return t.grade !== 'O'; });
+      var sa = (si / subs.length) * Math.PI * 2, cx = SR * Math.cos(sa), cz = SR * Math.sin(sa), rr = Math.max(400, ring.length * 50);
+      ths.filter(function (t) { return t.grade === 'O'; }).forEach(function (t) { A[t.id] = { x: cx, y: 0, z: cz, mid: true }; });
+      ring.forEach(function (t, i) { var a2 = (i / ring.length) * Math.PI * 2; A[t.id] = { x: cx + rr * Math.cos(a2), y: ys[i % 8] * 1.6, z: cz + rr * Math.sin(a2) }; });
+      self0.subAnchors.push({ id: sid, x: cx, z: cz });
+    });
     var N = D.topics.map(function (t) { var a = A[t.theme]; return { t: t, x: a.x + (rnd() - 0.5) * 140, y: a.y + (rnd() - 0.5) * 140, z: a.z + (rnd() - 0.5) * 140, vx: 0, vy: 0, vz: 0, deg: 0 }; });
     var ix = {}; N.forEach(function (n, i) { ix[n.t.id] = i; });
     var E = D.links.map(function (l) { return [ix[l.from], ix[l.to], l.type]; });
@@ -451,13 +509,13 @@
     for (var it = 0; it < 260; it++) {
       var k = 1 - it / 300;
       for (var i = 0; i < N.length; i++) for (var j = i + 1; j < N.length; j++) {
-        var a = N[i], b = N[j], dx = a.x - b.x, dy = a.y - b.y, dz = a.z - b.z, d2 = dx * dx + dy * dy + dz * dz + 1;
+        var a = N[i], b = N[j], dx = a.x - b.x; if (dx > 300 || dx < -300) continue; var dy = a.y - b.y, dz = a.z - b.z, d2 = dx * dx + dy * dy + dz * dz + 1;
         if (d2 > 90000) continue;
         var d = Math.sqrt(d2), f = 1600 / d2 / d; dx *= f; dy *= f; dz *= f;
         a.vx += dx; a.vy += dy; a.vz += dz; b.vx -= dx; b.vy -= dy; b.vz -= dz;
       }
       E.forEach(function (e) { var a = N[e[0]], b = N[e[1]], dx = b.x - a.x, dy = b.y - a.y, dz = b.z - a.z, d = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.01, f = ((d - 90) * 0.012) / d; a.vx += dx * f; a.vy += dy * f; a.vz += dz * f; b.vx -= dx * f; b.vy -= dy * f; b.vz -= dz * f; });
-      N.forEach(function (n) { var a = A[n.t.theme], c = n.t.theme === 'fen' ? 0.05 : 0.032; n.vx += (a.x - n.x) * c; n.vy += (a.y - n.y) * c; n.vz += (a.z - n.z) * c; n.vx *= 0.8; n.vy *= 0.8; n.vz *= 0.8; n.x += n.vx * k; n.y += n.vy * k; n.z += n.vz * k; });
+      N.forEach(function (n) { var a = A[n.t.theme], c = a.mid ? 0.05 : 0.032; n.vx += (a.x - n.x) * c; n.vy += (a.y - n.y) * c; n.vz += (a.z - n.z) * c; n.vx *= 0.8; n.vy *= 0.8; n.vz *= 0.8; n.x += n.vx * k; n.y += n.vy * k; n.z += n.vz * k; });
     }
     return { N: N, E: E, ix: ix };
   };
@@ -486,7 +544,7 @@
     R.domElement.style.cursor = 'grab';
     R.domElement.setAttribute('role', 'img'); R.domElement.setAttribute('aria-label', TX.canvas);
     this.stage.appendChild(R.domElement); this.renderer = R;
-    R.domElement.addEventListener('webglcontextlost', function (e) { e.preventDefault(); self.alive = false; failGL('Üç boyutlu görünüm durdu (grafik bağlamı kaybedildi).'); });
+    R.domElement.addEventListener('webglcontextlost', function (e) { e.preventDefault(); if (!self.alive) return; self.alive = false; failGL('Üç boyutlu görünüm durdu (grafik bağlamı kaybedildi).'); });
 
     var S = new T.Scene(); S.fog = new T.FogExp2(0x17140f, 0.00042); this.scene = S;
     var C = new T.PerspectiveCamera(45, W / H, 1, 8000); this.camera = C; S.add(C);
@@ -587,16 +645,24 @@
       var el = document.createElement('div');
       el.style.cssText = 'position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:3px 12px 4px;border-radius:14px;white-space:nowrap;pointer-events:none;will-change:transform;opacity:0;text-shadow:0 2px 12px rgba(17,15,12,.95)';
       var a = document.createElement('span'); a.style.cssText = 'font-family:var(--font-heading);font-size:calc(20px * var(--ls,1))'; a.textContent = t.name;
-      var b = document.createElement('span'); b.style.cssText = 'font-family:var(--font-body);font-size:calc(13px * var(--ls,1));font-weight:700;letter-spacing:.1em'; b.textContent = D.gradeName(t.grade).toLocaleUpperCase(TX.locale);
+      var b = document.createElement('span'); b.style.cssText = 'font-family:var(--font-body);font-size:calc(13px * var(--ls,1));font-weight:700;letter-spacing:.1em'; b.textContent = (D.multi ? D.subjectShort(t.subject).toLocaleUpperCase(TX.locale) + ' · ' : '') + D.gradeName(t.grade).toLocaleUpperCase(TX.locale);
       el.appendChild(a); el.appendChild(b); self.labelLayer.appendChild(el);
       return { el: el, a: a, b: b, pos: new T.Vector3(c.x, maxY + 34, c.z), grade: String(t.grade), id: t.id };
+    });
+    if (D.multi) this.subAnchors.forEach(function (sa) {
+      var ns = self.nodes.filter(function (n) { return D.byId[n.t.id].subject === sa.id; }), maxY = -1e9;
+      ns.forEach(function (n) { maxY = Math.max(maxY, n.pos.y); });
+      var el = document.createElement('div');
+      el.style.cssText = 'position:absolute;left:0;top:0;padding:6px 18px 8px;border-radius:18px;white-space:nowrap;pointer-events:none;will-change:transform,opacity;color:var(--n-ink);text-shadow:0 2px 18px var(--n-glow);font-family:var(--font-heading);font-size:calc(34px * var(--ls,1));line-height:1';
+      var a = document.createElement('span'); a.textContent = D.subjectShort(sa.id); el.appendChild(a); self.labelLayer.appendChild(el);
+      self.themeLabels.push({ el: el, a: a, b: null, pos: new T.Vector3(sa.x, maxY + 150, sa.z), grade: 'S', id: 'subj:' + sa.id, big: true, sid: sa.id });
     });
     this.tipName = $('.n', this.tip); this.tipSub = $('.s', this.tip); this.tipAct = $('.a', this.tip);
     this.applyTheme(state.mode);
 
     var rb = 0; this.nodes.forEach(function (n) { rb = Math.max(rb, n.pos.length() + n.r); });
-    this.idleDist = clamp(rb * 2.25, 500, 1600) * (state.wide ? 1.2 : 1);
-    this.ctl = { theta: 0.95, phi: 1.18, dist: this.idleDist * 1.6, target: new T.Vector3(), gTarget: new T.Vector3(), gDist: this.idleDist, vt: 0, vp: 0 };
+    MAX_D = D.multi ? 7200 : 2600; this.idleDist = clamp(rb * (D.multi ? 1.5 : 2.25), 500, D.multi ? 5200 : 1600) * (state.wide ? 1.2 : 1); this.scene.fog.density = 0.00042 * Math.min(1, 1600 / this.idleDist);
+    this.ctl = { theta: 0.95, phi: D.multi ? 0.7 : 1.18, dist: this.idleDist * 1.6, target: new T.Vector3(), gTarget: new T.Vector3(), gDist: this.idleDist, vt: 0, vp: 0 };
     this.bindPointer(R.domElement);
 
     this.lt = performance.now(); this.poke();
@@ -610,6 +676,12 @@
       catch (e) { if (!self.errLogged) { self.errLogged = true; console.error('frame', e); } }
     };
     this.raf = requestAnimationFrame(loop);
+  };
+
+  S3.dispose = function () {
+    this.alive = false; cancelAnimationFrame(this.raf);
+    try { var R = this.renderer; R.dispose(); if (R.forceContextLoss) R.forceContextLoss(); R.domElement.remove(); } catch (e) {}
+    this.labelLayer.innerHTML = ''; if (this.tip) this.tip.style.opacity = '0';
   };
 
   S3.resize = function () {
@@ -635,7 +707,7 @@
     var eb = this.edge.base, em = this.eMeta;
     for (var w = 0; w < em.length / 3; w++) { var u = em[w * 3 + 2]; tc.copy(N[em[w * 3]].col).lerp(N[em[w * 3 + 1]].col, u); mix(eb, w * 3, tc, (0.3 + 0.22 * Math.abs(u - 0.5) * 2) * P.lineK); }
     this.paint(this.dend, this.nfC, this.dRange); this.paint(this.edge, this.efC, this.eRange);
-    this.themeLabels.forEach(function (Lb) { Lb.el.style.background = P.lbg; Lb.el.style.textShadow = '0 2px 12px ' + P.shadow; Lb.a.style.color = P.ink; Lb.b.style.color = P.ink2; });
+    this.themeLabels.forEach(function (Lb) { if (Lb.big) { Lb.el.style.textShadow = '0 2px 18px ' + P.shadow; Lb.a.style.color = P.ink; return; } Lb.el.style.background = P.lbg; Lb.el.style.textShadow = '0 2px 12px ' + P.shadow; Lb.a.style.color = P.ink; Lb.b.style.color = P.ink2; });
     this.tipName.style.color = P.ink; this.tipSub.style.color = P.ink2; this.tipAct.style.color = P.acc;
     if (state.sel) { this.buildHighlight(state.sel); this.buildFocusLabels(state.sel); }
   };
@@ -683,7 +755,7 @@
 
   /* dil değişimi: etiket metinleri değişir, önbellekteki genişlikler sıfırlanır */
   S3.relabel = function () {
-    this.themeLabels.forEach(function (Lb) { var t = D.themeById[Lb.id]; Lb.a.textContent = t.name; Lb.b.textContent = D.gradeName(t.grade).toLocaleUpperCase(TX.locale); Lb.w = Lb.h = 0; });
+    this.themeLabels.forEach(function (Lb) { if (Lb.big) { Lb.a.textContent = D.subjectShort(Lb.sid); Lb.w = Lb.h = 0; return; } var t = D.themeById[Lb.id]; Lb.a.textContent = t.name; Lb.b.textContent = (D.multi ? D.subjectShort(t.subject).toLocaleUpperCase(TX.locale) + ' · ' : '') + D.gradeName(t.grade).toLocaleUpperCase(TX.locale); Lb.w = Lb.h = 0; });
     this.renderer.domElement.setAttribute('aria-label', TX.canvas);
     this.tipI = -1;
     if (state.sel) this.buildFocusLabels(state.sel);
@@ -986,13 +1058,13 @@
     var proj = function (p) { v.copy(p).project(C); return [((v.x + 1) / 2) * W, ((1 - v.y) / 2) * H, v.z]; };
     var pxR = function (n) { return (n.r * n.scale * H) / (2 * C.position.distanceTo(n.pos) * tf); };
     var tl = this.themeLabels.map(function (Lb) { var p = proj(Lb.pos); return { L: Lb, x: p[0], y: p[1], z: p[2], d: C.position.distanceTo(Lb.pos) }; })
-      .sort(function (a, b) { return (s.filter !== 'all' ? (b.L.grade === s.filter) - (a.L.grade === s.filter) : 0) || a.d - b.d; });
+      .sort(function (a, b) { return (b.L.big ? 1 : 0) - (a.L.big ? 1 : 0) || (s.filter !== 'all' ? (b.L.grade === s.filter) - (a.L.grade === s.filter) : 0) || a.d - b.d; });
     var boxes2 = [], hit = function (bx, by, w, h) { return boxes2.some(function (q) { return bx < q.x + q.w && bx + w > q.x && by < q.y + q.h && by + h > q.y; }); };
     tl.forEach(function (o2) {
       var L = o2.L, x = o2.x, z = o2.z, d = o2.d, y = o2.y;
       var lw = L.w || (L.w = L.el.offsetWidth || 140); x = clamp(x, lw / 2 + 8, Math.max(lw / 2 + 8, W - lw / 2 - 8));
       var o = s.sel || z > 1 ? 0 : clamp(2.1 - d / 1250, 0.85, 1);
-      if (s.filter !== 'all' && L.grade !== s.filter) o *= 0.3;
+      if (s.filter !== 'all' && L.grade !== s.filter && !L.big) o *= 0.3;
       var hr = self2.heroBox();
       if (hr && !s.sel && x + (L.w || 140) / 2 > hr.l && x - (L.w || 140) / 2 < hr.r + 8 && y > hr.t && y < hr.b + 40) o = 0;
       if (o > 0) {
@@ -1043,7 +1115,7 @@
       var n = this.nodes[hi];
       if (this.tipI !== hi) {
         this.tipName.textContent = n.t.name;
-        this.tipSub.textContent = n.isO ? n.t.gradeLabel : n.t.gradeLabel + ' · ' + n.t.themeName;
+        this.tipSub.textContent = (D.multi ? n.t.subjectShort + ' · ' : '') + (n.isO ? n.t.gradeLabel : n.t.gradeLabel + ' · ' + n.t.themeName);
         this.tipAct.textContent = hi === this.selI ? TX.tipOpen : TX.tipClick;
         this.tipI = hi;
       }
@@ -1054,6 +1126,49 @@
   };
 
   /* ───────── başlatma ───────── */
+  function makeScene() {
+    if (!THREE_MOD) return;
+    if (scene) { scene.dispose(); scene = null; }
+    scene = new Scene3D(THREE_MOD, $('#stage'), $('#labels'), $('#tip'));
+    scene.resize();
+  }
+
+  var SUBJ_ICON = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></svg>';
+  var SUBJ_CHEV = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+  function subjLabel() { return D.multi ? TX.allSubj : D.subjectShort(D.sel[0]); }
+  function renderSubjBtn() {
+    var b = $('#subjBtn'); if (!b) return;
+    b.innerHTML = SUBJ_ICON + '<span class="sl">' + esc(subjLabel()) + '</span>' + SUBJ_CHEV;
+    b.setAttribute('aria-label', TX.subjPick + ': ' + subjLabel());
+    b.setAttribute('aria-expanded', String(state.subjOpen));
+    var m = $('#subjMenu'); m.hidden = !state.subjOpen;
+    if (state.subjOpen && m.dataset.l !== lang + state.subject) {
+      m.dataset.l = lang + state.subject;
+      var items = [['all', TX.allSubj, TX.allSubjSub]].concat(EBA.ids().map(function (sid) { return [sid, EBA.short(sid, lang), EBA.make([sid]).topics.length + ' ' + TX.topicsN]; }));
+      m.innerHTML = '<p class="sh">' + esc(TX.subjPick) + '</p>' + items.map(function (it, i) {
+        return (i === 1 ? '<hr>' : '') + '<button type="button" class="si" data-subj="' + it[0] + '" aria-pressed="' + (state.subject === it[0]) + '"><b>' + esc(it[1]) + '</b><small>' + esc(it[2]) + '</small></button>';
+      }).join('');
+    }
+  }
+  function setSubjOpen(on) {
+    state.subjOpen = !!on; if (on) { state.help = false; $('#subjMenu').dataset.l = ''; }
+    ui();
+    if (on) { var p = $('#subjMenu .si[aria-pressed="true"]') || $('#subjMenu .si'); if (p) p.focus({ preventScroll: true }); }
+  }
+  function setSubject(s, fromHash) {
+    if (!(s === 'all' || EBA.reg[s]) || s === state.subject) { state.subjOpen = false; ui(); return; }
+    state.sel = null; state.help = false; state.query = ''; state.open = false; state.filter = 'all'; state.scope = 'filter'; state.subjOpen = false;
+    state.subject = s; D = dataFor(s); D.setLang(lang);
+    try { localStorage.setItem(SUBJ_KEY, s); } catch (e) {}
+    try { var q = location.search.replace(/([?&])ders=[a-z]*&?/, '$1').replace(/[?&]$/, ''); q += (q ? '&' : '?') + 'ders=' + s; history.replaceState(history.state, '', location.pathname + q + (fromHash ? location.hash : '')); } catch (e) {}
+    if (!fromHash) setHash(null);
+    renderStatic();
+    var lb = $('#listView .lbody'); if (lb) lb.innerHTML = D.listHTML();
+    $('#panel').innerHTML = '';
+    applyFilterViews(); makeScene(); ui();
+    announce(TX.subjNow(subjLabel()));
+  }
+
   function failGL(why) {
     root.classList.add('nogl');
     if (scene) { scene.alive = false; }
@@ -1084,8 +1199,7 @@
       done = true; clearTimeout(timer);
       if (!T) { failGL('three yok'); if (start) select(start, true); return; }
       try {
-        scene = new Scene3D(T, $('#stage'), $('#labels'), $('#tip'));
-        scene.resize();
+        THREE_MOD = T; makeScene();
         $('#loading').hidden = true;
         state.ready = true; ui();
         if (start) setTimeout(function () { select(start, true); }, 500);

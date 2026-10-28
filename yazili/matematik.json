@@ -1,0 +1,18 @@
+{ "exams": [
+  { "grade": 9, "donem": 1, "yazili": 1, "kodlar": ["MAT.9.1.1", "MAT.9.1.2", "MAT.9.1.3", "MAT.9.1.4", "MAT.9.2.1"],
+    "topics": ["mat_us", "mat_kume", "mat_aralik", "mat_sayikume", "mat_onerme", "mat_islem", "mat_fonk"] },
+  { "grade": 9, "donem": 1, "yazili": 2, "kodlar": ["MAT.9.1.2", "MAT.9.1.3", "MAT.9.2.1", "MAT.9.2.3", "MAT.9.2.2", "MAT.9.4.1"],
+    "topics": ["mat_aralik", "mat_sayikume", "mat_fonk", "mat_mutlak", "mat_denk9", "mat_ucgenaci", "mat_ucgenesit"] },
+  { "grade": 9, "donem": 2, "yazili": 1, "kodlar": ["MAT.9.5.1", "MAT.9.5.2", "MAT.9.5.3", "MAT.9.5.4", "MAT.9.5.5", "MAT.9.3.1"],
+    "topics": ["mat_donusum", "mat_es", "mat_benzer", "mat_benzolus", "mat_tales", "mat_oklid", "mat_pisagor", "mat_esprob", "mat_algo", "mat_akis"] },
+  { "grade": 9, "donem": 2, "yazili": 2, "kodlar": ["MAT.9.5.4", "MAT.9.5.5", "MAT.9.3.1", "MAT.9.3.2", "MAT.9.3.3", "MAT.9.6.1", "MAT.9.6.2", "MAT.9.7.1", "MAT.9.7.2"],
+    "topics": ["mat_tales", "mat_oklid", "mat_pisagor", "mat_esprob", "mat_algo", "mat_mantik", "mat_algouyg", "mat_arastirma", "mat_dagilim", "mat_ozet", "mat_yorum9", "mat_gozlem", "mat_orneklem", "mat_olasi"] },
+  { "grade": 10, "donem": 1, "yazili": 1, "kodlar": ["MAT.10.1.1", "MAT.10.1.2", "MAT.10.1.3", "MAT.10.1.4", "MAT.10.2.1"],
+    "topics": ["mat_trig", "mat_yardimci", "mat_alan10", "mat_sinkos", "mat_kategorik", "mat_kategorik2"] },
+  { "grade": 10, "donem": 1, "yazili": 2, "kodlar": ["MAT.10.4.3", "MAT.10.6.1", "MAT.10.6.2", "MAT.10.1.1", "MAT.10.1.2", "MAT.10.1.3", "MAT.10.2.1"],
+    "topics": ["mat_alan10", "mat_kategorik", "mat_kategorik2", "mat_asal", "mat_obeb", "mat_kalan", "mat_fonkozel"] },
+  { "grade": 10, "donem": 2, "yazili": 1, "kodlar": ["MAT.10.2.1", "MAT.10.2.2", "MAT.10.2.3", "MAT.10.2.5", "MAT.10.2.4"],
+    "topics": ["mat_fonkozel", "mat_kares", "mat_karekok", "mat_rasyonel", "mat_ters", "mat_denk10"] },
+  { "grade": 10, "donem": 2, "yazili": 2, "kodlar": ["MAT.10.2.5", "MAT.10.2.6", "MAT.10.3.2", "MAT.10.5.1", "MAT.10.5.2", "MAT.10.7.1"],
+    "topics": ["mat_ters", "mat_kares", "mat_denk10", "mat_algo10", "mat_uzaklik", "mat_dogru", "mat_kosullu"] }
+] }

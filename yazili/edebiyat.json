@@ -1,0 +1,12 @@
+{
+  "exams": [
+    { "grade": 9, "donem": 1, "yazili": 1, "kodlar": ["TDE2.2", "TDE4.1", "TDE4.2", "TDE4.3", "TDE4.4"], "topics": ["edb_siir", "edb_gundil", "edb_ileti", "edb_sanat", "edb_deneme", "edb_konu", "edb_dusunce", "edb_betimyaz"] },
+    { "grade": 9, "donem": 1, "yazili": 2, "kodlar": ["TDE2.2", "TDE4.1", "TDE4.2", "TDE4.3", "TDE4.4"], "topics": ["edb_siir", "edb_ileti", "edb_hikaye", "edb_ani", "edb_yazar", "edb_betimyaz"] },
+    { "grade": 9, "donem": 2, "yazili": 1, "kodlar": ["TDE2.2", "TDE2.3", "TDE4.3"], "topics": ["edb_hikaye", "edb_kisi", "edb_olay", "edb_gezi", "edb_anlatimoz", "edb_uslup", "edb_dusunce", "edb_betimyaz"] },
+    { "grade": 9, "donem": 2, "yazili": 2, "kodlar": ["TDE2.2", "TDE2.3", "TDE2.4", "TDE4.1", "TDE4.2", "TDE4.3", "TDE4.4"], "topics": ["edb_anlatimoz", "edb_uslup", "edb_anlatici", "edb_hikaye", "edb_kisi", "edb_roman", "edb_olay", "edb_belgesel"] },
+    { "grade": 10, "donem": 1, "yazili": 1, "kodlar": [], "topics": ["edb_kosuk", "edb_kosma", "edb_turku", "edb_masal", "edb_filmseridi", "edb_sozlu"] },
+    { "grade": 10, "donem": 1, "yazili": 2, "kodlar": ["TDE2.3", "TDE2.2", "TDE4.1", "TDE4.2", "TDE4.3"], "topics": ["edb_kosma", "edb_gazel", "edb_safsiir", "edb_podcast"] },
+    { "grade": 10, "donem": 2, "yazili": 1, "kodlar": ["TDE2.2", "TDE2.3", "TDE4.3"], "topics": ["edb_destan", "edb_motif", "edb_mesnevi", "edb_fabl"] },
+    { "grade": 10, "donem": 2, "yazili": 2, "kodlar": ["TDE2.3", "TDE2.4", "TDE4.1", "TDE4.2", "TDE4.3", "TDE4.4"], "topics": ["edb_mesnevi", "edb_dede", "edb_tanzimat", "edb_servet", "edb_fabl"] }
+  ]
+}

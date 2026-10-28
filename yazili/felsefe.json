@@ -1,0 +1,6 @@
+{ "exams": [
+  { "grade": 10, "donem": 1, "yazili": 1, "kodlar": ["FEL.10.1.1", "FEL.10.2.1", "FEL.10.2.2"], "topics": ["fel_anlam", "fel_ozellik", "fel_islev", "fel_dusdil", "fel_akilyur", "fel_arguman", "fel_safsata"] },
+  { "grade": 10, "donem": 1, "yazili": 2, "kodlar": ["FEL.10.1.2", "FEL.10.2.1", "FEL.10.3.1", "FEL.10.4.1"], "topics": ["fel_alanlar", "fel_arguman", "fel_var_konu", "fel_var_olup", "fel_var_ne", "fel_bil_imkan", "fel_bil_kaynak", "fel_bil_olcut"] },
+  { "grade": 10, "donem": 2, "yazili": 1, "kodlar": ["FEL.10.5.1", "FEL.10.6.1"], "topics": ["fel_ah_konu", "fel_ah_evrensel", "fel_ah_ozgur", "fel_es_konu", "fel_es_sanat", "fel_es_guzel"] },
+  { "grade": 10, "donem": 2, "yazili": 2, "kodlar": ["FEL.10.5.1", "FEL.10.6.1", "FEL.10.7.1", "FEL.10.8.1", "FEL.10.9.1"], "topics": ["fel_ah_konu", "fel_es_sanat", "fel_si_konu", "fel_si_iktidar", "fel_si_ideal", "fel_di_konu", "fel_di_tanri", "fel_di_arg", "fel_bi_ne"] }
+] }

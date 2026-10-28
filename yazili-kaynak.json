@@ -1,0 +1,25 @@
+{
+  "_not": "OGM Materyal 'Yazılıya Hazırlanıyorum' sayfasından (girişsiz) toplanan dizin. pdf sırası: 1.dönem 1.yazılı, 1.dönem 2.yazılı, 2.dönem 1.yazılı, 2.dönem 2.yazılı. 11. sınıfta sitede yazılı yok. Eksik PDF null.",
+  "site": "https://ogmmateryal.eba.gov.tr",
+  "cdn": "https://ogm-large-cdn.eba.gov.tr/materyal/Etkilesimlikitap/",
+  "sinif": { "9": "4fc2a7ed-7772-4a14-a4c5-08dcb630897d", "10": "327b01c1-df92-4fde-18e3-08dcd0ce9fb2" },
+  "ders": {
+    "Biyoloji": { "9": { "id": "f779eb46-19d1-f111-b31c-005056a7d529", "pdf": ["0948d223-e543-42de-ac75-63fec33cf61f", "4a1b2570-103c-4f9a-94a9-61d6a5c16399", "31df1ed0-a2a9-4c18-ac13-4fab7209e839", "90ccfc17-e90d-46bd-b280-41b979b6b062"] },
+      "10": { "id": "6f59985b-19d1-f111-b31c-005056a7d529", "pdf": ["88dbfe33-1cd4-4062-b37c-350fccd41ba3", "2beaaa95-b709-40fb-8134-adeb17567d15", "09225dfc-2776-4b32-aa00-4687c3f41ff1", "f6a193ce-e953-4fb9-abd3-6231779192c4"] } },
+    "Coğrafya": { "9": { "id": "b933d494-a1d0-f111-b31c-005056a7d529", "pdf": ["0f836846-deb0-402d-b27d-d184cb6f4789", "8cf25dfb-132b-4cbb-ad34-c238755030e3", "6fce2741-bdf7-46dd-acc6-4ad44fc9602c", "da48145b-bcd4-4c5f-96b6-4e054eec39df"] },
+      "10": { "id": "633513d3-a1d0-f111-b31c-005056a7d529", "pdf": ["3db394d3-11a2-491d-9651-417f45bc93b8", "6b51fc46-7196-4c32-ada0-8b6dd69ca070", "9ee573fb-ab99-4c0a-b4d1-f6811e602605", "197cfd57-b7d1-4ba6-b769-fc0dd9e5ea60"] } },
+    "Fizik": { "9": { "id": "0f9ec053-19d1-f111-b31c-005056a7d529", "pdf": ["fe2a4c1b-5983-40a9-bad3-0e08add50c68", "4a383c52-c4e3-4dd6-9221-093bbdc59f57", "874e3aef-e4c9-49e0-a3db-eb865cffb2bf", "0cf7b696-56dd-45b4-9dc5-fc2be33516c8"] },
+      "10": { "id": "7459985b-19d1-f111-b31c-005056a7d529", "pdf": ["732558c3-52fb-4ee4-b2ff-6b319c7b5eba", "ae05f4ad-2584-4294-b695-6da5fe07ceb0", "6e45a479-e891-4a40-91ec-10ca4ecbff48", "bf74c78d-4522-47dc-9b35-2c59ab47f02d"] } },
+    "İngilizce": { "9": { "id": "8f378fa3-a1d0-f111-b31c-005056a7d529", "pdf": ["43117367-570f-44fb-80a0-8ce22aff16af", "91e29cb6-c0a4-45ff-afe4-f62863fcc8a5", "1fea0c96-f2e1-4978-a24e-3178332c659f", "90f08d70-fab9-46d9-8192-1554be55ea9a"] },
+      "10": { "id": "0d4c1bda-a1d0-f111-b31c-005056a7d529", "pdf": ["35aa6378-4167-46ca-8b1b-6b699d61601b", null, null, null] } },
+    "Kimya": { "9": { "id": "547d47b5-a1d0-f111-b31c-005056a7d529", "pdf": ["fdae00aa-cd94-4698-8d9e-2e5f2447e7cc", "1bdd5659-8b04-49c0-ae86-d0432d5c7dc0", "f33895eb-e5e2-44d5-9165-13a2cd238c65", "90e846d6-7aae-4dc5-a229-f214bc25a360"] },
+      "10": { "id": "0f4c1bda-a1d0-f111-b31c-005056a7d529", "pdf": ["0108d3fe-b864-4325-9861-b5cb950560f9", "8944c435-a10c-4bf9-81e3-a09cd0b64f8b", "92d227d4-1542-426b-a689-d02e547b0998", "ba38ce80-c91c-4b1a-8f28-0820b3880dc3"] } },
+    "Matematik": { "9": { "id": "567d47b5-a1d0-f111-b31c-005056a7d529", "pdf": ["1aa46d63-65a8-4a15-9a90-ead3c2c04722", "aa262fb7-a866-4818-a467-5d6dbd1ec9b0", "f4c1beea-bd99-4131-83f0-e3262c53d856", "d182986b-ba12-4868-a81e-779b75eb5186"] },
+      "10": { "id": "ee0f20e5-a1d0-f111-b31c-005056a7d529", "pdf": ["fa901c73-95d8-47b0-90d7-fb436be3d047", "a23d9740-b362-4624-ac91-3dddd806b43a", "d08f4a42-86dd-4f2c-b819-46f0241231e3", "8da7b58a-f275-4a79-9651-e1cab3340058"] } },
+    "Tarih": { "9": { "id": "996941be-a1d0-f111-b31c-005056a7d529", "pdf": ["20230e08-1685-4221-9f6f-2c18aaf4fbc3", "53d04d8c-8dfb-49b1-809f-2f5042e0d610", "f35cc144-fdd0-4e2a-a83f-bf3a41300429", "52f9c388-7625-4214-a054-f47963c8f98c"] },
+      "10": { "id": "f00f20e5-a1d0-f111-b31c-005056a7d529", "pdf": ["41e98dd9-0c53-4391-8615-83e3ab4848e4", "881980b8-1869-4b96-bf49-f275e05dd0c2", "bf325a65-0f47-45f5-bdff-eddecf022063", "3b888b30-409b-4c0c-aca7-80a4a15329d4"] } },
+    "Türk Dili ve Edebiyatı": { "9": { "id": "014360c7-a1d0-f111-b31c-005056a7d529", "pdf": ["2b1cbd20-c414-4608-8b21-566ec02cf2e9", "103a3559-895b-4081-8669-a21a17ed8010", "39ec3e8e-0869-49f0-bdb2-1237a06a11da", "cb9d404d-94d5-4037-90e1-8db0bc746275"] },
+      "10": { "id": "78edbaeb-a1d0-f111-b31c-005056a7d529", "pdf": ["ce777491-3731-4bcb-9da3-3e78244304e3", "3c13d0fd-ba32-4da8-8b28-eaaa6270c2b0", "c11169e4-2f4b-4380-9dba-173ca09b93bd", "223926e8-1c25-455c-9181-76f4fac4e390"] } },
+    "Felsefe": { "10": { "id": "663513d3-a1d0-f111-b31c-005056a7d529", "pdf": ["59f8fcea-07a4-4092-b2f1-88a186a0384c", "e2c2e16d-66b5-4967-858e-42fe0c557db4", "2f53cab9-beef-4414-bd52-6df17d1b6a40", "6e317c49-e290-4605-b079-b439b967bf94"] } }
+  }
+}
