@@ -5,9 +5,21 @@
   var reg = {}, ids = [];
 
   function register(def) {
-    reg[def.id] = def;
+    reg[def.id] = def; every = null;
     if (ids.indexOf(def.id) < 0) ids.push(def.id);
     ids.sort(function (a, b) { return reg[a].order - reg[b].order; });
+  }
+  /* kayıtlı tüm derslerin konuları (hangi dersler seçili olursa olsun): dersler arası bağların öbür ucu için */
+  var every = null;
+  function topicInfo(id) {
+    if (!every) {
+      every = {};
+      ids.forEach(function (sid) {
+        var th = {}; reg[sid].themes.forEach(function (t) { th[t.id] = t; });
+        reg[sid].topics.forEach(function (r) { every[r[0]] = { id: r[0], subject: sid, grade: th[r[1]].grade, names: { tr: r[2], en: r[5] } }; });
+      });
+    }
+    return every[id];
   }
 
   var NT = '(yeni sekmede açılır)', NT_EN = '(opens in a new tab)';
@@ -148,6 +160,22 @@
       return r;
     }
 
+    /* konunun öbür derslerle bağları; seçili derslerden bağımsız, tek ders görünümünde de çalışır.
+       kind: pre (öbür dersten ön koşul), kol (öbür dersten destek), next (öbür derste kullanılır), rel (ilgili) */
+    var KIND_ORDER = { pre: 0, kol: 1, next: 2, rel: 3 };
+    function crossOf(id) {
+      var me = topicInfo(id), S = GEN[api.lang], out = [];
+      if (!me) return out;
+      (reg._cross || []).forEach(function (l) {
+        var dir = l[0] === id ? 'out' : l[1] === id ? 'in' : null; if (!dir) return;
+        var o = topicInfo(dir === 'out' ? l[1] : l[0]); if (!o || o.subject === me.subject) return;
+        var kind = l[2] === 'ilg' ? 'rel' : dir === 'out' ? 'next' : l[2] === 'on' ? 'pre' : 'kol';
+        out.push({ id: o.id, subject: o.subject, subjectShort: subShort(o.subject), name: o.names[api.lang], grade: o.grade,
+          gradeLabel: o.grade === 'O' ? S.mid : S.grade(o.grade), kind: kind, reason: api.lang === 'en' ? l[4] : l[3] });
+      });
+      return out.sort(function (a, b) { return KIND_ORDER[a.kind] - KIND_ORDER[b.kind]; });
+    }
+
     var prefixes = {}; topics.forEach(function (t) { prefixes[norm(t.codeTr).replace(/ /g, '').split(/[0-9]/)[0]] = 1; });
     /* sıralama: tam başlık > başlık başı > başlıkta geçen > kazanım kodu > öbür dildeki başlık > açıklama; eşitlikte lise konusu ortaokuldan önce */
     function search(q, pred) {
@@ -168,7 +196,7 @@
     api.sel = sel; api.multi = multi;
     api.subjects = subs.map(function (d) { return { id: d.id, order: d.order }; });
     api.themes = themes; api.themeById = themeById; api.topics = topics; api.byId = byId; api.links = links;
-    api.resources = resources; api.neighbors = neighbors; api.search = search;
+    api.resources = resources; api.neighbors = neighbors; api.search = search; api.crossOf = crossOf;
     api.programPdf = subs[0] && subs[0].program ? subs[0].program.pdf : '';
     api.setLang = setLang; api.gradeName = gradeName; api.subjectName = subName; api.subjectShort = subShort; api.listHTML = listHTML; api.missing = missing;
     api.popular = sel.length === 1 ? (reg[sel[0]].popular || []) : [].concat.apply([], subs.map(function (d) { return (d.popular || []).slice(0, 1); }));

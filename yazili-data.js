@@ -316,7 +316,8 @@ window.EBA_YAZILI = {
       "kim_viskozite",
       "kim_adezyon",
       "kim_yuzey",
-      "kim_metalekos"
+      "kim_metalekos",
+      "kim_nanoekos"
      ]
     },
     {
@@ -338,7 +339,7 @@ window.EBA_YAZILI = {
      "yazili": 2,
      "url": "https://ogm-large-cdn.eba.gov.tr/materyal/Etkilesimlikitap/8944c435-a10c-4bf9-81e3-a09cd0b64f8b/pdf.pdf",
      "topics": [
-      "kim_tepktur",
+      "kim_kimdeg",
       "kim_mol",
       "kim_molozel",
       "kim_denklem",
@@ -458,13 +459,10 @@ window.EBA_YAZILI = {
      "grade": 10,
      "donem": 1,
      "yazili": 2,
-     "url": "https://ogm-large-cdn.eba.gov.tr/materyal/Etkilesimlikitap/ae05f4ad-2584-4294-b695-6da5fe07ceb0/pdf.pdf",
-     "topics": [
-      "fiz_periyodik",
-      "fiz_dalgakav",
-      "fiz_dalgasin",
-      "fiz_dalgahiz"
-     ]
+     "hata": {
+      "tr": "OGM Materyal sayfasındaki 1. dönem 2. yazılı bağlantısı 2. dönem 2. yazılı dosyasını açıyor (Ekim 2026).",
+      "en": "The OGM Materyal link for term 1, exam 2 opens the term 2, exam 2 file (October 2026)."
+     }
     },
     {
      "grade": 10,
@@ -511,6 +509,7 @@ window.EBA_YAZILI = {
       "edb_sanat",
       "edb_deneme",
       "edb_konu",
+      "edb_yazar",
       "edb_dusunce",
       "edb_betimyaz"
      ]
@@ -824,6 +823,7 @@ window.EBA_YAZILI = {
       "ing_9_1_bec",
       "ing_9_2_dtb",
       "ing_9_2_bec",
+      "ing_9_3_kel",
       "ing_9_3_bec"
      ]
     },

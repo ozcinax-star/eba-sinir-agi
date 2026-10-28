@@ -1,4 +1,4 @@
-// Matematik (9–12) · Türkiye Yüzyılı Maarif Modeli 2026. Kaynak: MEB TYMM Ortaöğretim Matematik Dersi Öğretim Programı.
+// Matematik (9–12) · Türkiye Yüzyılı Maarif Modeli 2024. Kaynak: MEB TYMM Ortaöğretim Matematik Dersi Öğretim Programı.
 EBA.register({
   id: 'matematik', order: 2,
   name: { tr: 'Matematik', en: 'Mathematics' }, mid: { tr: 'Matematik', en: 'Mathematics' },

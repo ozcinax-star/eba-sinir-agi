@@ -1,4 +1,4 @@
-// Felsefe (10–11) · Türkiye Yüzyılı Maarif Modeli 2026. Kaynak: MEB TYMM Felsefe Dersi Öğretim Programı.
+// Felsefe (10–11) · Türkiye Yüzyılı Maarif Modeli 2024. Kaynak: MEB TYMM Felsefe Dersi Öğretim Programı.
 EBA.register({
   id: 'felsefe', order: 8,
   name: { tr: 'Felsefe', en: 'Philosophy' },

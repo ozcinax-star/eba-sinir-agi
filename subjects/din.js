@@ -1,4 +1,4 @@
-// Din Kültürü ve Ahlak Bilgisi (9–12) · Türkiye Yüzyılı Maarif Modeli 2026. Kaynak: MEB Talim ve Terbiye Kurulu, Din Kültürü ve Ahlak Bilgisi Dersi Öğretim Programı (9, 10, 11 ve 12. Sınıflar).
+// Din Kültürü ve Ahlak Bilgisi (9–12) · Türkiye Yüzyılı Maarif Modeli 2024. Kaynak: MEB Talim ve Terbiye Kurulu, Din Kültürü ve Ahlak Bilgisi Dersi Öğretim Programı (9, 10, 11 ve 12. Sınıflar).
 // Özetler yalnızca programdaki öğrenme çıktısı ifadelerine dayanır; betimleyicidir.
 EBA.register({
   id: 'din', order: 7,
