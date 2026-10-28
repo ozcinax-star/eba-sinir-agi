@@ -5,8 +5,9 @@
   var SUBJ_KEY = 'eba-subject';
   function dataFor(s) { return EBA.make(s === 'all' ? EBA.ids() : [s]); }
   function pickSubject() {
-    var q = /[?&]ders=([a-z]+)/.exec(location.search), h = /^#konu=(\w+)$/.exec(location.hash), s = q && q[1];
+    var q = /[?&]ders=([a-z]+)/.exec(location.search), h = /^#konu=(\w+)$/.exec(location.hash), hy = /^#yazili=([a-z]+)-/.exec(location.hash), s = q && q[1];
     if (!s && h && OWNER[h[1]]) s = localStorage_get(SUBJ_KEY) === 'all' ? 'all' : OWNER[h[1]];
+    if (!s && hy && EBA.reg[hy[1]]) s = localStorage_get(SUBJ_KEY) === 'all' ? 'all' : hy[1];
     if (!s) s = localStorage_get(SUBJ_KEY);
     return s === 'all' || (s && EBA.reg[s]) ? s : 'biyoloji';
   }
@@ -63,6 +64,16 @@
         var w = inc.map(function (e) { return e.donem + '. dönem ' + e.yazili + '. yazılıda'; });
         return 'MEB örnek senaryosuna göre bu konu ' + (w.length > 1 ? w.slice(0, -1).join(', ') + ' ve ' + w[w.length - 1] : w[0]) + ' soruluyor. Okulunun yazılısı farklı olabilir.';
       },
+      yzStudy: 'Yazılıma çalış', yzStudyThis: function (d, y) { return d + '. dönem ' + y + '. yazılıya çalış'; }, yzMode: 'Yazılı Modu', yzPick: 'Yazılı seç',
+      yzTitle: function (d, y) { return d + '. dönem · ' + y + '. yazılı'; },
+      yzPreH: 'Önce bunlar', yzPreSub: 'Yazılı konularının dayandığı konular. Eksiğin varsa buradan başla.',
+      yzExH: 'Yazılıda çıkan konular', yzExSub: 'MEB örnek senaryosundaki sırayla.',
+      yzHelpH: 'Başka derslerden yardımcı', yzHelpSub: 'Şart değil; bilirsen yazılı konuları daha kolay yerine oturur.',
+      yzFor: function (s) { return s + ' için'; }, yzKnow: 'Biliyorum', yzHard: 'Zorlanıyorum',
+      yzProg: function (n, m) { return n + '/' + m + ' konuyu biliyorum'; }, yzHow: '✓ Biliyorum · ! Zorlanıyorum. İşaretlerin yalnızca bu cihazda kalır.',
+      yzLook: 'Önce şunlara bak:', yzNoPre: 'Bu konunun doğrudan ön koşulu yok. Konunun özetine ve örnek yazılıya bak.',
+      yzBack: function (s) { return s + ' listesine dön'; }, yzNote: 'Liste MEB örnek senaryosuna göre hazırlandı; okulunun yazılısı farklı olabilir.', yzClose: 'Yazılı Modundan çık',
+      yzOpened: function (s) { return s + ' çalışma listesi açıldı'; }, yzMarkB: 'Biliyorum olarak işaretlendi', yzMarkZ: 'Zorlanıyorum olarak işaretlendi', yzUnmark: 'İşaret kaldırıldı',
       xH: 'Diğer derslerle bağı', xSub: 'Bu konu başka derslerde de işe yarar. Tıklayınca tüm dersler ağında açılır.', xSubM: 'Bu konu başka derslerde kullanılır ya da onlardan destek alır.',
       xKind: { pre: 'önce bunu bil', kol: 'kolaylaştırır', next: 'orada kullanılır', rel: 'ilgili' },
       atH: 'Dersler arası ağ', atStats: function (s, t, b) { return s + ' ders · ' + t + ' konu · ' + b + ' köprü'; }, atRow: function (t, b) { return t + ' konu · ' + b + ' köprü'; },
@@ -96,6 +107,16 @@
         var w = inc.map(function (e) { return 'term ' + e.donem + ' exam ' + e.yazili; });
         return 'In the MEB sample scenarios this topic appears in ' + (w.length > 1 ? w.slice(0, -1).join(', ') + ' and ' + w[w.length - 1] : w[0]) + '. Your school’s exam may differ.';
       },
+      yzStudy: 'Study for an exam', yzStudyThis: function (d, y) { return 'Study for term ' + d + ' exam ' + y; }, yzMode: 'Exam mode', yzPick: 'Choose an exam',
+      yzTitle: function (d, y) { return 'Term ' + d + ' · Exam ' + y; },
+      yzPreH: 'First, these', yzPreSub: 'What the exam topics build on. If something is missing, start here.',
+      yzExH: 'Topics in the exam', yzExSub: 'In the order of the MEB sample scenario.',
+      yzHelpH: 'Help from other subjects', yzHelpSub: 'Not required; if you know them, the exam topics fall into place more easily.',
+      yzFor: function (s) { return 'for ' + s; }, yzKnow: 'I know this', yzHard: 'I find this hard',
+      yzProg: function (n, m) { return 'I know ' + n + ' of ' + m + ' topics'; }, yzHow: '✓ I know this · ! I find this hard. Marks stay on this device only.',
+      yzLook: 'Look at these first:', yzNoPre: 'This topic has no direct prerequisite. Read its summary and the sample exam.',
+      yzBack: function (s) { return 'Back to the ' + s + ' list'; }, yzNote: 'Based on the MEB sample scenario; your school’s exam may differ.', yzClose: 'Leave exam mode',
+      yzOpened: function (s) { return 'Study list opened: ' + s; }, yzMarkB: 'Marked as known', yzMarkZ: 'Marked as hard', yzUnmark: 'Mark removed',
       xH: 'Links to other subjects', xSub: 'This topic matters in other subjects too. Opens in the all-subjects network.', xSubM: 'This topic is used in other subjects or draws on them.',
       xKind: { pre: 'know this first', kol: 'makes it easier', next: 'used there', rel: 'related' },
       atH: 'Across subjects', atStats: function (s, t, b) { return s + ' subjects · ' + t + ' topics · ' + b + ' bridges'; }, atRow: function (t, b) { return t + ' topics · ' + b + ' bridges'; },
@@ -137,7 +158,7 @@
   var mqReduce = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
   var LITE = Math.min(innerWidth, innerHeight) < 700 || (navigator.hardwareConcurrency || 8) <= 4;
 
-  var state = { mode: root.getAttribute('data-eba-mode') || 'dark', ready: false, subject: D.multi ? 'all' : D.sel[0], sel: null, atlasSub: null, bridges: false, subjOpen: false, query: '', open: false, hi: 0, filter: 'all', scope: 'filter', preOnly: false, flat: false, help: false, listOpen: false, wide: innerWidth >= 900, roomy: innerWidth >= 1280 };
+  var state = { mode: root.getAttribute('data-eba-mode') || 'dark', ready: false, subject: D.multi ? 'all' : D.sel[0], sel: null, exam: null, atlasSub: null, bridges: false, subjOpen: false, query: '', open: false, hi: 0, filter: 'all', scope: 'filter', preOnly: false, flat: false, help: false, listOpen: false, wide: innerWidth >= 900, roomy: innerWidth >= 1280 };
   var scene = null;
   var COARSE = window.matchMedia ? matchMedia('(pointer: coarse)').matches : false;
   var app = $('#app');
@@ -189,7 +210,12 @@
   }
   function renderPopular() {
     var pop = $('#popular'); if (!pop) return;
-    $$('[data-go],[data-random]', pop).forEach(function (b) { b.remove(); });
+    $$('[data-go],[data-random],[data-yz-open]', pop).forEach(function (b) { b.remove(); });
+    // Yazılı Modu'nun girişi: yazılısı yayımlanmış derslerde sık arananlardan önce
+    if (!D.multi && examsOf(D.sel[0]).some(examOk)) {
+      var yb = document.createElement('button'); yb.type = 'button'; yb.className = 'btn btn-secondary yzgo'; yb.dataset.yzOpen = '';
+      yb.innerHTML = ICON_PEN + esc(TX.yzStudy); pop.insertBefore(yb, pop.firstChild);
+    }
     D.popular.forEach(function (id) {
       if (!D.byId[id]) return;
       var b = document.createElement('button'); b.type = 'button'; b.className = 'btn btn-secondary'; b.dataset.go = id; pop.appendChild(b);
@@ -220,14 +246,14 @@
     var lb = $('#listView .lbody'); if (lb) lb.innerHTML = D.listHTML();
     applyFilterViews();
     if (scene) scene.relabel();
-    if (state.sel) renderPanel(true);
+    if (state.sel) renderPanel(true); else if (state.exam) renderExam(true);
     ui();
     announce(TX.langName);
   }
 
   var phoneMQ = window.matchMedia('(max-width:599px)');
   function heroMin(on) {
-    on = !!on && phoneMQ.matches && !state.sel;
+    on = !!on && phoneMQ.matches && !state.sel && !state.exam;
     if (app.classList.contains('hero-min') === on) return;
     app.classList.toggle('hero-min', on);
     if (scene) { scene.hb = null; scene.poke(); }
@@ -236,18 +262,19 @@
   ['focusin', 'click'].forEach(function (ev) { var h = document.getElementById('hero'); if (h) h.addEventListener(ev, function () { heroMin(false); }); });
 
   function ui() {
-    var sel = state.sel ? D.byId[state.sel] : null;
-    app.classList.toggle('has-sel', !!sel);
+    // panel açık: bir konu ya da Yazılı Modu'nun çalışma listesi
+    var sel = state.sel ? D.byId[state.sel] : null, open = !!(sel || state.exam);
+    app.classList.toggle('has-sel', open);
     app.classList.toggle('all-view', !!D.multi);
     renderSubjBtn();
-    app.classList.toggle('chips-hide', !!sel);
-    if (sel) heroMin(false);
-    $('#hero').hidden = !!sel;
-    $('#s2').hidden = !sel;
-    $('#panel').hidden = !sel;
+    app.classList.toggle('chips-hide', open);
+    if (open) heroMin(false);
+    $('#hero').hidden = open;
+    $('#s2').hidden = !open;
+    $('#panel').hidden = !open;
     $('#focusLegend').hidden = !sel;
-    $('#idleLegend').style.visibility = sel ? 'hidden' : '';
-    $('#hintline').hidden = !(state.roomy && !sel && scene && !D.multi);
+    $('#idleLegend').style.visibility = open ? 'hidden' : '';
+    $('#hintline').hidden = !(state.roomy && !open && scene && !D.multi);
     renderAtlas();
     $('#help').hidden = !state.help;
     $('#helpBtn').setAttribute('aria-expanded', String(state.help));
@@ -268,8 +295,9 @@
     var hiddenN = all.length - inScope.length;
     results = inScope.slice(0, 7);
     var scopeRow = g ? '<div class="scope" role="presentation"><span>' + esc(TX.scope(filterLabel())) + '</span><button type="button" data-scope>' + esc(TX.scopeAll(hiddenN)) + '</button></div>' : '';
+    var open = !!(state.sel || state.exam);
     boxes.forEach(function (b, bi) {
-      var visible = bi === 0 ? !state.sel : !!state.sel;
+      var visible = bi === 0 ? !open : open;
       var show = visible && state.open && (results.length > 0 || (!!g && state.query.trim() && hiddenN > 0));
       b.list.hidden = !show;
       b.none.hidden = !(visible && state.open && state.query.trim() && !results.length && !(g && hiddenN > 0));
@@ -309,7 +337,7 @@
   }
   function renderAtlas() {
     var el = $('#atlas'); if (!el) return;
-    var show = !!(D.multi && scene && !state.sel);
+    var show = !!(D.multi && scene && !state.sel && !state.exam);
     if (el.hidden === show) { el.hidden = !show; if (scene) scene.refit(); }
     if (!show) return;
     var key = lang + '|' + state.atlasSub + '|' + state.bridges + '|' + D.sel.join(); if (el.dataset.k === key) return; el.dataset.k = key;
@@ -362,6 +390,9 @@
   /* Yazılı takvimi: konunun sınıfındaki dört ortak yazılı sırayla. Konunun sorulduğu yazılı dolu, sorulmadığı boş
      (yine açılır), kaynakta dosyası olmayan ya da yanlış olan kesik çizgili; böylece hiçbir yazılı sessizce kaybolmaz. */
   var ICON_CHECK = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+  function resRow(url, title, small) {
+    return '<a class="res" href="' + esc(url) + '" target="_blank" rel="noopener"><span class="ic">' + ICON_BOOK + '</span><span class="tx"><b>' + esc(title) + '</b><small>' + esc(small) + '</small></span>' + ICON_EXT + '<span class="sr">' + esc(TX.newTab) + '</span></a>';
+  }
   function yazilHTML(t) {
     var Y = window.EBA_YAZILI, ys = Y && Y.subjects && Y.subjects[t.subject]; if (!ys) return '';
     var ex = ys.exams.filter(function (e) { return e.grade === t.grade; }); if (!ex.length) return '';
@@ -373,14 +404,13 @@
       var on = e.topics.indexOf(t.id) >= 0, lbl = TX.yzName(e.grade, d, y) + ': ' + (on ? TX.yzIn : TX.yzOut) + ' · ' + TX.yzPdf + ' ' + TX.newTab;
       return '<li class="' + (on ? 'yz-on' : 'yz-off') + '"><a href="' + esc(e.url) + '" target="_blank" rel="noopener" aria-label="' + esc(lbl) + '"><b>' + esc(name) + '</b><small>' + (on ? ICON_CHECK : '') + esc(on ? TX.yzIn : TX.yzOut) + '</small></a></li>';
     };
-    var row = function (url, title, small) {
-      return '<a class="res" href="' + esc(url) + '" target="_blank" rel="noopener"><span class="ic">' + ICON_BOOK + '</span><span class="tx"><b>' + esc(title) + '</b><small>' + esc(small) + '</small></span>' + ICON_EXT + '<span class="sr">' + esc(TX.newTab) + '</span></a>';
-    };
     return '<div class="sec"><h3>' + esc(TX.yzH) + '</h3><p class="sub">' + esc(TX.yzSum(t.grade, inc)) + '</p>' +
       '<div class="yz">' + [1, 2].map(function (d) { return '<div class="yzd"><span>' + esc(TX.yzTerm(d)) + '</span><ol>' + cell(d, 1) + cell(d, 2) + '</ol></div>'; }).join('') + '</div>' +
       ex.filter(function (e) { return e.hata; }).map(function (e) { return '<p class="fine yz-note">' + esc(TX.yzName(e.grade, e.donem, e.yazili)) + ': ' + esc(e.hata[lang] || e.hata.tr) + '</p>'; }).join('') +
       '<p class="fine">' + esc(TX.yzTap + ' · ' + TX.yzSrc) + '</p>' +
-      row(ys.materyal[t.grade], TX.yzMat, TX.yzSrc + ' · ' + TX.yzMatNote) +
+      // konunun sorulduğu her yazılı için çalışma listesi (Yazılı Modu)
+      (inc.length ? '<div class="chain">' + inc.map(function (e) { return '<button type="button" class="cn yzgo" data-yz="' + examKey(e, t.subject) + '">' + ICON_PEN + esc(TX.yzStudyThis(e.donem, e.yazili)) + '</button>'; }).join('') + '</div>' : '') +
+      resRow(ys.materyal[t.grade], TX.yzMat, TX.yzSrc + ' · ' + TX.yzMatNote) +
       '<p class="fine">' + esc(TX.checked(new Date(Y.checked).toLocaleDateString(TX.locale, { month: 'long', year: 'numeric' }))) + '</p></div>';
   }
 
@@ -398,7 +428,9 @@
     var nb = D.neighbors(t.id), res = D.resources(t.id);
     // tüm dersler görünümünde öbür derslerin konuları kendi bölümünde durur
     if (D.multi) Object.keys(nb).forEach(function (k) { nb[k] = nb[k].filter(function (o) { return o.topic.subject === t.subject; }); });
-    var h = '<header><div class="tags">' + (D.multi ? '<span class="tag tag-neutral" style="font-weight:700">' + esc(t.subjectShort) + '</span>' : '') + '<span class="tag tag-accent" style="font-weight:700">' + esc(t.gradeLabel) + '</span><span class="tag tag-accent-2" style="font-weight:700">' + esc(TX.themeTag(t.themeName)) + '</span><span class="tag tag-neutral">' + esc(t.code) + '</span>' +
+    // Yazılı Modu'nda açılan konudan çalışma listesine dönüş
+    var back = state.exam ? '<button type="button" class="btn btn-secondary yzback" data-yz-back aria-label="' + esc(TX.yzBack(examFull(state.exam))) + '">' + ICON_LEFT + esc(TX.yzTitle(state.exam.e.donem, state.exam.e.yazili)) + '</button>' : '';
+    var h = '<header>' + back + '<div class="tags">' + (D.multi ? '<span class="tag tag-neutral" style="font-weight:700">' + esc(t.subjectShort) + '</span>' : '') + '<span class="tag tag-accent" style="font-weight:700">' + esc(t.gradeLabel) + '</span><span class="tag tag-accent-2" style="font-weight:700">' + esc(TX.themeTag(t.themeName)) + '</span><span class="tag tag-neutral">' + esc(t.code) + '</span>' +
       '<button type="button" class="btn btn-secondary btn-icon" data-close aria-label="' + esc(TX.closePanel) + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>' +
       '<h2 tabindex="-1" id="ptitle">' + esc(t.name) + '</h2><button type="button" class="btn btn-secondary expand" data-expand aria-expanded="false">' + esc(TX.expand) + '</button></header><div class="pbody">' +
       // telefonda alt pencerenin ilk açılan kısmında yazılı ızgarası görünsün diye önce o gelir
@@ -426,7 +458,124 @@
     h += group(esc(TX.nextH), 'nx', '', nb.next, 'next');
     h += group(esc(TX.relH), '', '', nb.rel, 'rel');
     h += '<p class="fine">' + esc(TX.source(D.curriculum)) + '</p></div>';
-    var p = $('#panel'); if (!keep) p.classList.remove('big'); p.innerHTML = '<button type="button" class="grab" aria-label="' + esc(TX.grab) + '"></button>' + h; syncExpand();
+    var p = $('#panel'); if (!keep) p.classList.remove('big'); p.setAttribute('aria-label', UI[lang].panel); p.innerHTML = '<button type="button" class="grab" aria-label="' + esc(TX.grab) + '"></button>' + h; syncExpand();
+  }
+
+  /* ───────── Yazılı Modu ─────────
+     Öğrenci bir ortak yazılıyı seçer; panel sıralı çalışma listesini (önce ön koşullar, sonra yazılı konuları, sonra öbür
+     derslerden yardımcılar) verir, ağ o kümeyi yakar. "Biliyorum / Zorlanıyorum" işaretleri konuya bağlıdır, yalnız bu cihazda kalır. */
+  var MARK_KEY = 'eba-yz-isaret', LAST_KEY = 'eba-yz-son';
+  function readJSON(k) { try { var v = JSON.parse(localStorage.getItem(k)); return v && typeof v === 'object' ? v : {}; } catch (e) { return {}; } }
+  function writeJSON(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  var marks = readJSON(MARK_KEY);
+  var ICON_PEN = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6a1 1 0 0 1 1 1v1H8V4a1 1 0 0 1 1-1Z"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>';
+  var ICON_LEFT = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7M19 12H5"/></svg>';
+  function examsOf(sid) { var Y = window.EBA_YAZILI, ys = Y && Y.subjects && Y.subjects[sid]; return ys ? ys.exams : []; }
+  function examOk(e) { return !!(e && !e.hata && e.topics && e.topics.length); }
+  function examKey(e, sid) { return sid + '-' + e.grade + '-' + e.donem + '-' + e.yazili; }
+  /* "kimya-9-1-1" → { key, sid, e }; yalnızca konuları bilinen yazılılar */
+  function findExam(key) {
+    var m = /^([a-z]+)-(\d+)-(\d)-(\d)$/.exec(key || ''); if (!m || !EBA.reg[m[1]]) return null;
+    var e = examsOf(m[1]).filter(function (x) { return x.grade === +m[2] && x.donem === +m[3] && x.yazili === +m[4]; })[0];
+    return examOk(e) ? { key: key, sid: m[1], e: e } : null;
+  }
+  /* arama kartındaki düğme: bu dersin son açılan yazılısı; yoksa (süzülen sınıfın) ilk yazılısı */
+  function defaultExam(sid) {
+    var last = readJSON(LAST_KEY)[sid], f = state.filter;
+    if (findExam(last) && (f === 'all' || last.split('-')[1] === f)) return last;
+    var ok = examsOf(sid).filter(examOk), e = ok.filter(function (x) { return f === 'all' || String(x.grade) === f; })[0] || ok[0];
+    return e ? examKey(e, sid) : null;
+  }
+  function examFull(x) { return EBA.short(x.sid, lang) + ' · ' + TX.yzName(x.e.grade, x.e.donem, x.e.yazili); }
+  function examRoles() {
+    var L = D.studyList(state.exam.e.topics), R = {};
+    ['help', 'pre', 'exam'].forEach(function (k) { L[k].forEach(function (t) { R[t.id] = k; }); });
+    return R;
+  }
+
+  function markBtns(t) {
+    return '<span class="yzm">' + [['b', TX.yzKnow, ICON_CHECK], ['z', TX.yzHard, '<span aria-hidden="true">!</span>']].map(function (k) {
+      return '<button type="button" class="' + k[0] + '" data-mark="' + t.id + ':' + k[0] + '" aria-pressed="' + (marks[t.id] === k[0]) + '" aria-label="' + esc(t.name + ': ' + k[1]) + '" title="' + esc(k[1]) + '">' + k[2] + '</button>';
+    }).join('') + '</span>';
+  }
+  /* "Zorlanıyorum": konunun doğrudan ön koşulları maddenin altında açılır */
+  function hardHTML(id) {
+    var ps = D.prereqsOf(id), sid = state.exam.sid;
+    return '<div class="yzz" data-for="' + id + '"><p>' + esc(ps.length ? TX.yzLook : TX.yzNoPre) + '</p>' + (ps.length ? '<div class="chain">' + ps.map(function (p) {
+      var c = D.multi || p.subject !== sid ? 's-' + p.subject : 'g' + p.grade;
+      return '<button type="button" class="cn" data-go="' + p.id + '"><i class="' + (p.grade === 'O' ? 'ring' : '') + '" style="--c:var(--' + c + ')"></i>' + esc((p.subject !== sid ? p.subjectShort + ' · ' : '') + p.name) + '</button>';
+    }).join('') + '</div>' : '') + '</div>';
+  }
+  function yzRow(t, kind, names) {
+    var bt = D.byId[t.id], sid = state.exam.sid, sub;
+    if (kind === 'exam') sub = bt && bt.grade !== 'O' ? bt.themeName : t.gradeLabel;
+    else sub = (t.subject !== sid ? t.subjectShort + ' · ' : '') + t.gradeLabel + ' · ' + TX.yzFor(t.for.map(function (x) { return names[x]; }).join(', '));
+    var mk = kind === 'help' ? '<span class="mk x" style="--c:var(--s-' + t.subject + ')"></span>' : '<span class="mk ' + (kind === 'exam' ? 'ex' : t.grade === 'O' ? 'base' : 'pre') + '"></span>';
+    return '<div class="yzi' + (marks[t.id] ? ' ' + marks[t.id] : '') + '" data-id="' + t.id + '"><button type="button" class="item" data-go="' + t.id + '">' + mk + '<span class="it"><span class="t"><b>' + esc(t.name) + '</b><span>' + esc(sub) + '</span></span>' +
+      (kind !== 'exam' && t.reason ? '<span class="r">' + esc(t.reason) + '</span>' : '') + '</span></button>' + markBtns(t) + '</div>' + (marks[t.id] === 'z' ? hardHTML(t.id) : '');
+  }
+  function progressHTML() {
+    var ids = state.exam.ids, n = ids.filter(function (id) { return marks[id] === 'b'; }).length;
+    return '<span class="bar" aria-hidden="true"><i style="width:' + (ids.length ? Math.round((n / ids.length) * 100) : 0) + '%"></i></span><span>' + esc(TX.yzProg(n, ids.length)) + '</span>';
+  }
+  function renderExam(keep) {
+    var x = state.exam; if (!x) return;
+    var L = D.studyList(x.e.topics), names = {}, Y = window.EBA_YAZILI;
+    L.exam.forEach(function (t) { names[t.id] = t.name; }); x.ids = L.exam.map(function (t) { return t.id; });
+    var sec = function (h, cls, sub, arr, kind) { return arr.length ? '<div class="sec"><h3' + (cls ? ' class="' + cls + '"' : '') + '>' + esc(h) + '</h3><p class="sub">' + esc(sub) + '</p>' + arr.map(function (t) { return yzRow(t, kind, names); }).join('') + '</div>' : ''; };
+    var h = '<header><div class="tags"><span class="tag tag-neutral" style="font-weight:700">' + esc(EBA.short(x.sid, lang)) + '</span><span class="tag tag-accent" style="font-weight:700">' + esc(D.gradeName(x.e.grade)) + '</span><span class="tag tag-accent-2">' + esc(TX.yzMode) + '</span>' +
+      '<button type="button" class="btn btn-secondary btn-icon" data-yz-close aria-label="' + esc(TX.yzClose) + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>' +
+      '<h2 tabindex="-1" id="ptitle">' + esc(TX.yzTitle(x.e.donem, x.e.yazili)) + '</h2><p class="yzp" id="yzProg">' + progressHTML() + '</p>' +
+      '<button type="button" class="btn btn-secondary expand" data-expand aria-expanded="false">' + esc(TX.expand) + '</button></header><div class="pbody">' +
+      '<div class="sec"><label class="yzsel"><span class="sr">' + esc(TX.yzPick) + '</span><select data-yz-pick>' + examsOf(x.sid).map(function (e) {
+        var k = examKey(e, x.sid), ok = examOk(e);
+        return '<option value="' + k + '"' + (k === x.key ? ' selected' : '') + (ok ? '' : ' disabled') + '>' + esc(TX.yzName(e.grade, e.donem, e.yazili) + (ok ? '' : ' · ' + TX.yzBad)) + '</option>';
+      }).join('') + '</select></label><p class="fine">' + esc(TX.yzHow) + '</p></div>' +
+      sec(TX.yzPreH, 'pre', TX.yzPreSub, L.pre, 'pre') + sec(TX.yzExH, '', TX.yzExSub, L.exam, 'exam') + sec(TX.yzHelpH, 'kol', TX.yzHelpSub, L.help, 'help') +
+      '<div class="sec">' + resRow(x.e.url, TX.yzPdf, TX.yzSrc) + '<p class="fine">' + esc(TX.yzNote) + '</p>' +
+      (Y && Y.checked ? '<p class="fine">' + esc(TX.checked(new Date(Y.checked).toLocaleDateString(TX.locale, { month: 'long', year: 'numeric' }))) + '</p>' : '') + '</div></div>';
+    var p = $('#panel'); if (!keep) p.classList.remove('big'); p.setAttribute('aria-label', TX.yzMode); p.innerHTML = '<button type="button" class="grab" aria-label="' + esc(TX.grab) + '"></button>' + h; syncExpand();
+  }
+  /* işaret: panel yeniden çizilmez (bölümlerin giriş hareketi tekrar oynamasın); yalnız madde, altındaki öneri ve ilerleme değişir */
+  function toggleMark(v) {
+    var p = v.split(':'), id = p[0], k = p[1];
+    if (marks[id] === k) delete marks[id]; else marks[id] = k;
+    writeJSON(MARK_KEY, marks);
+    $$('#panel .yzi[data-id="' + id + '"]').forEach(function (row) {
+      row.className = 'yzi' + (marks[id] ? ' ' + marks[id] : '');
+      $$('[data-mark]', row).forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.mark === id + ':' + marks[id])); });
+      var z = row.nextElementSibling; if (z && z.classList.contains('yzz')) z.remove();
+      if (marks[id] === 'z') row.insertAdjacentHTML('afterend', hardHTML(id));
+    });
+    var pg = $('#yzProg'); if (pg) pg.innerHTML = progressHTML();
+    if (scene && !state.sel) scene.buildExamLabels();
+    announce(!marks[id] ? TX.yzUnmark : k === 'b' ? TX.yzMarkB : TX.yzMarkZ);
+  }
+  function openExam(key, fromHash) {
+    var x = findExam(key); if (!x) return;
+    if (D.sel.indexOf(x.sid) < 0) setSubject(x.sid, true);
+    var fresh = !state.exam || state.exam.key !== key, prev = state.sel;
+    state.exam = x; state.sel = null; state.query = ''; state.open = false; state.help = false; state.atlasSub = null;
+    if (!state.wide) state.listOpen = false;
+    var last = readJSON(LAST_KEY); last[x.sid] = key; writeJSON(LAST_KEY, last);
+    if (scene) scene.setExam(examRoles(), fresh);
+    renderExam(); ui();
+    if (!fromHash) setHash(null);
+    // listeden açılan konudan geri gelindiyse o maddeye dönülür; yoksa listenin başına
+    var it = !fresh && prev ? $('#panel .yzi[data-id="' + prev + '"] .item') : null, pb = $('.pbody');
+    if (it) { it.focus({ preventScroll: true }); it.scrollIntoView({ block: 'nearest' }); }
+    else { if (pb) pb.scrollTop = 0; var h = $('#ptitle'); if (h) h.focus({ preventScroll: true }); }
+    announce(TX.yzOpened(examFull(x)));
+  }
+  /* moddan çıkış; açık bir konu varsa açık kalır (yalnız dönüş düğmesi gider) */
+  function closeExam(fromHash) {
+    if (!state.exam) return;
+    state.exam = null; state.help = false;
+    if (scene) scene.setExam(null);
+    if (state.sel) renderPanel(true);
+    ui();
+    if (!fromHash) setHash(state.sel);
+    if (!state.sel) announce(TX.fullMap);
   }
 
   function syncExpand() {
@@ -438,10 +587,11 @@
 
   /* ───────── durum işlemleri ───────── */
   var hashBusy = false;
+  /* Yazılı Modu'nda adres #yazili=kimya-9-1-1; listeden açılan konunun geçmiş kaydı yazılıyı da taşır (geri tuşu listeye döner) */
   function setHash(id) {
-    var h = id ? '#konu=' + id : '';
-    if (location.hash === h || (!id && !location.hash)) return;
-    try { hashBusy = true; history.pushState(null, '', location.pathname + location.search + h); } catch (e) {} hashBusy = false;
+    var h = id ? '#konu=' + id : state.exam ? '#yazili=' + state.exam.key : '';
+    if (location.hash === h || (!h && !location.hash)) return;
+    try { hashBusy = true; history.pushState(state.exam ? { yz: state.exam.key } : null, '', location.pathname + location.search + h); } catch (e) {} hashBusy = false;
   }
 
   function select(id, fromHash) {
@@ -464,10 +614,12 @@
     var prev = state.sel;
     state.sel = null; state.help = false;
     if (scene) scene.clearSel();
+    // Yazılı Modu'nda konu kapanınca çalışma listesine, açılan maddenin üstüne dönülür
+    if (state.exam) renderExam(true);
     ui();
     if (!fromHash) setHash(null);
-    var b = state.query ? null : $('#s1 input'); if (b && !fromHash) { /* odak aramada kalmaz */ }
-    announce(TX.fullMap);
+    if (state.exam) { var it = $('#panel .yzi[data-id="' + prev + '"] .item'); if (it) { it.focus({ preventScroll: true }); it.scrollIntoView({ block: 'nearest' }); } }
+    announce(state.exam ? TX.yzOpened(examFull(state.exam)) : TX.fullMap);
     return prev;
   }
   function applyFilterViews() {
@@ -504,9 +656,15 @@
   }
 
   function readHash() { var m = /^#konu=([\w]+)$/.exec(location.hash); if (!m || !OWNER[m[1]]) return null; if (!D.byId[m[1]]) setSubject(OWNER[m[1]], true); return D.byId[m[1]] ? m[1] : null; }
+  function readExamHash() { var m = /^#yazili=([a-z]+-\d+-\d-\d)$/.exec(location.hash); return m && findExam(m[1]) ? m[1] : null; }
   function onHash() {
     if (hashBusy) return;
-    var id = readHash();
+    var yz = readExamHash();
+    // popstate ve hashchange birlikte gelir: zaten açık olan listeyi yeniden açmaz
+    if (yz) { if (!state.exam || state.exam.key !== yz || state.sel) openExam(yz, true); return; }
+    var id = readHash(), hs = history.state && history.state.yz;
+    // Yazılı Modu'ndan açılmamış bir kayda dönülürse moddan çıkılır
+    if (state.exam && !(id && hs === state.exam.key)) closeExam(true);
     if (id) { if (id !== state.sel) select(id, true); }
     else if (state.sel) clearSel(true);
   }
@@ -514,9 +672,14 @@
   /* ───────── olaylar ───────── */
   function bindUI() {
     document.addEventListener('click', function (e) {
-      var t = e.target.closest ? e.target.closest('.grab,[data-expand],[data-go],[data-random],[data-close],[data-f],[data-mode],[data-submit],a[href^="#konu="],.opt') : null;
+      var t = e.target.closest ? e.target.closest('.grab,[data-expand],[data-go],[data-random],[data-close],[data-f],[data-mode],[data-submit],[data-mark],[data-yz],[data-yz-open],[data-yz-close],[data-yz-back],a[href^="#konu="],.opt') : null;
       if (!t) return;
       if (t.classList.contains('grab') || t.dataset.expand !== undefined) { togglePanel(); return; }
+      if (t.dataset.mark) { toggleMark(t.dataset.mark); return; }
+      if (t.dataset.yz) { openExam(t.dataset.yz); return; }
+      if (t.dataset.yzOpen !== undefined) { var k = defaultExam(state.subject); if (k) openExam(k); return; }
+      if (t.dataset.yzClose !== undefined) { closeExam(); return; }
+      if (t.dataset.yzBack !== undefined) { clearSel(); return; }
       if (t.dataset.random) { var pool = D.topics.filter(function (x) { return x.id !== state.sel && (state.filter === 'all' || String(x.grade) === state.filter); }); select(pool[Math.floor(Math.random() * pool.length)].id); return; }
       if (t.dataset.go) { select(t.dataset.go); return; }
       if (t.dataset.close !== undefined) { clearSel(); return; }
@@ -538,7 +701,7 @@
         else if (e.key === 'Escape') { e.stopPropagation(); state.query = ''; state.open = false; renderResults(); b.input.blur(); }
       });
     });
-    $('#back').addEventListener('click', function () { clearSel(); });
+    $('#back').addEventListener('click', function () { if (state.sel) clearSel(); else closeExam(); });
     $('#subjBtn').addEventListener('click', function () { setSubjOpen(!state.subjOpen); });
     $('#subjMenu').addEventListener('click', function (e) { var b = e.target.closest('[data-subj]'); if (b) { setSubject(b.dataset.subj); $('#subjBtn').focus({ preventScroll: true }); } });
     $('#subjMenu').addEventListener('keydown', function (e) {
@@ -557,12 +720,13 @@
     $('#zreset').addEventListener('click', function () { setFilter('all'); state.atlasSub = null; if (scene) { scene.setHiSub(null); scene.reset(); } renderAtlas(); });
     window.addEventListener('keydown', function (e) {
       var tag = (e.target && e.target.tagName) || '';
-      if (e.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA') { e.preventDefault(); (state.sel ? boxes[1] : boxes[0]).input.focus(); }
+      if (e.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') { e.preventDefault(); (state.sel || state.exam ? boxes[1] : boxes[0]).input.focus(); }
       else if (e.key === 'Escape') {
         if (state.subjOpen) { state.subjOpen = false; ui(); $('#subjBtn').focus({ preventScroll: true }); }
         else if (state.help) { state.help = false; ui(); }
         else if (state.listOpen && !root.classList.contains('nogl')) { state.listOpen = false; ui(); }
         else if (state.sel) clearSel();
+        else if (state.exam) closeExam();
       }
       else if (scene && !e.altKey && !e.ctrlKey && !e.metaKey && (e.target === document.body || e.target === scene.renderer.domElement)) {
         // klavyeyle gezinme: oklar/WASD kaydırır, + − yakınlaştırır, 0 ya da Home sıfırlar
@@ -587,7 +751,9 @@
       });
     }
     document.addEventListener('change', function (e) {
-      var c = e.target; if (!c || !c.matches || !c.matches('[data-preonly]')) return;
+      var c = e.target; if (!c || !c.matches) return;
+      if (c.matches('[data-yz-pick]')) { openExam(c.value); var s = $('[data-yz-pick]'); if (s) s.focus({ preventScroll: true }); return; }
+      if (!c.matches('[data-preonly]')) return;
       state.preOnly = c.checked; var pb = $('.pbody'), st = pb ? pb.scrollTop : 0;
       renderPanel(true); if (scene) scene.reapply();
       var nb = $('[data-preonly]'); if (nb) nb.focus({ preventScroll: true }); var pb2 = $('.pbody'); if (pb2) pb2.scrollTop = st;
@@ -599,7 +765,7 @@
     window.addEventListener('popstate', onHash);
     if ('ResizeObserver' in window) new ResizeObserver(function () {
       var w = app.clientWidth; state.wide = w >= 900; state.roomy = w >= 1280;
-      $('#hintline').hidden = !(state.roomy && !state.sel && scene && !D.multi);
+      $('#hintline').hidden = !(state.roomy && !state.sel && !state.exam && scene && !D.multi);
       if (scene) scene.resize();
     }).observe(app);
   }
@@ -965,7 +1131,7 @@
   S3.refit = function () {
     this.ab = null; this.ob = null; this.idleDist = this.fitDist();
     this.scene.fog.density = this.fogU.value = 0.00042 * Math.min(1, 1600 / this.idleDist);
-    if (this.ctl && !this.nav && this.selI < 0) this.ctl.gDist = this.idleDist;
+    if (this.ctl && !this.nav && this.selI < 0 && !this.exam) this.ctl.gDist = this.idleDist;
     this.poke();
   };
 
@@ -998,7 +1164,10 @@
       Lb.el.style.background = P.lbg; Lb.el.style.textShadow = '0 2px 12px ' + P.shadow; Lb.a.style.color = P.ink; Lb.b.style.color = P.ink2;
     });
     this.tipName.style.color = P.ink; this.tipSub.style.color = P.ink2; this.tipAct.style.color = P.acc;
-    if (state.sel) { this.buildHighlight(state.sel); this.buildFocusLabels(state.sel); }
+    // yalnız sahnede gerçekten seçili bir konu varsa (tema değişimi); kurulumda vurgu kurulmaz: select() kurar.
+    // Kurulumda kurulsaydı malzemeleri compileAsync'in derleme kümesine girer, select() onları atınca söz hiç çözülmez, ağ çizilmezdi.
+    if (state.sel && this.selI >= 0) { this.buildHighlight(state.sel); this.buildFocusLabels(state.sel); }
+    else if (this.exam) this.buildExamLabels();
   };
 
   /* ── gezinme: sürükle = döndür; sağ tık / orta tık / Shift+sürükle / iki parmak = kaydır; tekerlek ve kıstırma imlecin
@@ -1101,12 +1270,17 @@
     this.themeLabels.forEach(function (Lb) { if (Lb.pair) return; if (Lb.big) { Lb.a.textContent = D.subjectShort(Lb.sid); Lb.w = Lb.h = 0; return; } var t = D.themeById[Lb.id]; Lb.a.textContent = t.name; Lb.b.textContent = (D.multi ? D.subjectShort(t.subject).toLocaleUpperCase(TX.locale) + ' · ' : '') + D.gradeName(t.grade).toLocaleUpperCase(TX.locale); Lb.w = Lb.h = 0; });
     this.renderer.domElement.setAttribute('aria-label', TX.canvas);
     this.tipI = -1;
-    if (state.sel) this.buildFocusLabels(state.sel);
+    if (state.sel) this.buildFocusLabels(state.sel); else if (this.exam) this.buildExamLabels();
     this.poke();
   };
 
   S3.zoom = function (k) { this.zoomAt(k, null); };
-  S3.reset = function () { this.nav = false; this.ctl.gDist = this.idleDist; this.ctl.gTarget.copy(this.home); this.poke(); };
+  /* sıfırla: Yazılı Modu'nda yazılı kümesine, yoksa tüm ağa */
+  S3.reset = function () {
+    this.nav = false;
+    if (this.exam && this.selI < 0) this.fitExam(); else { this.ctl.gDist = this.idleDist; this.ctl.gTarget.copy(this.home); }
+    this.poke();
+  };
 
   /* ekran düzleminde seçim: imlece en yakın, kameraya en yakın nöron */
   S3.pick = function (v) {
@@ -1146,6 +1320,17 @@
       E.forEach(function (e, k) { ef[k] = hl.has(k) ? 0 : 0.12; });
       ci.upE.concat(ci.downE).forEach(function (e) { if (!hl.has(e.k)) ef[e.k] = 0.55; });
       this.activeEdges = Array.from(hl);
+      return;
+    }
+    // Yazılı Modu: yazılı konuları tam, ön koşul ve yardımcılar yarı parlak; ışık yalnız yazılı konularına giren bağlarda akar
+    if (this.exam) {
+      var R = this.exam.roles; this.activeEdges = [];
+      N.forEach(function (n, i) { var r = R[n.t.id]; nf[i] = r === 'exam' ? 1 : r ? 0.72 : 0.08; });
+      D.links.forEach(function (l, k) {
+        var a = R[l.from], b = R[l.to];
+        ef[k] = a && b === 'exam' && l.type !== 'ilg' ? 1 : a && b ? 0.3 : 0.04;
+        if (ef[k] > 0.4) self.activeEdges.push(k);
+      });
       return;
     }
     var fg = filter && filter !== 'all' ? filter : null, hs = this.hiSub, br = this.bridges;
@@ -1215,30 +1400,36 @@
     this.hl = null;
   };
 
+  function mk(tag, css) { var e = document.createElement(tag); e.style.cssText = css; return e; }
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+  S3.chipSvg = function () {
+    var svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('style', 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible');
+    this.labelLayer.appendChild(svg); return svg;
+  };
+  /* konu yongası: nöronun yanında durur, tıklanınca konuyu açar; uzağa düşerse kesik çizgiyle nörona bağlanır. rank küçük olan önce yerleşir */
+  S3.chip = function (svg, oid, col, text, rank) {
+    var self = this, P = this.P, n = this.nodes[this.L.ix[oid]], dc = D.multi ? P.SC[n.t.subject] : GC[n.t.grade];
+    var el = mk('button', 'position:absolute;left:0;top:0;display:flex;align-items:center;gap:7px;padding:5px 12px 5px 9px;border-radius:999px;border:1.5px solid ' + col + ';background:' + P.chipBg + ';color:' + P.ink + ';font-family:var(--font-body);font-weight:600;font-size:13px;line-height:1.2;white-space:nowrap;cursor:pointer;pointer-events:auto;will-change:transform;opacity:0;transition:opacity .25s');
+    el.type = 'button'; el.tabIndex = -1; el.setAttribute('aria-hidden', 'true');
+    el.appendChild(mk('i', 'flex:none;width:8px;height:8px;border-radius:50%;box-sizing:border-box;' + (n.isO ? 'border:2px solid ' + dc : 'background:' + dc)));
+    el.appendChild(document.createTextNode(text));
+    el.addEventListener('click', function () { select(oid); });
+    el.addEventListener('mouseenter', function () { self.chipHover = n.i; self.poke(); });
+    el.addEventListener('mouseleave', function () { self.chipHover = -1; self.poke(); });
+    this.labelLayer.appendChild(el);
+    var ln = document.createElementNS(SVG_NS, 'line');
+    ln.setAttribute('stroke', col); ln.setAttribute('stroke-width', '1.2'); ln.setAttribute('stroke-opacity', '0.6'); ln.setAttribute('stroke-dasharray', '2 3');
+    svg.appendChild(ln);
+    return { el: el, n: n, ln: ln, w: 0, cy: null, rank: rank || 0 };
+  };
   S3.buildFocusLabels = function (id) {
     this.clearFocusLabels();
     var self = this, P = this.P;
-    var mk = function (tag, css) { var e = document.createElement(tag); e.style.cssText = css; return e; };
-    var seen = new Map(), NS = 'http://www.w3.org/2000/svg', sub0 = D.byId[id].subject;
+    var seen = new Map(), sub0 = D.byId[id].subject;
     D.links.forEach(function (l) { if ((l.from !== id && l.to !== id) || !self.keep(l, id)) return; var o = l.from === id ? l.to : l.from; if (!seen.has(o)) seen.set(o, self.relType(l, id)); });
-    var svg = document.createElementNS(NS, 'svg');
-    svg.setAttribute('style', 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible');
-    this.labelLayer.appendChild(svg);
-    var items = Array.from(seen).map(function (kv) {
-      var oid = kv[0], type = kv[1], n = self.nodes[self.L.ix[oid]], dc = D.multi ? P.SC[n.t.subject] : GC[n.t.grade];
-      var el = mk('button', 'position:absolute;left:0;top:0;display:flex;align-items:center;gap:7px;padding:5px 12px 5px 9px;border-radius:999px;border:1.5px solid ' + EC[type] + ';background:' + P.chipBg + ';color:' + P.ink + ';font-family:var(--font-body);font-weight:600;font-size:13px;line-height:1.2;white-space:nowrap;cursor:pointer;pointer-events:auto;will-change:transform;opacity:0;transition:opacity .25s');
-      el.type = 'button'; el.tabIndex = -1; el.setAttribute('aria-hidden', 'true');
-      el.appendChild(mk('i', 'flex:none;width:8px;height:8px;border-radius:50%;box-sizing:border-box;' + (n.isO ? 'border:2px solid ' + dc : 'background:' + dc)));
-      el.appendChild(document.createTextNode((n.t.subject !== sub0 ? n.t.subjectShort + ' · ' : '') + n.t.name));
-      el.addEventListener('click', function () { select(oid); });
-      el.addEventListener('mouseenter', function () { self.chipHover = n.i; self.poke(); });
-      el.addEventListener('mouseleave', function () { self.chipHover = -1; self.poke(); });
-      self.labelLayer.appendChild(el);
-      var ln = document.createElementNS(NS, 'line');
-      ln.setAttribute('stroke', EC[type]); ln.setAttribute('stroke-width', '1.2'); ln.setAttribute('stroke-opacity', '0.6'); ln.setAttribute('stroke-dasharray', '2 3');
-      svg.appendChild(ln);
-      return { el: el, n: n, ln: ln, w: 0, cy: null };
-    });
+    var svg = this.chipSvg();
+    var items = Array.from(seen).map(function (kv) { var t = D.byId[kv[0]]; return self.chip(svg, kv[0], EC[kv[1]], (t.subject !== sub0 ? t.subjectShort + ' · ' : '') + t.name); });
     var sn = this.nodes[this.L.ix[id]];
     // uzun konu adı dar ekranda kenara taşmaz, iki satıra kırılır
     var main = mk('div', 'position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;max-width:' + (state.wide ? '520px' : 'calc(100vw - 112px)') + ';pointer-events:none;padding:5px 16px 7px;border-radius:20px;background:' + P.chipBg + ';box-shadow:0 6px 22px ' + P.shadow + ';will-change:transform;opacity:0');
@@ -1247,9 +1438,47 @@
     main.appendChild(a); main.appendChild(b); this.labelLayer.appendChild(main);
     this.fl = { items: items, main: main, n: sn, svg: svg };
   };
+  /* Yazılı Modu: kümedeki konuların yongaları; önce yazılı konuları yerleşir. ✓ biliyorum, ! zorlanıyorum */
+  S3.buildExamLabels = function () {
+    this.clearFocusLabels();
+    var self = this, R = this.exam.roles, svg = this.chipSvg(), sid = state.exam ? state.exam.sid : null;
+    var col = { exam: EC.next, pre: EC.pre, help: EC.kol }, rank = { exam: 0, pre: 1, help: 2 };
+    var items = Object.keys(R).filter(function (id) { return self.L.ix[id] != null; }).map(function (id) {
+      var t = D.byId[id], m = marks[id];
+      return self.chip(svg, id, col[R[id]], (m === 'b' ? '✓ ' : m === 'z' ? '! ' : '') + (t.subject !== sid ? t.subjectShort + ' · ' : '') + t.name, rank[R[id]]);
+    });
+    this.fl = { items: items, main: null, c: this.exam.c || this.home, svg: svg };
+  };
   S3.clearFocusLabels = function () {
     if (!this.fl) return;
-    this.fl.items.forEach(function (i) { i.el.remove(); }); this.fl.main.remove(); this.fl.svg.remove(); this.fl = null; this.chipHover = -1;
+    this.fl.items.forEach(function (i) { i.el.remove(); }); if (this.fl.main) this.fl.main.remove(); this.fl.svg.remove(); this.fl = null; this.chipHover = -1;
+  };
+
+  /* Yazılı Modu'nu aç (roles: konu → exam | pre | help) ya da kapat (null). Bir konu açıksa görünüm konu kapanınca döner. */
+  S3.setExam = function (roles, signal) {
+    this.exam = roles ? { roles: roles } : null; this.hiSub = null;
+    if (state.sel && this.selI >= 0) return;
+    this.clearSel();
+    if (signal && this.exam) this.examSignal();
+  };
+  /* kamera yazılı kümesine oturur */
+  S3.fitExam = function () {
+    var self = this, c = new this.T.Vector3(), ns = [], r = 0;
+    Object.keys(this.exam.roles).forEach(function (id) { var i = self.L.ix[id]; if (i != null) ns.push(self.nodes[i]); });
+    if (!ns.length) { this.exam.c = this.home; return; }
+    ns.forEach(function (n) { c.add(n.pos); }); c.divideScalar(ns.length);
+    ns.forEach(function (n) { r = Math.max(r, n.pos.distanceTo(c)); });
+    this.exam.c = c; this.ctl.gTarget.copy(c); this.ctl.gDist = clamp(r * 2.3 + 160, 320, D.multi ? 2600 : 1200);
+  };
+  /* Sinyal: girişte ışık önce ön koşullardan, sonra öbür derslerden, en son yazılı konuları arasından yazılı konularına akar */
+  S3.examSignal = function () {
+    this.clearChain(); if (mqReduce.matches) return;
+    var self = this, T = this.T, R = this.exam.roles, t0 = (this.clock || 0) + 0.5;
+    var col = { pre: new T.Color(this.P.acc), help: new T.Color(EC.kol), exam: new T.Color(EC.next) }, at = { pre: 0, help: 0.9, exam: 1.8 }, n = { pre: 0, help: 0, exam: 0 };
+    D.links.forEach(function (l, k) {
+      var a = R[l.from]; if (!a || R[l.to] !== 'exam' || l.type === 'ilg') return;
+      self.cp.push({ k: k, at: t0 + at[a] + (n[a]++ % 5) * 0.16, dur: 1.1, dest: self.L.E[k][1], col: col[a] });
+    });
   };
 
   S3.select = function (id) {
@@ -1266,11 +1495,14 @@
     }
     this.lastInteract = performance.now(); this.poke();
   };
+  /* seçim kalkar: Yazılı Modu'ndaysa yazılı kümesine, değilse tüm ağa dönülür */
   S3.clearSel = function () {
     this.selI = -1; this.nav = false;
-    this.ctl.gTarget.copy(this.home); this.ctl.gDist = this.idleDist;
+    if (this.exam) this.fitExam(); else { this.ctl.gTarget.copy(this.home); this.ctl.gDist = this.idleDist; }
     this.computeTargets(null, state.filter);
-    this.clearHighlight(); this.clearFocusLabels(); this.clearChain(); this.poke();
+    this.clearHighlight(); this.clearFocusLabels(); this.clearChain();
+    if (this.exam) this.buildExamLabels();
+    this.poke();
   };
   S3.setFilter = function (k) { this.computeTargets(null, k); };
 
@@ -1289,14 +1521,14 @@
       ctl.theta += (tt - ctl.theta) * kk; ctl.phi += (hp - ctl.phi) * kk; ctl.vt = ctl.vp = 0;
       if (Math.abs(tt - ctl.theta) + Math.abs(hp - ctl.phi) > 0.002) this.poke();
     } else if (!this.dragging) { ctl.theta += ctl.vt; ctl.phi += ctl.vp; var dmp = Math.pow(0.9, dt * 60); ctl.vt *= dmp; ctl.vp *= dmp; }
-    if (!s.flat && !reduce && !this.dragging && !this.nav && performance.now() - this.lastInteract > 2600) ctl.theta += dt * (s.sel ? 0.03 : D.multi ? 0.04 : 0.065);
+    if (!s.flat && !reduce && !this.dragging && !this.nav && performance.now() - this.lastInteract > 2600) ctl.theta += dt * (s.sel || s.exam ? 0.03 : D.multi ? 0.04 : 0.065);
     ctl.phi = clamp(ctl.phi, 0.3, 2.84);
     ctl.target.lerp(ctl.gTarget, kc); ctl.dist += (ctl.gDist - ctl.dist) * kc;
     var sp = Math.sin(ctl.phi), t = ctl.target;
     C.position.set(t.x + ctl.dist * sp * Math.sin(ctl.theta), t.y + ctl.dist * Math.cos(ctl.phi), t.z + ctl.dist * sp * Math.cos(ctl.theta));
     C.lookAt(t);
     var gx = 0, gy = 0;
-    if (s.sel) { gx = s.wide ? 228 : 0; gy = s.wide ? 0 : this.H * 0.2; }
+    if (s.sel || s.exam) { gx = s.wide ? 228 : 0; gy = s.wide ? 0 : this.H * 0.2; }
     else if (s.wide) { var li = this.ab != null ? this.ab : (this.ab = this.leftInset()); gx = -li / 2; } // ağ, soldaki kartın (ağ kartı ya da arama kartı) sağında kalan alanın ortasına oturur
     this.off[0] += (gx - this.off[0]) * kc; this.off[1] += (gy - this.off[1]) * kc;
     if (Math.abs(this.off[0]) + Math.abs(this.off[1]) > 0.5) C.setViewOffset(this.W, this.H, this.off[0], this.off[1], this.W, this.H);
@@ -1429,7 +1661,7 @@
     tl.forEach(function (o2) {
       var L = o2.L, z = o2.z, d = o2.d;
       // tüm derslerde ayrıntı uzaklıkla açılır: uzakta ders adları ve köprü çiftleri, yaklaştıkça tema adları
-      var o = s.sel || z > 1 ? 0 : L.big ? clamp((d - 500) / 900, 0.3, 1) : L.pair ? (self2.bridges ? 1 : clamp((d - 700) / 1400, 0, 0.9)) : D.multi ? clamp((2600 - d) / 900, 0, 1) : clamp(2.1 - d / 1250, 0.85, 1);
+      var o = s.sel || s.exam || z > 1 ? 0 : L.big ? clamp((d - 500) / 900, 0.3, 1) : L.pair ? (self2.bridges ? 1 : clamp((d - 700) / 1400, 0, 0.9)) : D.multi ? clamp((2600 - d) / 900, 0, 1) : clamp(2.1 - d / 1250, 0.85, 1);
       if (s.filter !== 'all' && L.grade !== s.filter && L.grade !== 'S') o *= 0.3;
       if (hs) o *= L.pair ? (L.sids.indexOf(hs) >= 0 ? 1.1 : 0) : L.sid !== hs ? (L.big ? 0.35 : 0) : 1;
       o = Math.min(1, o);
@@ -1458,14 +1690,18 @@
       if (o > 0) { var ts = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) translate(-50%,-100%)'; if (L.ts !== ts) { L.el.style.transform = ts; L.ts = ts; } }
     });
     if (this.fl) {
-      var fl = this.fl, pm = proj(fl.n.pos), mx = pm[0], my = pm[1], mz = pm[2], mr = pxR(fl.n), mw = fl.mw || (fl.mw = fl.main.offsetWidth || 200);
-      var mTop = my + mr * 1.25 + 10, mh = fl.mh || (fl.mh = fl.main.offsetHeight || 50);
-      // ad etiketi ekranda kalır: geniş ekranda panelin, telefonda yakınlaştırma düğmelerinin solunda
-      var lim = s.wide ? W - 464 : mTop < H * 0.46 && mTop + mh > H * 0.46 - 160 ? W - 88 : W - 12;
-      mx = clamp(mx, mw / 2 + 12, Math.max(mw / 2 + 12, lim - mw / 2));
-      fl.main.style.transform = 'translate(' + mx.toFixed(1) + 'px,' + mTop.toFixed(1) + 'px) translate(-50%,0)';
-      fl.main.style.opacity = mz > 1 ? '0' : '1';
-      var placed = [{ x: mx - mw / 2, y: mTop, w: mw, h: mh }, { x: mx - mr, y: my - mr, w: mr * 2, h: mr * 2 }];
+      // konu açıkken yongalar seçili nöronun ad etiketi çevresine, Yazılı Modu'nda (ad etiketi yok) kümenin ortası çevresine dizilir
+      var fl = this.fl, pm = proj(fl.main ? fl.n.pos : fl.c), my = pm[1], placed = [];
+      if (fl.main) {
+        var mx = pm[0], mz = pm[2], mr = pxR(fl.n), mw = fl.mw || (fl.mw = fl.main.offsetWidth || 200);
+        var mTop = my + mr * 1.25 + 10, mh = fl.mh || (fl.mh = fl.main.offsetHeight || 50);
+        // ad etiketi ekranda kalır: geniş ekranda panelin, telefonda yakınlaştırma düğmelerinin solunda
+        var lim = s.wide ? W - 464 : mTop < H * 0.46 && mTop + mh > H * 0.46 - 160 ? W - 88 : W - 12;
+        mx = clamp(mx, mw / 2 + 12, Math.max(mw / 2 + 12, lim - mw / 2));
+        fl.main.style.transform = 'translate(' + mx.toFixed(1) + 'px,' + mTop.toFixed(1) + 'px) translate(-50%,0)';
+        fl.main.style.opacity = mz > 1 ? '0' : '1';
+        placed.push({ x: mx - mw / 2, y: mTop, w: mw, h: mh }, { x: mx - mr, y: my - mr, w: mr * 2, h: mr * 2 });
+      }
       if (s.wide) placed.push({ x: W - 536, y: H - 180, w: 64, h: 180 }); else placed.push({ x: W - 80, y: H * 0.46 - 160, w: 80, h: 160 });
       var ch = 29, gap = 4;
       var maxX = (s.wide ? W - 464 : W - 12), minY = 150, maxY = s.wide ? H - 90 : H * 0.46 - 8;
@@ -1474,7 +1710,7 @@
         var x = ax < pm[0] - 4 ? ax - r - 8 - it.w : ax + r + 8;
         x = clamp(x, 12, Math.max(12, maxX - it.w));
         return { it: it, ax: ax, ay: ay, z: z2, x: x, y: ay - ch / 2 };
-      }).sort(function (a, b) { return Math.abs(a.ay - my) - Math.abs(b.ay - my); });
+      }).sort(function (a, b) { return a.it.rank - b.it.rank || Math.abs(a.ay - my) - Math.abs(b.ay - my); });
       list.forEach(function (Lq) {
         var free = function (yy) { return !placed.some(function (p) { return Lq.x < p.x + p.w + gap && Lq.x + Lq.it.w + gap > p.x && yy < p.y + p.h + gap && yy + ch + gap > p.y; }); };
         var y = clamp(Lq.y, minY, maxY), ok = free(y);
@@ -1519,12 +1755,13 @@
   function rebuildScene() {
     if (!THREE_MOD) return;
     var job = layoutJob(), my = ++sceneGen;
-    if (job.done) { makeScene(); return; }
+    if (job.done) { makeScene(); if (state.exam) scene.setExam(examRoles(), false); return; }
     if (scene) { scene.dispose(); scene = null; }
     $('#loading').hidden = false;
     runLayout(job).then(function () {
       if (my !== sceneGen) return;
       $('#loading').hidden = true; makeScene();
+      if (state.exam) scene.setExam(examRoles(), !state.sel);
       if (state.sel && D.byId[state.sel]) scene.select(state.sel);
       ui();
     });
@@ -1556,12 +1793,15 @@
     if (!(s === 'all' || EBA.reg[s]) || s === state.subject) { state.subjOpen = false; ui(); return; }
     state.sel = null; state.help = false; state.query = ''; state.open = false; state.filter = 'all'; state.scope = 'filter'; state.subjOpen = false; state.atlasSub = null; state.bridges = false;
     state.subject = s; D = dataFor(s); D.setLang(lang);
+    // Yazılı Modu yalnız yazılının dersi yeni görünümde de varsa sürer (tek dersten tüm derslere geçiş gibi)
+    if (state.exam && D.sel.indexOf(state.exam.sid) < 0) state.exam = null;
     try { localStorage.setItem(SUBJ_KEY, s); } catch (e) {}
     try { var q = location.search.replace(/([?&])ders=[a-z]*&?/, '$1').replace(/[?&]$/, ''); q += (q ? '&' : '?') + 'ders=' + s; history.replaceState(history.state, '', location.pathname + q + (fromHash ? location.hash : '')); } catch (e) {}
     if (!fromHash) setHash(null);
     renderStatic();
     var lb = $('#listView .lbody'); if (lb) lb.innerHTML = D.listHTML();
     $('#panel').innerHTML = '';
+    if (state.exam) renderExam();
     applyFilterViews(); rebuildScene(); ui();
     announce(TX.subjNow(subjLabel()));
   }
@@ -1584,6 +1824,9 @@
     buildStatic(); bindUI(); ui();
     var tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.content = PAL[state.mode].theme;
     var start = readHash();
+    // Yazılı Modu adresi: liste hemen açılır, ağ sahne kurulunca yanar; listeden açılmış bir konuya yeniden yüklemede mod sürer
+    if (!start) { var yz = readExamHash(); if (yz) openExam(yz, true); }
+    else if (history.state && history.state.yz) { var sx = findExam(history.state.yz); if (sx && D.sel.indexOf(sx.sid) >= 0) state.exam = sx; }
     var saveData = navigator.connection && navigator.connection.saveData;
     if (!hasWebGL() || saveData) { failGL(saveData ? 'Veri tasarrufu açık: 3B görünüm atlandı.' : 'WebGL yok.'); if (start) select(start, true); return; }
     $('#loading').hidden = false;
@@ -1602,7 +1845,8 @@
         THREE_MOD = T; makeScene();
         $('#loading').hidden = true;
         state.ready = true; ui();
-        if (start) setTimeout(function () { select(start, true); }, 500);
+        // açılış hareketi başlasın diye seçim ve yazılı görünümü biraz sonra uygulanır
+        if (start || state.exam) setTimeout(function () { if (scene && state.exam) scene.setExam(examRoles(), !start); if (start) select(start, true); }, 500);
       } catch (e) { console.error(e); failGL('sahne kurulamadı'); if (start) select(start, true); }
     })();
   }

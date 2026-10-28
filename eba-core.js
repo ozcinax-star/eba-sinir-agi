@@ -5,22 +5,34 @@
   var reg = {}, ids = [];
 
   function register(def) {
-    reg[def.id] = def; every = null;
+    reg[def.id] = def; every = null; allLinks = null;
     if (ids.indexOf(def.id) < 0) ids.push(def.id);
     ids.sort(function (a, b) { return reg[a].order - reg[b].order; });
   }
-  /* kayıtlı tüm derslerin konuları (hangi dersler seçili olursa olsun): dersler arası bağların öbür ucu için */
+  /* kayıtlı tüm derslerin konuları (hangi dersler seçili olursa olsun): dersler arası bağların öbür ucu için.
+     ord: ders sırası + programdaki sıra */
   var every = null;
   function topicInfo(id) {
     if (!every) {
-      every = {};
+      every = {}; var n = 0;
       ids.forEach(function (sid) {
         var th = {}; reg[sid].themes.forEach(function (t) { th[t.id] = t; });
-        reg[sid].topics.forEach(function (r) { every[r[0]] = { id: r[0], subject: sid, grade: th[r[1]].grade, names: { tr: r[2], en: r[5] } }; });
+        reg[sid].topics.forEach(function (r) { every[r[0]] = { id: r[0], subject: sid, grade: th[r[1]].grade, names: { tr: r[2], en: r[5] }, ord: n++ }; });
       });
     }
     return every[id];
   }
+  /* kayıttaki bütün bağlar (ders içi + dersler arası), seçimden bağımsız */
+  var allLinks = null;
+  function everyLink() {
+    if (!allLinks) {
+      allLinks = [];
+      ids.forEach(function (sid) { allLinks.push.apply(allLinks, reg[sid].links); });
+      allLinks = allLinks.concat(reg._cross || []);
+    }
+    return allLinks;
+  }
+  function gradeVal(g) { return g === 'O' ? 8 : +g; }
 
   var NT = '(yeni sekmede açılır)', NT_EN = '(opens in a new tab)';
   var GEN = {
@@ -164,16 +176,56 @@
        kind: pre (öbür dersten ön koşul), kol (öbür dersten destek), next (öbür derste kullanılır), rel (ilgili) */
     var KIND_ORDER = { pre: 0, kol: 1, next: 2, rel: 3 };
     function crossOf(id) {
-      var me = topicInfo(id), S = GEN[api.lang], out = [];
+      var me = topicInfo(id), out = [];
       if (!me) return out;
       (reg._cross || []).forEach(function (l) {
         var dir = l[0] === id ? 'out' : l[1] === id ? 'in' : null; if (!dir) return;
         var o = topicInfo(dir === 'out' ? l[1] : l[0]); if (!o || o.subject === me.subject) return;
         var kind = l[2] === 'ilg' ? 'rel' : dir === 'out' ? 'next' : l[2] === 'on' ? 'pre' : 'kol';
-        out.push({ id: o.id, subject: o.subject, subjectShort: subShort(o.subject), name: o.names[api.lang], grade: o.grade,
-          gradeLabel: o.grade === 'O' ? S.mid : S.grade(o.grade), kind: kind, reason: api.lang === 'en' ? l[4] : l[3] });
+        out.push(infoOf(o.id, { kind: kind, reason: reasonOf(l) }));
       });
       return out.sort(function (a, b) { return KIND_ORDER[a.kind] - KIND_ORDER[b.kind]; });
+    }
+    /* kayıttaki herhangi bir konunun (seçili olmasa da) kısa bilgisi */
+    function infoOf(id, extra) {
+      var o = topicInfo(id), S = GEN[api.lang], r = { id: o.id, subject: o.subject, subjectShort: subShort(o.subject), name: o.names[api.lang], grade: o.grade,
+        gradeLabel: o.grade === 'O' ? S.mid : S.grade(o.grade) };
+      for (var k in extra) r[k] = extra[k];
+      return r;
+    }
+    function reasonOf(l) { return api.lang === 'en' ? l[4] : l[3]; }
+    function byGrade(a, b) { return gradeVal(a.grade) - gradeVal(b.grade) || topicInfo(a.id).ord - topicInfo(b.id).ord; }
+    function byOrd(a, b) { return topicInfo(a.id).ord - topicInfo(b.id).ord; }
+
+    /* bir konunun doğrudan ön koşulları (öbür derslerden olanlar dahil), sınıf ve program sırasıyla */
+    function prereqsOf(id) {
+      var out = [], seen = {};
+      everyLink().forEach(function (l) {
+        if (l[1] !== id || l[2] !== 'on' || seen[l[0]] || !topicInfo(l[0])) return;
+        seen[l[0]] = 1; out.push(infoOf(l[0], { reason: reasonOf(l) }));
+      });
+      return out.sort(byGrade);
+    }
+
+    /* Yazılı Modu çalışma listesi; seçili derslerden bağımsız, tüm kayıt üzerinden.
+       pre: yazılı konularının doğrudan ön koşulları · exam: yazılı konuları (verilen sırayla, bilinmeyenler atlanır)
+       help: öbür derslerden kolaylaştıranlar (ders sırasıyla) · her maddede for: hizmet ettiği yazılı konuları */
+    function studyList(examIds) {
+      var ex = {}, exam = [], pre = {}, help = {};
+      (examIds || []).forEach(function (id) { if (topicInfo(id) && !(id in ex)) { ex[id] = exam.length; exam.push(infoOf(id)); } });
+      everyLink().forEach(function (l) {
+        if (!(l[1] in ex) || l[0] in ex || !topicInfo(l[0])) return;
+        var bag = l[2] === 'on' ? pre : l[2] === 'kol' && topicInfo(l[0]).subject !== topicInfo(l[1]).subject ? help : null;
+        if (!bag) return;
+        if (bag[l[0]]) { if (bag[l[0]].for.indexOf(l[1]) < 0) bag[l[0]].for.push(l[1]); }
+        else bag[l[0]] = infoOf(l[0], { for: [l[1]], reason: reasonOf(l) });
+      });
+      function list(bag, cmp) {
+        return Object.keys(bag).filter(function (id) { return bag !== help || !pre[id]; }).map(function (id) {
+          bag[id].for.sort(function (a, b) { return ex[a] - ex[b]; }); return bag[id];
+        }).sort(cmp);
+      }
+      return { pre: list(pre, byGrade), exam: exam, help: list(help, byOrd) };
     }
 
     var prefixes = {}; topics.forEach(function (t) { prefixes[norm(t.codeTr).replace(/ /g, '').split(/[0-9]/)[0]] = 1; });
@@ -197,6 +249,7 @@
     api.subjects = subs.map(function (d) { return { id: d.id, order: d.order }; });
     api.themes = themes; api.themeById = themeById; api.topics = topics; api.byId = byId; api.links = links;
     api.resources = resources; api.neighbors = neighbors; api.search = search; api.crossOf = crossOf;
+    api.infoOf = infoOf; api.prereqsOf = prereqsOf; api.studyList = studyList;
     api.programPdf = subs[0] && subs[0].program ? subs[0].program.pdf : '';
     api.setLang = setLang; api.gradeName = gradeName; api.subjectName = subName; api.subjectShort = subShort; api.listHTML = listHTML; api.missing = missing;
     api.popular = sel.length === 1 ? (reg[sel[0]].popular || []) : [].concat.apply([], subs.map(function (d) { return (d.popular || []).slice(0, 1); }));
@@ -208,6 +261,6 @@
     register: register, make: make, reg: reg, ids: function () { return ids.slice(); },
     name: function (id, lang) { return reg[id].name[lang || 'tr']; },
     short: function (id, lang) { var d = reg[id]; return (d.short || d.name)[lang || 'tr']; },
-    cross: function (arr) { reg._cross = (reg._cross || []).concat(arr); }
+    cross: function (arr) { reg._cross = (reg._cross || []).concat(arr); allLinks = null; }
   };
 })();
