@@ -44,7 +44,7 @@
       scopeAll: function (n) { return 'Tüm sınıflarda ara' + (n ? ' (+' + n + ')' : ''); }, noneIn: function (f) { return f + ' içinde sonuç yok.'; },
       viaKol: 'bu konudan destek alır', viaOn: 'bu konuya dayanır', themeTag: function (th) { return th + ' teması'; },
       closePanel: 'Paneli kapat', expand: 'Ayrıntıları büyüt', shrink: 'Küçült', grab: 'Paneli büyüt ya da küçült',
-      preOnly: 'Yalnızca ön koşulları göster', short: 'Kısaca', official: 'Resmî kaynaklar', verified: 'Doğrulandı', newTab: '(yeni sekmede açılır)',
+      preOnly: 'Yalnızca ön koşulları göster', short: 'Kısaca', yzH: 'Yazılıya hazırlık', yzSub: 'Bu konu aşağıdaki ortak yazılılarda sorulabilir.', yzName: function (g, d, y) { return g + '. sınıf · ' + d + '. dönem ' + y + '. yazılı'; }, yzPdf: 'Yazılı senaryosu ve puanlama (PDF)', yzMat: 'Ders materyalleri (fasikül)', yzSrc: 'MEB · OGM Materyal · girişsiz', yzMatNote: 'Başlıklar güncel müfredattan farklı olabilir.', official: 'Resmî kaynaklar', verified: 'Doğrulandı', newTab: '(yeni sekmede açılır)',
       notOfficial: 'resmî materyal olarak gösterilmez', checked: function (d) { return 'Bağlantılar ' + d + ' itibarıyla kontrol edildi.'; },
       preOnlyNote: 'Yalnızca bu konudan önce bilinmesi gerekenler gösteriliyor.',
       preH: 'Önce bunları bil', preSub: 'Ön koşul: bilinmeden bu konu anlaşılamaz.', baseH: 'Ortaokuldan gelen temel',
@@ -64,7 +64,7 @@
       scopeAll: function (n) { return 'Search all grades' + (n ? ' (+' + n + ')' : ''); }, noneIn: function (f) { return 'No results in ' + f + '.'; },
       viaKol: 'draws support from this topic', viaOn: 'builds on this topic', themeTag: function (th) { return th + ' theme'; },
       closePanel: 'Close panel', expand: 'Expand details', shrink: 'Shrink', grab: 'Expand or shrink the panel',
-      preOnly: 'Show prerequisites only', short: 'In short', official: 'Official resources', verified: 'Verified', newTab: '(opens in a new tab)',
+      preOnly: 'Show prerequisites only', short: 'In short', yzH: 'Exam practice', yzSub: 'This topic can appear in the common written exams below.', yzName: function (g, d, y) { return 'Grade ' + g + ' · term ' + d + ' · exam ' + y; }, yzPdf: 'Exam scenario and scoring (PDF, Turkish)', yzMat: 'Course materials (booklets, Turkish)', yzSrc: 'MEB · OGM Materyal · no login', yzMatNote: 'Titles may differ from the current curriculum.', official: 'Official resources', verified: 'Verified', newTab: '(opens in a new tab)',
       notOfficial: 'not shown as official material', checked: function (d) { return 'Links checked as of ' + d + '.'; },
       preOnlyNote: 'Showing only what you need to know before this topic.',
       preH: 'Know these first', preSub: 'Prerequisite: this topic can’t be understood without it.', baseH: 'Foundation from middle school',
@@ -243,6 +243,19 @@
     return out.sort(function (a, b) { return gv(a) - gv(b) || a.name.localeCompare(b.name, TX.locale); });
   }
 
+  function yazilHTML(t) {
+    var Y = window.EBA_YAZILI; if (!Y) return '';
+    var ex = Y.exams.filter(function (e) { return e.topics.indexOf(t.id) >= 0; });
+    if (!ex.length) return '';
+    var row = function (url, title, small) {
+      return '<a class="res" href="' + esc(url) + '" target="_blank" rel="noopener"><span class="ic">' + ICON_BOOK + '</span><span class="tx"><b>' + esc(title) + '</b><small>' + esc(small) + '</small></span>' + ICON_EXT + '<span class="sr">' + esc(TX.newTab) + '</span></a>';
+    };
+    return '<div class="sec"><h3>' + esc(TX.yzH) + '</h3><p class="sub">' + esc(TX.yzSub) + '</p>' +
+      ex.map(function (e) { return row(e.url, TX.yzName(e.grade, e.donem, e.yazili), TX.yzPdf + ' · ' + TX.yzSrc); }).join('') +
+      row(Y.materyal[ex[0].grade], TX.yzMat, TX.yzSrc + ' · ' + TX.yzMatNote) +
+      '<p class="fine">' + esc(TX.checked(new Date(Y.checked).toLocaleDateString(TX.locale, { month: 'long', year: 'numeric' }))) + '</p></div>';
+  }
+
   function renderPanel(keep) {
     var t = D.byId[state.sel]; if (!t) return;
     var nb = D.neighbors(t.id), res = D.resources(t.id);
@@ -255,7 +268,7 @@
         return r.verified
           ? '<a class="res" href="' + esc(r.url) + '" target="_blank" rel="noopener"><span class="ic">' + ICON_BOOK + '</span><span class="tx"><b>' + esc(r.title) + '</b><small>' + ICON_OK + esc(r.source) + ' · ' + esc(TX.verified) + '</small></span>' + ICON_EXT + '<span class="sr">' + esc(TX.newTab) + '</span></a>'
           : '<div class="res un"><span class="ic" style="background:none;color:inherit">' + ICON_CLOCK + '</span><span class="tx"><b>' + esc(r.title) + '</b><small>' + esc(r.note) + ' · ' + esc(TX.notOfficial) + '</small></span></div>';
-      }).join('') + '<p class="fine">' + esc(TX.checked(D.checkedAt)) + '</p></div>';
+      }).join('') + '<p class="fine">' + esc(TX.checked(D.checkedAt)) + '</p></div>' + yazilHTML(t);
     if (state.preOnly) { nb = { pre: nb.pre, base: nb.base, kol: [], next: [], rel: [] }; h += '<p class="fine">' + esc(TX.preOnlyNote) + '</p>'; }
     var before = nb.pre.length + nb.kol.length + nb.base.length > 0;
     if (before) {
