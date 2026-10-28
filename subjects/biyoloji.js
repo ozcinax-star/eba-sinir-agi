@@ -1,4 +1,4 @@
-// Biyoloji (9–12) · Türkiye Yüzyılı Maarif Modeli 2026. Kaynak: MEB TYMM Biyoloji Dersi Öğretim Programı.
+// Biyoloji (9–12) · Türkiye Yüzyılı Maarif Modeli 2024. Kaynak: MEB TYMM Biyoloji Dersi Öğretim Programı.
 EBA.register({
   id: 'biyoloji', order: 1,
   name: { tr: 'Biyoloji', en: 'Biology' }, mid: { tr: 'Fen Bilimleri', en: 'Science' },

@@ -46,6 +46,7 @@ if (yz) {
   const Y = JSON.parse(fs.readFileSync(yz, 'utf8')), seenE = new Set();
   (Y.exams || []).forEach(e => {
     const k = e.grade + '-' + e.donem + '-' + e.yazili; if (seenE.has(k)) errs.push('yinelenen yazılı ' + k); seenE.add(k);
+    if (e.hata) { if (e.topics) errs.push('yazılı ' + k + ': hata kaydında konu olmaz'); return; }
     if (!e.topics || !e.topics.length) warns.push('konusuz yazılı ' + k);
     (e.topics || []).forEach(t => { if (!D.byId[t]) errs.push('yazılı ' + k + ': bilinmeyen konu ' + t); else if (D.byId[t].grade !== e.grade) errs.push('yazılı ' + k + ': sınıf uyuşmuyor ' + t); });
   });

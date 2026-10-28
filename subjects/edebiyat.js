@@ -1,4 +1,4 @@
-// Türk Dili ve Edebiyatı (9–12) · Türkiye Yüzyılı Maarif Modeli 2026. Kaynak: MEB TYMM Türk Dili ve Edebiyatı Dersi Öğretim Programı.
+// Türk Dili ve Edebiyatı (9–12) · Türkiye Yüzyılı Maarif Modeli 2024. Kaynak: MEB TYMM Türk Dili ve Edebiyatı Dersi Öğretim Programı.
 // Program 4 tema/sınıf yapısındadır; öğrenme çıktıları TDE1.x (dinleme/izleme), TDE2.x (okuma), TDE3.x (konuşma), TDE4.x (yazma) kodlarıyla tüm temalarda ortaktır.
 // Hazırlık sınıfı temaları bu haritaya alınmadı (9–12 ve ortaokul temelleri).
 EBA.register({

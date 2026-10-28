@@ -5,7 +5,7 @@
     { "grade": 9, "donem": 2, "yazili": 1, "kodlar": ["FZ.9.2.7", "FZ.9.3.1", "FZ.9.3.2", "FZ.9.3.4", "FZ.9.3.6"], "topics": ["fiz_haretur", "fiz_basinc", "fiz_sivibas", "fiz_acikhava", "fiz_kaldirma", "fiz_kaldbas"] },
     { "grade": 9, "donem": 2, "yazili": 2, "kodlar": ["FZ.9.3.7", "FZ.9.4.1", "FZ.9.4.3", "FZ.9.4.4", "FZ.9.4.5"], "topics": ["fiz_bernoulli", "fiz_icenerji", "fiz_ozisi", "fiz_hal", "fiz_denge", "fiz_aktarim"] },
     { "grade": 10, "donem": 1, "yazili": 1, "kodlar": ["FZ.10.1.1", "FZ.10.1.2", "FZ.10.1.3"], "topics": ["fiz_sabithiz", "fiz_ivme", "fiz_sabitivme"] },
-    { "grade": 10, "donem": 1, "yazili": 2, "kodlar": ["FZ.10.4.1", "FZ.10.4.2", "FZ.10.4.3", "FZ.10.4.4"], "topics": ["fiz_periyodik", "fiz_dalgakav", "fiz_dalgasin", "fiz_dalgahiz"] },
+    { "grade": 10, "donem": 1, "yazili": 2, "hata": "OGM Materyal sayfasındaki 1. dönem 2. yazılı bağlantısı 2. dönem 2. yazılı dosyasını açıyor (Ekim 2026).", "hataEn": "The OGM Materyal link for term 1, exam 2 opens the term 2, exam 2 file (October 2026)." },
     { "grade": 10, "donem": 2, "yazili": 1, "kodlar": ["FZ.10.3.2", "FZ.10.3.3", "FZ.10.3.4", "FZ.10.3.5", "FZ.10.3.6"], "topics": ["fiz_akim", "fiz_ohm", "fiz_esdeger", "fiz_uretec", "fiz_tehlike"] },
     { "grade": 10, "donem": 2, "yazili": 2, "kodlar": ["FZ.10.4.1", "FZ.10.4.2", "FZ.10.4.3", "FZ.10.4.4"], "topics": ["fiz_periyodik", "fiz_dalgakav", "fiz_dalgasin", "fiz_dalgahiz"] }
   ]
